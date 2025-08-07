@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "945797982425",
+    "project_id": "crm-clinic-3bb78",
+    "storage_bucket": "crm-clinic-3bb78.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945797982425:android:b670037631a6de65be76c8",
+        "android_client_info": {
+          "package_name": "com.example.crm_clinic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945797982425-6mn294cmbpnjb7ub61stmnft141fp5oh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.crm_clinic",
+            "certificate_hash": "adc9b406393cb40801caecde75d8eeddf970479b"
+          }
+        },
+        {
+          "client_id": "945797982425-kamkqj86p0lbplck77pme2uuq3hp8d7g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVSn7jK5ccFVt5eFKHdeXb4whMrM5dr_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945797982425-kamkqj86p0lbplck77pme2uuq3hp8d7g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "945797982425-led4rtvqdcdph8achlee8ab6uf2d64m7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.crmClinic"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

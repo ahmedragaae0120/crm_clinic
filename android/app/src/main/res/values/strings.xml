@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">crm clinic</string>
+    <string name="facebook_app_id">1742478626657604</string>
+    <string name="facebook_client_token">e6db517201a9447d2fe99411ab76810b</string>
+    <string name="fb_login_protocol_scheme">fb1742478626657604</string>
+</resources>

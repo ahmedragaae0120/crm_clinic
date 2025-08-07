@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CLIENT_ID</key>
+		<string>945797982425-led4rtvqdcdph8achlee8ab6uf2d64m7.apps.googleusercontent.com</string>
+		<key>REVERSED_CLIENT_ID</key>
+		<string>com.googleusercontent.apps.945797982425-led4rtvqdcdph8achlee8ab6uf2d64m7</string>
+		<key>ANDROID_CLIENT_ID</key>
+		<string>945797982425-6mn294cmbpnjb7ub61stmnft141fp5oh.apps.googleusercontent.com</string>
+		<key>API_KEY</key>
+		<string>AIzaSyB2TQE4SL8UQeZCDIpWK_HSwachs2FyLfg</string>
+		<key>GCM_SENDER_ID</key>
+		<string>945797982425</string>
+		<key>PLIST_VERSION</key>
+		<string>1</string>
+		<key>BUNDLE_ID</key>
+		<string>com.example.crmClinic</string>
+		<key>PROJECT_ID</key>
+		<string>crm-clinic-3bb78</string>
+		<key>STORAGE_BUCKET</key>
+		<string>crm-clinic-3bb78.firebasestorage.app</string>
+		<key>IS_ADS_ENABLED</key>
+		<false></false>
+		<key>IS_ANALYTICS_ENABLED</key>
+		<false></false>
+		<key>IS_APPINVITE_ENABLED</key>
+		<true></true>
+		<key>IS_GCM_ENABLED</key>
+		<true></true>
+		<key>IS_SIGNIN_ENABLED</key>
+		<true></true>
+		<key>GOOGLE_APP_ID</key>
+		<string>1:945797982425:ios:d84f366dee86a5f1be76c8</string>
+	</dict>
+</plist>
