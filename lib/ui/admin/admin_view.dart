@@ -1,3 +1,4 @@
+import 'package:crm_clinic/ui/admin/widgets/add_user_dialog.dart';
 import 'package:crm_clinic/ui/admin/widgets/admin_drawer.dart';
 import 'package:crm_clinic/ui/admin/widgets/users_table.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +31,18 @@ class AdminView extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => const AddUserDialog(),
+                        );
+                      },
                       child: Text("+ New User",
                           style: theme.textTheme.bodyLarge!
                               .copyWith(color: theme.colorScheme.onPrimary)),
                     ),
                   ),
-                  const UsersTable()
+                  const UsersTable(),
                 ]),
           ),
         ),
