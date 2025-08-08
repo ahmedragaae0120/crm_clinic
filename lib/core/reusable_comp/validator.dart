@@ -33,23 +33,19 @@ abstract class Validator {
     return null;
   }
 
-  static String? confirmPassword(String? value, String password) {
-    if (value == null || value.isEmpty) {
-      return AppStrings.passwordCantBeEmpty;
-    }
-
-    if (value != password) {
-      return AppStrings.passwordsDoNotMatch;
-    }
-    return null;
-  }
-
   static String? name(String? value) {
     if (value == null || value.isEmpty) {
       return AppStrings.userNameCannotBeEmpty;
     }
     if (value.length > 20) {
       return AppStrings.userNameCannotBeMoreThan20Characters;
+    }
+    return null;
+  }
+
+  static dropdownButton(value) {
+    if (value == null) {
+      return AppStrings.fieldCannotBeEmpty;
     }
     return null;
   }

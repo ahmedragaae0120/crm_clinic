@@ -41,7 +41,7 @@ class _LoginViewState extends State<LoginView> {
             toastMessage(
                 message: AppStrings.loginSucessfully,
                 tybeMessage: TybeMessage.positive);
-            Navigator.pushReplacementNamed(context, AppRoutes.main);
+            Navigator.pushReplacementNamed(context, AppRoutes.admin);
           } else if (state is LoginFailure) {
             toastMessage(
                 message: state.error, tybeMessage: TybeMessage.negative);

@@ -1,4 +1,5 @@
 import 'package:crm_clinic/core/result.dart';
+import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/domain/use_cases/auth/login_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/auth/register_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/auth/signin_with_facebook_usecase.dart';
@@ -13,9 +14,12 @@ part 'auth_state.dart';
 @injectable
 class AuthCubit extends Cubit<AuthState> {
   @factoryMethod
-  AuthCubit(this._loginUseCase, this._registerUsecase,
-      this._signinWithGoogleUsecase, this._signinWithFacebookUsecase)
-      : super(AuthInitial());
+  AuthCubit(
+    this._loginUseCase,
+    this._registerUsecase,
+    this._signinWithGoogleUsecase,
+    this._signinWithFacebookUsecase,
+  ) : super(AuthInitial());
   final LoginUseCase _loginUseCase;
   final RegisterUsecase _registerUsecase;
   final SigninWithGoogleUsecase _signinWithGoogleUsecase;
@@ -36,9 +40,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  register(String email, String password) async {
+  register({required UserModel userModel, required String password}) async {
     emit(SignupLoading());
-    final result = await _registerUsecase(email: email, password: password);
+    final result =
+        await _registerUsecase(userModel: userModel, password: password);
     switch (result) {
       case Success():
         emit(SignupSuccess());

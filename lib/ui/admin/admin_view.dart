@@ -1,6 +1,6 @@
-import 'package:crm_clinic/ui/admin/widgets/add_user_dialog.dart';
-import 'package:crm_clinic/ui/admin/widgets/admin_drawer.dart';
-import 'package:crm_clinic/ui/admin/widgets/users_table.dart';
+import 'package:crm_clinic/core/utils/layout_builder.dart';
+import 'package:crm_clinic/ui/admin/layout/desktop/admin_desktop_body.dart';
+import 'package:crm_clinic/ui/admin/layout/mobile/admin_mobile_body.dart';
 import 'package:flutter/material.dart';
 
 class AdminView extends StatelessWidget {
@@ -8,45 +8,10 @@ class AdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Admin"),
-      ),
-      drawer: AdminDrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                spacing: 10,
-                children: [
-                  Text(
-                    "User Managament",
-                    style: theme.textTheme.headlineLarge,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => const AddUserDialog(),
-                        );
-                      },
-                      child: Text("+ New User",
-                          style: theme.textTheme.bodyLarge!
-                              .copyWith(color: theme.colorScheme.onPrimary)),
-                    ),
-                  ),
-                  const UsersTable(),
-                ]),
-          ),
-        ),
-      ),
+    return LayoutBuilderWidget(
+      mobileLayout: (context) => const AdminMobileBody(),
+      tabletLayout: (context) => const AdminMobileBody(),
+      desktopLayout: (context) => const AdminDesktopBody(),
     );
   }
 }

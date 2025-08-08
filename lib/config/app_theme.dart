@@ -25,6 +25,11 @@ class AppTheme {
         fontWeight: FontWeight.bold,
         color: AppColors.textPrimary,
       ),
+      headlineMedium: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textPrimary,
+      ),
       bodyLarge: TextStyle(
         fontSize: 16,
         color: AppColors.textPrimary,

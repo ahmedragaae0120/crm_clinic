@@ -1,3 +1,4 @@
+import 'package:crm_clinic/core/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class AdminDrawer extends StatelessWidget {
@@ -5,9 +6,10 @@ class AdminDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Drawer(
       child: Container(
-        color: Colors.blue[800],
+        color: theme.colorScheme.primary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -30,8 +32,8 @@ class AdminDrawer extends StatelessWidget {
               text: 'Dashboard',
               context: context,
               onTap: () {
-                Navigator.pop(context);
-                // ضع التنقل إلى صفحة الداشبورد هنا
+                Navigator.pushNamedAndRemoveUntil(
+                    context, AppRoutes.admin, (_) => false);
               },
             ),
             drawerItem(
@@ -39,8 +41,7 @@ class AdminDrawer extends StatelessWidget {
               text: 'Logout',
               context: context,
               onTap: () {
-                Navigator.pop(context);
-                // ضع منطق تسجيل الخروج هنا
+                // Navigator.pop(context);
               },
             ),
           ],

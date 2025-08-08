@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crm_clinic/core/services/collections.dart';
+import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,18 +8,18 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 class FirebaseManager {
-  final auth = FirebaseAuth.instance;
-  // final GoogleSignIn googleUser = GoogleSignIn.instance;
-  final firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  final _db = FirebaseFirestore.instance;
+
   Future<UserCredential> registerService(String email, String password) async {
-    return await auth.createUserWithEmailAndPassword(
+    return await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
 
   Future<UserCredential> loginService(String email, String password) async {
-    return await auth.signInWithEmailAndPassword(
+    return await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -68,6 +68,23 @@ class FirebaseManager {
         message: loginResult.message ?? "Facebook login failed",
       );
     }
+  }
+
+  Future<void> addUser(
+      {required UserModel userModel,
+      required UserCredential userCredential}) async {
+    String uid = userCredential.user!.uid;
+    await _db.collection(Collections.users).doc(uid).set({
+      'fullName': userModel.fullName,
+      'email': userModel.email,
+      'permission': userModel.permission,
+      'joined': userModel.joined
+    });
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
+    final collectionRef = _db.collection(Collections.users);
+    return collectionRef.snapshots();
   }
 
   // Future<QuerySnapshot<Map<String, dynamic>>> getProducts() async {

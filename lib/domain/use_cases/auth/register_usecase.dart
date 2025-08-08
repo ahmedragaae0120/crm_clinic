@@ -1,4 +1,5 @@
 import 'package:crm_clinic/core/result.dart';
+import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/domain/repo_contract/auth/register_repo.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,13 +9,9 @@ class RegisterUsecase {
   RegisterUsecase(this._registerRepo);
   final RegisterRepo _registerRepo;
 
-  Future<Result<void>> call({
-    required String email,
-    required String password,
-  }) {
-    return _registerRepo.register(
-      email: email,
-      password: password,
-    );
+  Future<Result<void>> call(
+      {required UserModel userModel, required String password}) async {
+    return await _registerRepo.register(
+        userModel: userModel, password: password);
   }
 }

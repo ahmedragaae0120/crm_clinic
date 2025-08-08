@@ -1,5 +1,10 @@
 import 'package:crm_clinic/core/reusable_comp/validator.dart';
+import 'package:crm_clinic/core/utils/toast_message.dart';
+import 'package:crm_clinic/data/model/user_model.dart';
+import 'package:crm_clinic/ui/admin/widgets/role_dropdown_widget.dart';
+import 'package:crm_clinic/ui/auth/view_model/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddUserDialog extends StatefulWidget {
   const AddUserDialog({super.key});
@@ -12,68 +17,102 @@ class _AddUserDialogState extends State<AddUserDialog> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  UserPermission? _userPermission;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _fullNameController.dispose();
     super.dispose();
   }
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      final email = _emailController.text.trim();
-      final password = _passwordController.text;
-
-      // TODO: قم بإرسال البيانات للخادم أو حفظها في قاعدة البيانات
-      print("✅ Create user: $email, $password");
-      FocusScope.of(context).unfocus();
-      Navigator.pop(context); // أغلق الديالوج بعد الإدخال الناجح
+      AuthCubit.get(context).register(
+          userModel: UserModel(
+              fullName: _fullNameController.text,
+              email: _emailController.text,
+              joined: DateTime.now(),
+              permission: _userPermission!.name),
+          password: _passwordController.text);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text("Add New User"),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _emailController,
-                validator: Validator.email,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is SignupSuccess) {
+          toastMessage(
+              message: "User Added Successfully",
+              tybeMessage: TybeMessage.positive);
+          FocusScope.of(context).unfocus();
+          Navigator.pop(context);
+        }
+        if (state is SignupFailure) {
+          FocusScope.of(context).unfocus();
+          toastMessage(message: state.error, tybeMessage: TybeMessage.negative);
+        }
+      },
+      child: AlertDialog(
+        title: const Text("Add New User"),
+        content: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 12,
+              children: [
+                TextFormField(
+                  controller: _fullNameController,
+                  validator: Validator.name,
+                  decoration: const InputDecoration(
+                    labelText: 'Full Name',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _passwordController,
-                validator: Validator.password,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
+                TextFormField(
+                  controller: _emailController,
+                  validator: Validator.email,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-              ),
-            ],
+                TextFormField(
+                  controller: _passwordController,
+                  validator: Validator.password,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                RoleDropdownWidget(
+                  userPermission: _userPermission,
+                  onChanged: (t) {
+                    setState(() {
+                      _userPermission = t;
+                    });
+                  },
+                )
+              ],
+            ),
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: _submit,
+            child: const Text("Create"),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text("Cancel"),
-        ),
-        ElevatedButton(
-          onPressed: _submit,
-          child: const Text("Create"),
-        ),
-      ],
     );
   }
 }
