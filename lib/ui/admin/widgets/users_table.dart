@@ -91,7 +91,7 @@ class UsersTable extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(8.0),
           child: Icon(
-            Icons.change_circle_outlined,
+            Icons.remove_circle_outline_outlined,
             color: theme.colorScheme.onPrimary,
           ),
         ),
