@@ -29,13 +29,16 @@ TableRow userRow(UserModel user, BuildContext context) {
         // labelStyle: TextStyle(color: permissionColor(user.permission)),
       ),
     ),
-    Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: IconButton(
-            onPressed: () {
-              AdminCubit.get(context).removeUser(userId);
-            },
-            icon: Icon(Icons.delete_forever)))
+    Visibility(
+      visible: enumPermission != UserPermission.admin,
+      child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+              onPressed: () {
+                AdminCubit.get(context).removeUser(userId);
+              },
+              icon: Icon(Icons.delete_forever))),
+    )
   ]);
 }
 
