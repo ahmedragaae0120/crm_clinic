@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crm_clinic/core/constant.dart';
 import 'package:crm_clinic/core/services/collections.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +13,8 @@ import 'package:injectable/injectable.dart';
 class FirebaseManager {
   final _auth = FirebaseAuth.instance;
   final _db = FirebaseFirestore.instance;
+
+  User? get currentUser => _auth.currentUser;
 
   Future<UserCredential> registerService(String email, String password) async {
     return await _auth.createUserWithEmailAndPassword(
@@ -78,13 +83,82 @@ class FirebaseManager {
       'fullName': userModel.fullName,
       'email': userModel.email,
       'permission': userModel.permission,
-      'joined': userModel.joined
+      'joined': userModel.joined,
+      'uid': uid
     });
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
     final collectionRef = _db.collection(Collections.users);
     return collectionRef.snapshots();
+  }
+
+  Future<UserPermission> getUserPermission(String uid) async {
+    try {
+      final docSnapshot =
+          await _db.collection(Collections.users).doc(uid).get();
+      final userData = docSnapshot.data();
+      final String? role = userData?['permission'] ?? '';
+
+      // توجيه حسب الـ role
+      if (role == UserPermission.admin.name) {
+        return UserPermission.admin;
+      } else if (role == UserPermission.doctor.name) {
+        return UserPermission.doctor;
+      } else if (role == UserPermission.nurse.name) {
+        return UserPermission.nurse;
+      } else {
+        return UserPermission.receptionist;
+      }
+    } catch (e) {
+      log('Error fetching role: $e');
+      throw Exception('Error fetching role: $e');
+    }
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  /// دالة خاصة لإنشاء admin إذا لم يكن موجود
+  Future<void> createDefaultAdminIfNotExists() async {
+    try {
+      // 1. البحث عن admin في Firestore
+      final query = await _db
+          .collection('users')
+          .where('permission', isEqualTo: 'Admin')
+          .limit(1)
+          .get();
+
+      log("found admin ${query.docs.length}");
+
+      if (query.docs.isEmpty) {
+        // 2. محاولة تسجيل دخول أو إنشاء حساب admin
+        UserCredential userCredential =
+            await registerService(Constant.adminEmail, Constant.adminPassword);
+
+        final adminUid = userCredential.user!.uid;
+
+        log("created admin and uid: $adminUid");
+        // 3. إضافة بيانات admin في Firestore
+
+        await addUser(
+            userModel: UserModel(
+              email: Constant.adminEmail,
+              fullName: 'Admin',
+              joined: DateTime.now(),
+              permission: UserPermission.admin.name,
+              uid: adminUid,
+            ),
+            userCredential: userCredential);
+      } else {
+        log("admin already exists");
+        throw Exception("Admin already exists.");
+      }
+    } catch (e) {
+      log("❌ Error creating admin: $e");
+      throw Exception("❌ Error creating admin: $e");
+    }
   }
 
   // Future<QuerySnapshot<Map<String, dynamic>>> getProducts() async {

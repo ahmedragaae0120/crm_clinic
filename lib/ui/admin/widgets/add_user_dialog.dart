@@ -1,4 +1,5 @@
 import 'package:crm_clinic/core/reusable_comp/validator.dart';
+import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/toast_message.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/ui/admin/widgets/role_dropdown_widget.dart';
@@ -44,16 +45,19 @@ class _AddUserDialogState extends State<AddUserDialog> {
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is SignupSuccess) {
+        if (state.signup is BaseSuccessState) {
           toastMessage(
               message: "User Added Successfully",
               tybeMessage: TybeMessage.positive);
           FocusScope.of(context).unfocus();
           Navigator.pop(context);
         }
-        if (state is SignupFailure) {
+        if (state.signup is BaseErrorState) {
+          final errorState = state.signup as BaseErrorState;
           FocusScope.of(context).unfocus();
-          toastMessage(message: state.error, tybeMessage: TybeMessage.negative);
+          toastMessage(
+              message: errorState.errorMessage,
+              tybeMessage: TybeMessage.negative);
         }
       },
       child: AlertDialog(

@@ -10,6 +10,14 @@ class UsersTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BlocBuilder<AdminCubit, AdminState>(
+      buildWhen: (previous, current) {
+        if (current is GetAllUsersSuccess ||
+            current is GetAllUsersFailed ||
+            current is GetAllUsersLoading) {
+          return true;
+        }
+        return false;
+      },
       builder: (context, state) {
         switch (state) {
           case GetAllUsersSuccess():
@@ -22,7 +30,7 @@ class UsersTable extends StatelessWidget {
               children: [
                 _buildHeader(context),
                 ...state.users.map(
-                  (users) => userRow(users),
+                  (users) => userRow(users, context),
                 ),
               ],
             );
@@ -79,6 +87,13 @@ class UsersTable extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onPrimary)),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.change_circle_outlined,
+            color: theme.colorScheme.onPrimary,
+          ),
         ),
       ],
     );

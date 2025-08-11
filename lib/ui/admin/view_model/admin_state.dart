@@ -15,3 +15,12 @@ class GetAllUsersFailed extends AdminState {
   final String message;
   GetAllUsersFailed(this.message);
 }
+
+class RemoveUserSuccess extends AdminState {}
+
+class RemoveUserFailed extends AdminState {
+  final String message;
+  RemoveUserFailed(this.message);
+}
+
+class RemoveUserLoading extends AdminState {}

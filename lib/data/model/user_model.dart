@@ -15,12 +15,14 @@ class UserModel {
   final String? email;
   final DateTime? joined;
   final String? permission;
+  final String? uid;
 
   const UserModel({
     this.fullName,
     this.email,
     this.joined,
     this.permission,
+    this.uid,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class UserModel {
           ? (json['joined'] as Timestamp).toDate()
           : DateTime.tryParse(json['joined']?.toString() ?? ''),
       permission: json['permission'] as String?,
+      uid: json['uid'] as String?,
     );
   }
 
@@ -40,6 +43,7 @@ class UserModel {
       'email': email,
       'joined': joined?.toIso8601String(),
       'permission': permission,
+      'uid': uid
     };
   }
 }

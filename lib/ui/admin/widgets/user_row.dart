@@ -2,8 +2,19 @@ import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-TableRow userRow(UserModel user) {
+import '../view_model/admin_cubit.dart';
+
+enum UserMenuAction {
+  edit("Edit"),
+  delete("Delete");
+
+  final String name;
+  const UserMenuAction(this.name);
+}
+
+TableRow userRow(UserModel user, BuildContext context) {
   final enumPermission = toEnum(user.permission ?? "");
+  final userId = user.uid ?? "";
 
   return TableRow(children: [
     cell(user.fullName ?? ""),
@@ -18,6 +29,13 @@ TableRow userRow(UserModel user) {
         // labelStyle: TextStyle(color: permissionColor(user.permission)),
       ),
     ),
+    Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: IconButton(
+            onPressed: () {
+              AdminCubit.get(context).removeUser(userId);
+            },
+            icon: Icon(Icons.delete_forever)))
   ]);
 }
 

@@ -12,8 +12,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   configureDependencies();
-  runApp(BlocProvider(
-    create: (context) => getIt<AuthCubit>(),
-    child: MyApp(),
+
+  final authCubit = getIt<AuthCubit>();
+  await authCubit.createAdminEmail();
+  final initialRoute = await authCubit.initRoute();
+  runApp(BlocProvider.value(
+    value: authCubit,
+    child: MyApp(
+      initialRoute: initialRoute,
+    ),
   ));
 }
