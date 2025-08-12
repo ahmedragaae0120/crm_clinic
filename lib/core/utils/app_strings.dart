@@ -21,6 +21,7 @@ class AppStrings {
   static const String loginSucessfully = 'Login successfully';
   static const String registerSucessfully = 'Register successfully';
   static const String fieldCannotBeEmpty = 'Field cannot be empty';
+  static const String dateCannotBeEmpty = 'Date cannot be empty';
 
   //validation messages
   static const String emailCantBeEmpty = 'Email cannot be empty';
