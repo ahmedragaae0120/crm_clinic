@@ -9,8 +9,6 @@ import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/domain/use_cases/auth/create_admin_email_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/auth/login_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/auth/register_usecase.dart';
-import 'package:crm_clinic/domain/use_cases/auth/signin_with_facebook_usecase.dart';
-import 'package:crm_clinic/domain/use_cases/auth/signin_with_google_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/auth/signout_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,8 +22,6 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
     this._loginUseCase,
     this._registerUsecase,
-    this._signinWithGoogleUsecase,
-    this._signinWithFacebookUsecase,
     this._firebaseManager,
     this._signoutUsecase,
     this._cacheHelper,
@@ -33,8 +29,8 @@ class AuthCubit extends Cubit<AuthState> {
   ) : super(AuthState());
   final LoginUseCase _loginUseCase;
   final RegisterUsecase _registerUsecase;
-  final SigninWithGoogleUsecase _signinWithGoogleUsecase;
-  final SigninWithFacebookUsecase _signinWithFacebookUsecase;
+  // final SigninWithGoogleUsecase _signinWithGoogleUsecase;
+  // final SigninWithFacebookUsecase _signinWithFacebookUsecase;
   final SignoutUsecase _signoutUsecase;
   final CreateAdminEmailUsecase _createAdminEmailUsecase;
   final CacheHelper _cacheHelper;

@@ -10,9 +10,13 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: RemoveUserDatasource)
 class RemoveUserDatasourceImpl implements RemoveUserDatasource {
+  @factoryMethod
+  RemoveUserDatasourceImpl(this.client);
+
+  final http.Client client;
   @override
   Future<Result<void>> removeUser(String userId) async {
-    final response = await http.delete(Uri.parse(Constant.removeUserEndPoint),
+    final response = await client.delete(Uri.parse(Constant.removeUserEndPoint),
         headers: {
           'Content-Type': 'application/json',
         },

@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
+import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 
 import '../../data/data_source_contract/auth/create_admin_email_datasource.dart'
@@ -89,16 +90,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i853.RegisterRepoImpl(gh<_i504.RegisterDatasource>()));
     gh.factory<_i489.SigninWithFacebookDatasource>(() =>
         _i216.SigninWithFacebookDatasourceImpl(gh<_i1025.FirebaseManager>()));
-    gh.factory<_i1064.RemoveUserDatasource>(
-        () => _i610.RemoveUserDatasourceImpl());
-    gh.factory<_i374.RemoveUserUsecase>(
-        () => _i374.RemoveUserUsecase(gh<_i1064.RemoveUserDatasource>()));
     gh.factory<_i778.GetAllUsersRepo>(
         () => _i1039.GetAllUsersRepoImpl(gh<_i332.GetAllUsersDatasource>()));
     gh.factory<_i1048.LoginDatasource>(
         () => _i1013.LoginDatasourceImpl(gh<_i1025.FirebaseManager>()));
     gh.factory<_i81.SigninWithGoogleRepo>(() =>
         _i27.SigninWithGoogleRepoImpl(gh<_i574.SigninWithGoogleDatasource>()));
+    gh.factory<_i1064.RemoveUserDatasource>(
+        () => _i610.RemoveUserDatasourceImpl(gh<_i519.Client>()));
     gh.factory<_i299.SigninWithGoogleUsecase>(
         () => _i299.SigninWithGoogleUsecase(gh<_i81.SigninWithGoogleRepo>()));
     gh.factory<_i284.LoginRepo>(
@@ -114,21 +113,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i301.SigninWithFacebookRepo>(() =>
         _i28.SigninWithFacebookRepoImpl(
             gh<_i489.SigninWithFacebookDatasource>()));
+    gh.factory<_i374.RemoveUserUsecase>(
+        () => _i374.RemoveUserUsecase(gh<_i1064.RemoveUserDatasource>()));
+    gh.factory<_i538.AuthCubit>(() => _i538.AuthCubit(
+          gh<_i912.LoginUseCase>(),
+          gh<_i954.RegisterUsecase>(),
+          gh<_i1025.FirebaseManager>(),
+          gh<_i492.SignoutUsecase>(),
+          gh<_i299.CacheHelper>(),
+          gh<_i332.CreateAdminEmailUsecase>(),
+        ));
     gh.factory<_i441.SigninWithFacebookUsecase>(() =>
         _i441.SigninWithFacebookUsecase(gh<_i301.SigninWithFacebookRepo>()));
     gh.factory<_i705.AdminCubit>(() => _i705.AdminCubit(
           gh<_i967.GetAllUsersUsecase>(),
           gh<_i374.RemoveUserUsecase>(),
-        ));
-    gh.factory<_i538.AuthCubit>(() => _i538.AuthCubit(
-          gh<_i912.LoginUseCase>(),
-          gh<_i954.RegisterUsecase>(),
-          gh<_i299.SigninWithGoogleUsecase>(),
-          gh<_i441.SigninWithFacebookUsecase>(),
-          gh<_i1025.FirebaseManager>(),
-          gh<_i492.SignoutUsecase>(),
-          gh<_i299.CacheHelper>(),
-          gh<_i332.CreateAdminEmailUsecase>(),
         ));
     return this;
   }
