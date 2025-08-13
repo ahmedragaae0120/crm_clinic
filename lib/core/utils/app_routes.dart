@@ -4,7 +4,6 @@ import 'package:crm_clinic/ui/admin/view_model/admin_cubit.dart';
 import 'package:crm_clinic/ui/auth/login/login_view.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
 import 'package:crm_clinic/ui/receptionist/views/receptionist_main_screen.dart';
-import 'package:crm_clinic/ui/receptionist/views/receptionist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,5 +1,4 @@
 import 'package:crm_clinic/core/utils/config.dart';
-import 'package:crm_clinic/ui/receptionist/views/add_patient_view.dart';
 import 'package:flutter/material.dart';
 
 class ReceptionistView extends StatelessWidget {
