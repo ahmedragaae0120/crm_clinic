@@ -15,7 +15,7 @@ class AdminMobileBody extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Admin"),
       ),
-      drawer: AdminDrawer(),
+      drawer: const AdminDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

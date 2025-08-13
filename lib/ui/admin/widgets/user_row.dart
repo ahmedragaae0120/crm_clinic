@@ -37,7 +37,7 @@ TableRow userRow(UserModel user, BuildContext context) {
               onPressed: () {
                 AdminCubit.get(context).removeUser(userId);
               },
-              icon: Icon(Icons.delete_forever))),
+              icon: const Icon(Icons.delete_forever))),
     )
   ]);
 }

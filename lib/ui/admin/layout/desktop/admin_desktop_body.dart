@@ -14,7 +14,7 @@ class AdminDesktopBody extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          SizedBox(
+          const SizedBox(
             width: 250,
             height: double.infinity,
             child: AdminDrawer(),

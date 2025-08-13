@@ -41,14 +41,14 @@ class AddPatientMobileBody extends StatelessWidget {
               ),
             ),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Full name",
               ),
               controller: cubit.nameController,
               validator: Validator.name,
             ),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "phone number",
               ),
               keyboardType: TextInputType.phone,
@@ -77,7 +77,7 @@ class AddPatientMobileBody extends StatelessWidget {
                   .map((gender) =>
                       DropdownMenuItem(value: gender, child: Text(gender.name)))
                   .toList(),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Select Gender",
               ),
               onChanged: cubit.changeGender,

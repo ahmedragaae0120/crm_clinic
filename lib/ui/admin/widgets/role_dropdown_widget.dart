@@ -22,7 +22,7 @@ class RoleDropdownWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(UserPermission.doctor.name),
-                Icon(Icons.expand_circle_down_rounded,
+                const Icon(Icons.expand_circle_down_rounded,
                     color: Colors.blueAccent),
               ],
             ),
@@ -33,7 +33,7 @@ class RoleDropdownWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(UserPermission.nurse.name),
-                Icon(Icons.expand_circle_down_rounded,
+                const Icon(Icons.expand_circle_down_rounded,
                     color: Colors.lightBlueAccent),
               ],
             ),
@@ -44,7 +44,8 @@ class RoleDropdownWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(UserPermission.receptionist.name),
-                Icon(Icons.expand_circle_down_rounded, color: Colors.grey),
+                const Icon(Icons.expand_circle_down_rounded,
+                    color: Colors.grey),
               ],
             ),
           ),
@@ -54,7 +55,7 @@ class RoleDropdownWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(UserPermission.admin.name),
-                Icon(Icons.expand_circle_down_rounded, color: Colors.red),
+                const Icon(Icons.expand_circle_down_rounded, color: Colors.red),
               ],
             ),
           ),
