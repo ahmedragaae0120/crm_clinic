@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/domain/use_cases/get_all_users_usecase.dart';

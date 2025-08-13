@@ -57,7 +57,7 @@ class UsersTable extends StatelessWidget {
       ),
       children: [
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Text("Full Name",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -65,7 +65,7 @@ class UsersTable extends StatelessWidget {
                   color: theme.colorScheme.onPrimary)),
         ),
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Text("Email, Address",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -73,7 +73,7 @@ class UsersTable extends StatelessWidget {
                   color: theme.colorScheme.onPrimary)),
         ),
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Text("Joined",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -81,7 +81,7 @@ class UsersTable extends StatelessWidget {
                   color: theme.colorScheme.onPrimary)),
         ),
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Text("Permissions",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -89,7 +89,7 @@ class UsersTable extends StatelessWidget {
                   color: theme.colorScheme.onPrimary)),
         ),
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Icon(
             Icons.remove_circle_outline_outlined,
             color: theme.colorScheme.onPrimary,

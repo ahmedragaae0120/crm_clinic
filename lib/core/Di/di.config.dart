@@ -13,6 +13,7 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../data/data_source_contract/add_patient_datasource.dart' as _i901;
 import '../../data/data_source_contract/auth/create_admin_email_datasource.dart'
     as _i114;
 import '../../data/data_source_contract/auth/login_datasource.dart' as _i1048;
@@ -24,6 +25,7 @@ import '../../data/data_source_contract/auth/signin_with_google_datasource.dart'
 import '../../data/data_source_contract/auth/signout_datasource.dart' as _i365;
 import '../../data/data_source_contract/get_all_users_datasource.dart' as _i332;
 import '../../data/data_source_contract/remove_user_datasource.dart' as _i1064;
+import '../../data/data_source_impl/add_patient_datasource_impl.dart' as _i708;
 import '../../data/data_source_impl/auth/create_admin_email_datasource_impl.dart'
     as _i499;
 import '../../data/data_source_impl/auth/login_datasource_impl.dart' as _i1013;
@@ -48,6 +50,7 @@ import '../../domain/repo_contract/auth/signin_with_facebook_repo.dart'
     as _i301;
 import '../../domain/repo_contract/auth/signin_with_google_repo.dart' as _i81;
 import '../../domain/repo_contract/get_all_users_repo.dart' as _i778;
+import '../../domain/use_cases/add_patient_usecase.dart' as _i875;
 import '../../domain/use_cases/auth/create_admin_email_usecase.dart' as _i332;
 import '../../domain/use_cases/auth/login_usecase.dart' as _i912;
 import '../../domain/use_cases/auth/register_usecase.dart' as _i954;
@@ -58,6 +61,7 @@ import '../../domain/use_cases/get_all_users_usecase.dart' as _i967;
 import '../../domain/use_cases/remove_user_usecase.dart' as _i374;
 import '../../ui/admin/view_model/admin_cubit.dart' as _i705;
 import '../../ui/auth/view_model/auth_cubit.dart' as _i538;
+import '../../ui/receptionist/view_model/receptionist_cubit.dart' as _i858;
 import '../cache/shared_pref.dart' as _i299;
 import '../services/firebase_manager.dart' as _i1025;
 
@@ -92,8 +96,12 @@ extension GetItInjectableX on _i174.GetIt {
         _i216.SigninWithFacebookDatasourceImpl(gh<_i1025.FirebaseManager>()));
     gh.factory<_i778.GetAllUsersRepo>(
         () => _i1039.GetAllUsersRepoImpl(gh<_i332.GetAllUsersDatasource>()));
+    gh.factory<_i901.AddPatientDatasource>(
+        () => _i708.AddPatientDatasourceImpl(gh<_i1025.FirebaseManager>()));
     gh.factory<_i1048.LoginDatasource>(
         () => _i1013.LoginDatasourceImpl(gh<_i1025.FirebaseManager>()));
+    gh.factory<_i875.AddPatientUsecase>(
+        () => _i875.AddPatientUsecase(gh<_i901.AddPatientDatasource>()));
     gh.factory<_i81.SigninWithGoogleRepo>(() =>
         _i27.SigninWithGoogleRepoImpl(gh<_i574.SigninWithGoogleDatasource>()));
     gh.factory<_i1064.RemoveUserDatasource>(
@@ -115,6 +123,8 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i489.SigninWithFacebookDatasource>()));
     gh.factory<_i374.RemoveUserUsecase>(
         () => _i374.RemoveUserUsecase(gh<_i1064.RemoveUserDatasource>()));
+    gh.factory<_i858.ReceptionistCubit>(
+        () => _i858.ReceptionistCubit(gh<_i875.AddPatientUsecase>()));
     gh.factory<_i538.AuthCubit>(() => _i538.AuthCubit(
           gh<_i912.LoginUseCase>(),
           gh<_i954.RegisterUsecase>(),

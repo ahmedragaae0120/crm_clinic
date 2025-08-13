@@ -49,4 +49,21 @@ abstract class Validator {
     }
     return null;
   }
+
+  static String? date(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.dateCannotBeEmpty;
+    }
+    return null;
+  }
+
+  static String? phoneNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return AppStrings.fieldCannotBeEmpty;
+    }
+    if (!RegExp(r'^\+?[0-9]{10,15}$').hasMatch(value)) {
+      return 'Enter a valid phone number';
+    }
+    return null;
+  }
 }

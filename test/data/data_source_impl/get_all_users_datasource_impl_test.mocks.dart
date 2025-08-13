@@ -7,10 +7,11 @@ import 'dart:async' as _i5;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i3;
 import 'package:crm_clinic/core/services/firebase_manager.dart' as _i4;
+import 'package:crm_clinic/data/model/patient_model.dart' as _i7;
 import 'package:crm_clinic/data/model/user_model.dart' as _i6;
 import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:mockito/src/dummies.dart' as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -166,6 +167,17 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
       ) as _i5.Future<void>);
 
   @override
+  _i5.Future<void> addPatient(_i7.PatientModel? patientModel) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addPatient,
+          [patientModel],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
   _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>> getAllUsers() =>
       (super.noSuchMethod(
         Invocation.method(
@@ -257,7 +269,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i7.dummyValue<String>(
+        returnValue: _i8.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -293,7 +305,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
           #data,
           [],
         ),
-        returnValue: _i7.dummyValue<T>(
+        returnValue: _i8.dummyValue<T>(
           this,
           Invocation.method(
             #data,

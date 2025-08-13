@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/constant.dart';
 import 'package:crm_clinic/core/services/collections.dart';
+import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -86,6 +87,12 @@ class FirebaseManager {
       'joined': userModel.joined,
       'uid': uid
     });
+  }
+
+  Future<void> addPatient(PatientModel patientModel) async {
+    final docRef = _db.collection(Collections.patients).doc();
+    patientModel.uid = docRef.id;
+    await docRef.set(patientModel.toJson());
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
