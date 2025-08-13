@@ -5,8 +5,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:cloud_firestore/cloud_firestore.dart' as _i6;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i7;
 import 'package:crm_clinic/core/services/firebase_manager.dart' as _i3;
+import 'package:crm_clinic/data/model/patient_model.dart' as _i6;
 import 'package:crm_clinic/data/model/user_model.dart' as _i5;
 import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -143,15 +144,26 @@ class MockFirebaseManager extends _i1.Mock implements _i3.FirebaseManager {
       ) as _i4.Future<void>);
 
   @override
-  _i4.Stream<_i6.QuerySnapshot<Map<String, dynamic>>> getAllUsers() =>
+  _i4.Future<void> addPatient(_i6.PatientModel? patientModel) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addPatient,
+          [patientModel],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>> getAllUsers() =>
       (super.noSuchMethod(
         Invocation.method(
           #getAllUsers,
           [],
         ),
         returnValue:
-            _i4.Stream<_i6.QuerySnapshot<Map<String, dynamic>>>.empty(),
-      ) as _i4.Stream<_i6.QuerySnapshot<Map<String, dynamic>>>);
+            _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>.empty(),
+      ) as _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>);
 
   @override
   _i4.Future<_i5.UserPermission> getUserPermission(String? uid) =>

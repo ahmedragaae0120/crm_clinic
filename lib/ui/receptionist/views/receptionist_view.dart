@@ -21,7 +21,6 @@ class ReceptionistView extends StatelessWidget {
               style: theme.textTheme.headlineLarge,
             ),
           ),
-          Expanded(child: AddPatientView()),
         ],
       ),
     );
