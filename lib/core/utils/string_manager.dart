@@ -77,5 +77,8 @@ abstract class AppStrings {
   static String get doctor => "doctor".tr();
   static String get nurse => "nurse".tr();
   static String get receptionist => "receptionist".tr();
+  static String get doYouWantToLogout => "doYouWantToLogout".tr();
+  static String get yes => "yes".tr();
+  static String get no => "no".tr();
   static String get hello => "hello".tr();
 }

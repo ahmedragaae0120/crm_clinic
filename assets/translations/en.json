@@ -75,5 +75,8 @@
     "enterValidPhoneNumber": "Enter a valid phone number",
     "doctor": "Doctor",
     "nurse": "Nurse",
-    "receptionist": "Receptionist"
+    "receptionist": "Receptionist",
+    "doYouWantToLogout": "do you want to logout ?",
+    "yes": "Yes",
+    "no": "No"
 }
