@@ -1,4 +1,6 @@
+import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/ui/admin/view_model/admin_cubit.dart';
+import 'package:crm_clinic/ui/admin/view_model/admin_state.dart';
 import 'package:crm_clinic/ui/admin/widgets/user_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,26 +26,27 @@ class UsersTable extends StatelessWidget {
             return Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               border: TableBorder.all(
-                  color: theme.colorScheme.primary,
-                  width: 2,
-                  borderRadius: BorderRadius.circular(5)),
+                color: theme.colorScheme.primary,
+                width: 2,
+                borderRadius: BorderRadius.circular(5),
+              ),
               children: [
                 _buildHeader(context),
-                ...state.users.map(
-                  (users) => userRow(users, context),
-                ),
+                ...state.users.map((users) => userRow(users, context)),
               ],
             );
 
           case GetAllUsersFailed():
             return Center(
-                child:
-                    Text(state.message, style: theme.textTheme.headlineLarge));
+              child: Text(state.message, style: theme.textTheme.headlineLarge),
+            );
           case GetAllUsersLoading():
             return const Center(child: CircularProgressIndicator.adaptive());
           default:
-            return Text("something went wrong ",
-                style: theme.textTheme.headlineLarge);
+            return Text(
+              AppStrings.somethingWentWrong,
+              style: theme.textTheme.headlineLarge,
+            );
         }
       },
     );
@@ -52,41 +55,51 @@ class UsersTable extends StatelessWidget {
   TableRow _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
     return TableRow(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
-      ),
+      decoration: BoxDecoration(color: theme.colorScheme.primary),
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Full Name",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onPrimary)),
+          child: Text(
+            AppStrings.fullName,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Email, Address",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onPrimary)),
+          child: Text(
+            AppStrings.emailLabel,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Joined",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onPrimary)),
+          child: Text(
+            AppStrings.joined,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Permissions",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onPrimary)),
+          child: Text(
+            AppStrings.permissions,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

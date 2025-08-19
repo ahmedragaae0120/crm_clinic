@@ -1,3 +1,4 @@
+import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/ui/receptionist/views/add_patient_view.dart';
 import 'package:crm_clinic/ui/receptionist/views/receptionist_view.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +12,13 @@ class ReceptionistMainScreen extends StatefulWidget {
 
 class _ReceptionistMainScreenState extends State<ReceptionistMainScreen> {
   int _currentIndex = 0;
-  final List<Widget> _tabs = const [
-    ReceptionistView(),
-    AddPatientView(),
-  ];
+  final List<Widget> _tabs = const [ReceptionistView(), AddPatientView()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text(AppStrings.receptionistDashboard)),
+
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -27,14 +27,14 @@ class _ReceptionistMainScreenState extends State<ReceptionistMainScreen> {
             _currentIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: const Icon(Icons.dashboard),
+            label: AppStrings.dashboard,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_add),
-            label: 'Add Patient',
+            icon: const Icon(Icons.person_add),
+            label: AppStrings.addPatient,
           ),
         ],
       ),

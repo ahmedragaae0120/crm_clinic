@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crm_clinic/domain/entity/patient_entity.dart';
 
 class PatientModel {
   String? uid;
@@ -8,13 +9,14 @@ class PatientModel {
   String? gender;
   DateTime? joined;
 
-  PatientModel(
-      {this.fullName,
-      this.joined,
-      this.uid,
-      this.phone,
-      this.birthDate,
-      this.gender});
+  PatientModel({
+    this.fullName,
+    this.joined,
+    this.uid,
+    this.phone,
+    this.birthDate,
+    this.gender,
+  });
 
   PatientModel.fromJson(Map<String, dynamic> json) {
     fullName = json['fullName'] as String?;
@@ -36,5 +38,16 @@ class PatientModel {
       'birthDate': birthDate,
       'gender': gender,
     };
+  }
+
+  PatientEntity toDomainDTO() {
+    return PatientEntity(
+      uid: uid ?? '',
+      fullName: fullName ?? '',
+      phone: phone ?? '',
+      birthDate: birthDate ?? '',
+      gender: gender ?? '',
+      joined: joined ?? DateTime.now(),
+    );
   }
 }

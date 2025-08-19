@@ -1,4 +1,4 @@
-part of 'admin_cubit.dart';
+import 'package:crm_clinic/data/model/user_model.dart';
 
 abstract class AdminState {}
 

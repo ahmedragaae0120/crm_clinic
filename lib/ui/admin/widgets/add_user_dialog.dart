@@ -1,3 +1,5 @@
+import 'package:crm_clinic/core/utils/string_manager.dart';
+import 'package:crm_clinic/ui/auth/view_model/auth_state.dart';
 import 'package:crm_clinic/core/reusable_comp/validator.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/toast_message.dart';
@@ -32,12 +34,14 @@ class _AddUserDialogState extends State<AddUserDialog> {
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
       AuthCubit.get(context).register(
-          userModel: UserModel(
-              fullName: _fullNameController.text,
-              email: _emailController.text,
-              joined: DateTime.now(),
-              permission: _userPermission!.name),
-          password: _passwordController.text);
+        userModel: UserModel(
+          fullName: _fullNameController.text,
+          email: _emailController.text,
+          joined: DateTime.now(),
+          permission: _userPermission!.name,
+        ),
+        password: _passwordController.text,
+      );
     }
   }
 
@@ -47,8 +51,9 @@ class _AddUserDialogState extends State<AddUserDialog> {
       listener: (context, state) {
         if (state.signup is BaseSuccessState) {
           toastMessage(
-              message: "User Added Successfully",
-              tybeMessage: TybeMessage.positive);
+            message: AppStrings.userAddedSuccessfully,
+            tybeMessage: TybeMessage.positive,
+          );
           FocusScope.of(context).unfocus();
           Navigator.pop(context);
         }
@@ -56,12 +61,13 @@ class _AddUserDialogState extends State<AddUserDialog> {
           final errorState = state.signup as BaseErrorState;
           FocusScope.of(context).unfocus();
           toastMessage(
-              message: errorState.errorMessage,
-              tybeMessage: TybeMessage.negative);
+            message: errorState.errorMessage,
+            tybeMessage: TybeMessage.negative,
+          );
         }
       },
       child: AlertDialog(
-        title: const Text("Add New User"),
+        title: Text(AppStrings.addNewUser),
         content: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -72,26 +78,26 @@ class _AddUserDialogState extends State<AddUserDialog> {
                 TextFormField(
                   controller: _fullNameController,
                   validator: Validator.name,
-                  decoration: const InputDecoration(
-                    labelText: 'Full Name',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppStrings.fullName,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 TextFormField(
                   controller: _emailController,
                   validator: Validator.email,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppStrings.email,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 TextFormField(
                   controller: _passwordController,
                   validator: Validator.password,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppStrings.password,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 RoleDropdownWidget(
@@ -101,7 +107,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                       _userPermission = t;
                     });
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -109,12 +115,9 @@ class _AddUserDialogState extends State<AddUserDialog> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text(AppStrings.cancel),
           ),
-          ElevatedButton(
-            onPressed: _submit,
-            child: const Text("Create"),
-          ),
+          ElevatedButton(onPressed: _submit, child: Text(AppStrings.create)),
         ],
       ),
     );

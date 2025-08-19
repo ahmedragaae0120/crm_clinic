@@ -1,7 +1,5 @@
-// ignore_for_file: file_names
-
 import 'package:crm_clinic/core/constant.dart';
-import 'package:crm_clinic/core/utils/app_strings.dart';
+import 'package:crm_clinic/core/utils/string_manager.dart';
 
 abstract class Validator {
   static String? email(String? value) {
@@ -62,7 +60,7 @@ abstract class Validator {
       return AppStrings.fieldCannotBeEmpty;
     }
     if (!RegExp(r'^\+?[0-9]{10,15}$').hasMatch(value)) {
-      return 'Enter a valid phone number';
+      return AppStrings.enterValidPhoneNumber;
     }
     return null;
   }

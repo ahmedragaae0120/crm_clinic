@@ -4,42 +4,40 @@ import 'package:intl/intl.dart';
 
 import '../view_model/admin_cubit.dart';
 
-enum UserMenuAction {
-  edit("Edit"),
-  delete("Delete");
-
-  final String name;
-  const UserMenuAction(this.name);
-}
-
 TableRow userRow(UserModel user, BuildContext context) {
   final enumPermission = toEnum(user.permission ?? "");
   final userId = user.uid ?? "";
 
-  return TableRow(children: [
-    cell(user.fullName ?? ""),
-    cell(user.email ?? ""),
-    cell(formatDate(user.joined ?? DateTime.now())),
-    Padding(
-      padding: const EdgeInsets.all(8),
-      child: Chip(
-        label: Text(enumPermission.name,
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: permissionColor(enumPermission),
-        // labelStyle: TextStyle(color: permissionColor(user.permission)),
+  return TableRow(
+    children: [
+      cell(user.fullName ?? ""),
+      cell(user.email ?? ""),
+      cell(formatDate(user.joined ?? DateTime.now())),
+      Padding(
+        padding: const EdgeInsets.all(8),
+        child: Chip(
+          label: Text(
+            enumPermission.name,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: permissionColor(enumPermission),
+          // labelStyle: TextStyle(color: permissionColor(user.permission)),
+        ),
       ),
-    ),
-    Visibility(
-      visible: enumPermission != UserPermission.admin,
-      child: Padding(
+      Visibility(
+        visible: enumPermission != UserPermission.admin,
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
-              onPressed: () {
-                AdminCubit.get(context).removeUser(userId);
-              },
-              icon: const Icon(Icons.delete_forever))),
-    )
-  ]);
+            onPressed: () {
+              AdminCubit.get(context).removeUser(userId);
+            },
+            icon: const Icon(Icons.delete_forever),
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 String formatDate(DateTime date) {
@@ -67,40 +65,16 @@ UserPermission toEnum(String permission) {
 }
 
 Widget cell(String text) => Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(text,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            )),
+  child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Text(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
       ),
-    );
-
-
-
-
-//   String _monthName(int month) {
-//     const months = [
-//       "January",
-//       "February",
-//       "March",
-//       "April",
-//       "May",
-//       "June",
-//       "July",
-//       "August",
-//       "September",
-//       "October",
-//       "November",
-//       "December"
-//     ];
-//     return months[month - 1];
-//   }
-// }
-        // _cell("Full Name"),
-        //     _cell("Email Address"),
-        //     _cell("joined"),
-        //     _cell("Permission"),
+    ),
+  ),
+);

@@ -1,3 +1,5 @@
+import 'package:crm_clinic/core/utils/string_manager.dart';
+
 import 'package:crm_clinic/core/utils/config.dart';
 import 'package:crm_clinic/ui/admin/widgets/add_user_dialog.dart';
 import 'package:crm_clinic/ui/admin/widgets/admin_drawer.dart';
@@ -24,37 +26,42 @@ class AdminDesktopBody extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "User Managament",
-                        style: theme.textTheme.headlineLarge,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      AppStrings.userManagament,
+                      style: theme.textTheme.headlineLarge,
+                    ),
+                    Config.spaceSmall,
+                    Text(
+                      AppStrings.manageYourUsersHere,
+                      style: theme.textTheme.headlineMedium!.copyWith(
+                        color: theme.colorScheme.primary,
                       ),
-                      Config.spaceSmall,
-                      Text(
-                        "Manage your users here",
-                        style: theme.textTheme.headlineMedium!
-                            .copyWith(color: theme.colorScheme.primary),
-                      ),
-                      Config.spaceSmall,
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => const AddUserDialog(),
-                            );
-                          },
-                          child: Text("+ New User",
-                              style: theme.textTheme.bodyLarge!.copyWith(
-                                  color: theme.colorScheme.onPrimary)),
+                    ),
+                    Config.spaceSmall,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => const AddUserDialog(),
+                          );
+                        },
+                        child: Text(
+                          AppStrings.newUser,
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                          ),
                         ),
                       ),
-                      Config.spaceMedium,
-                      const UsersTable(),
-                    ]),
+                    ),
+                    Config.spaceMedium,
+                    const UsersTable(),
+                  ],
+                ),
               ),
             ),
           ),

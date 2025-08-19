@@ -16,11 +16,7 @@ void main() {
   late MockQuerySnapshot<Map<String, dynamic>> mockQuerySnapshot;
   late MockQueryDocumentSnapshot<Map<String, dynamic>> mockDoc;
 
-  final mockUserJson = {
-    'id': '1',
-    'name': 'Ahmed',
-    'email': 'ahmed@test.com',
-  };
+  final mockUserJson = {'id': '1', 'name': 'Ahmed', 'email': 'ahmed@test.com'};
 
   setUp(() {
     mockFirebaseManager = MockFirebaseManager();
@@ -36,8 +32,9 @@ void main() {
       when(mockDoc.data()).thenReturn(mockUserJson);
       when(mockQuerySnapshot.docs).thenReturn([mockDoc]);
 
-      when(mockFirebaseManager.getAllUsers())
-          .thenAnswer((_) => Stream.value(mockQuerySnapshot));
+      when(
+        mockFirebaseManager.getAllDocsInCollection(),
+      ).thenAnswer((_) => Stream.value(mockQuerySnapshot));
 
       // Act
       final resultStream = datasource.getAllUsers();
@@ -47,7 +44,8 @@ void main() {
         resultStream,
         emits(
           predicate<Result<List<UserModel>>>(
-              (result) => result is Success<List<UserModel>>),
+            (result) => result is Success<List<UserModel>>,
+          ),
         ),
       );
     });
@@ -56,8 +54,9 @@ void main() {
       // Arrange
       when(mockQuerySnapshot.docs).thenReturn([]);
 
-      when(mockFirebaseManager.getAllUsers())
-          .thenAnswer((_) => Stream.value(mockQuerySnapshot));
+      when(
+        mockFirebaseManager.getAllDocsInCollection(),
+      ).thenAnswer((_) => Stream.value(mockQuerySnapshot));
 
       // Act
       final resultStream = datasource.getAllUsers();
@@ -75,8 +74,9 @@ void main() {
 
     test('returns Error when FirebaseException thrown', () async {
       // Arrange
-      when(mockFirebaseManager.getAllUsers())
-          .thenThrow(FirebaseException(plugin: 'firestore'));
+      when(
+        mockFirebaseManager.getAllDocsInCollection(),
+      ).thenThrow(FirebaseException(plugin: 'firestore'));
 
       // Act
       final resultStream = datasource.getAllUsers();
