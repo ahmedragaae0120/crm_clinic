@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/result.dart';
+import 'package:crm_clinic/core/services/collections.dart';
 import 'package:crm_clinic/core/services/firebase_manager.dart';
 import 'package:crm_clinic/data/data_source_impl/get_all_users_datasource_impl.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
@@ -33,7 +34,7 @@ void main() {
       when(mockQuerySnapshot.docs).thenReturn([mockDoc]);
 
       when(
-        mockFirebaseManager.getAllDocsInCollection(),
+        mockFirebaseManager.getAllDocsInCollection(Collections.users),
       ).thenAnswer((_) => Stream.value(mockQuerySnapshot));
 
       // Act
@@ -55,7 +56,7 @@ void main() {
       when(mockQuerySnapshot.docs).thenReturn([]);
 
       when(
-        mockFirebaseManager.getAllDocsInCollection(),
+        mockFirebaseManager.getAllDocsInCollection(Collections.users),
       ).thenAnswer((_) => Stream.value(mockQuerySnapshot));
 
       // Act
@@ -75,7 +76,7 @@ void main() {
     test('returns Error when FirebaseException thrown', () async {
       // Arrange
       when(
-        mockFirebaseManager.getAllDocsInCollection(),
+        mockFirebaseManager.getAllDocsInCollection(Collections.users),
       ).thenThrow(FirebaseException(plugin: 'firestore'));
 
       // Act
