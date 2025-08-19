@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/result.dart';
+import 'package:crm_clinic/core/services/collections.dart';
 import 'package:crm_clinic/core/services/firebase_manager.dart';
 import 'package:crm_clinic/data/data_source_impl/get_all_users_datasource_impl.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
@@ -16,11 +17,7 @@ void main() {
   late MockQuerySnapshot<Map<String, dynamic>> mockQuerySnapshot;
   late MockQueryDocumentSnapshot<Map<String, dynamic>> mockDoc;
 
-  final mockUserJson = {
-    'id': '1',
-    'name': 'Ahmed',
-    'email': 'ahmed@test.com',
-  };
+  final mockUserJson = {'id': '1', 'name': 'Ahmed', 'email': 'ahmed@test.com'};
 
   setUp(() {
     mockFirebaseManager = MockFirebaseManager();
@@ -36,8 +33,9 @@ void main() {
       when(mockDoc.data()).thenReturn(mockUserJson);
       when(mockQuerySnapshot.docs).thenReturn([mockDoc]);
 
-      when(mockFirebaseManager.getAllUsers())
-          .thenAnswer((_) => Stream.value(mockQuerySnapshot));
+      when(
+        mockFirebaseManager.getAllDocsInCollection(Collections.users),
+      ).thenAnswer((_) => Stream.value(mockQuerySnapshot));
 
       // Act
       final resultStream = datasource.getAllUsers();
@@ -47,7 +45,8 @@ void main() {
         resultStream,
         emits(
           predicate<Result<List<UserModel>>>(
-              (result) => result is Success<List<UserModel>>),
+            (result) => result is Success<List<UserModel>>,
+          ),
         ),
       );
     });
@@ -56,8 +55,9 @@ void main() {
       // Arrange
       when(mockQuerySnapshot.docs).thenReturn([]);
 
-      when(mockFirebaseManager.getAllUsers())
-          .thenAnswer((_) => Stream.value(mockQuerySnapshot));
+      when(
+        mockFirebaseManager.getAllDocsInCollection(Collections.users),
+      ).thenAnswer((_) => Stream.value(mockQuerySnapshot));
 
       // Act
       final resultStream = datasource.getAllUsers();
@@ -75,8 +75,9 @@ void main() {
 
     test('returns Error when FirebaseException thrown', () async {
       // Arrange
-      when(mockFirebaseManager.getAllUsers())
-          .thenThrow(FirebaseException(plugin: 'firestore'));
+      when(
+        mockFirebaseManager.getAllDocsInCollection(Collections.users),
+      ).thenThrow(FirebaseException(plugin: 'firestore'));
 
       // Act
       final resultStream = datasource.getAllUsers();

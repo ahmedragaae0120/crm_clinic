@@ -28,13 +28,8 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeUserCredential_0 extends _i1.SmartFake
     implements _i2.UserCredential {
-  _FakeUserCredential_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeUserCredential_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [FirebaseManager].
@@ -51,24 +46,15 @@ class MockFirebaseManager extends _i1.Mock implements _i3.FirebaseManager {
     String? password,
   ) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #registerService,
-          [
-            email,
-            password,
-          ],
-        ),
-        returnValue: _i4.Future<_i2.UserCredential>.value(_FakeUserCredential_0(
-          this,
-          Invocation.method(
-            #registerService,
-            [
-              email,
-              password,
-            ],
-          ),
-        )),
-      ) as _i4.Future<_i2.UserCredential>);
+            Invocation.method(#registerService, [email, password]),
+            returnValue: _i4.Future<_i2.UserCredential>.value(
+              _FakeUserCredential_0(
+                this,
+                Invocation.method(#registerService, [email, password]),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.UserCredential>);
 
   @override
   _i4.Future<_i2.UserCredential> loginService(
@@ -76,54 +62,41 @@ class MockFirebaseManager extends _i1.Mock implements _i3.FirebaseManager {
     String? password,
   ) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #loginService,
-          [
-            email,
-            password,
-          ],
-        ),
-        returnValue: _i4.Future<_i2.UserCredential>.value(_FakeUserCredential_0(
-          this,
-          Invocation.method(
-            #loginService,
-            [
-              email,
-              password,
-            ],
-          ),
-        )),
-      ) as _i4.Future<_i2.UserCredential>);
+            Invocation.method(#loginService, [email, password]),
+            returnValue: _i4.Future<_i2.UserCredential>.value(
+              _FakeUserCredential_0(
+                this,
+                Invocation.method(#loginService, [email, password]),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.UserCredential>);
 
   @override
-  _i4.Future<_i2.UserCredential> signInWithGoogle() => (super.noSuchMethod(
-        Invocation.method(
-          #signInWithGoogle,
-          [],
-        ),
-        returnValue: _i4.Future<_i2.UserCredential>.value(_FakeUserCredential_0(
-          this,
-          Invocation.method(
-            #signInWithGoogle,
-            [],
-          ),
-        )),
-      ) as _i4.Future<_i2.UserCredential>);
+  _i4.Future<_i2.UserCredential> signInWithGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGoogle, []),
+            returnValue: _i4.Future<_i2.UserCredential>.value(
+              _FakeUserCredential_0(
+                this,
+                Invocation.method(#signInWithGoogle, []),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.UserCredential>);
 
   @override
-  _i4.Future<_i2.UserCredential> signInWithFacebook() => (super.noSuchMethod(
-        Invocation.method(
-          #signInWithFacebook,
-          [],
-        ),
-        returnValue: _i4.Future<_i2.UserCredential>.value(_FakeUserCredential_0(
-          this,
-          Invocation.method(
-            #signInWithFacebook,
-            [],
-          ),
-        )),
-      ) as _i4.Future<_i2.UserCredential>);
+  _i4.Future<_i2.UserCredential> signInWithFacebook() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithFacebook, []),
+            returnValue: _i4.Future<_i2.UserCredential>.value(
+              _FakeUserCredential_0(
+                this,
+                Invocation.method(#signInWithFacebook, []),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.UserCredential>);
 
   @override
   _i4.Future<void> addUser({
@@ -131,70 +104,77 @@ class MockFirebaseManager extends _i1.Mock implements _i3.FirebaseManager {
     required _i2.UserCredential? userCredential,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #addUser,
-          [],
-          {
-            #userModel: userModel,
-            #userCredential: userCredential,
-          },
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+            Invocation.method(#addUser, [], {
+              #userModel: userModel,
+              #userCredential: userCredential,
+            }),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 
   @override
   _i4.Future<void> addPatient(_i6.PatientModel? patientModel) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #addPatient,
-          [patientModel],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+            Invocation.method(#addPatient, [patientModel]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 
   @override
-  _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>> getAllUsers() =>
+  _i4.Future<void> removeDoc({
+    required String? collection,
+    required String? id,
+  }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getAllUsers,
-          [],
-        ),
-        returnValue:
-            _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>.empty(),
-      ) as _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>);
+            Invocation.method(#removeDoc, [], {
+              #collection: collection,
+              #id: id,
+            }),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>> getAllDocsInCollection(
+    String? collectionPath,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllDocsInCollection, [collectionPath]),
+            returnValue:
+                _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>.empty(),
+          )
+          as _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>);
 
   @override
   _i4.Future<_i5.UserPermission> getUserPermission(String? uid) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getUserPermission,
-          [uid],
-        ),
-        returnValue:
-            _i4.Future<_i5.UserPermission>.value(_i5.UserPermission.admin),
-      ) as _i4.Future<_i5.UserPermission>);
+            Invocation.method(#getUserPermission, [uid]),
+            returnValue: _i4.Future<_i5.UserPermission>.value(
+              _i5.UserPermission.admin,
+            ),
+          )
+          as _i4.Future<_i5.UserPermission>);
 
   @override
-  _i4.Future<void> signOut() => (super.noSuchMethod(
-        Invocation.method(
-          #signOut,
-          [],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+  _i4.Future<void> signOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOut, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 
   @override
-  _i4.Future<void> createDefaultAdminIfNotExists() => (super.noSuchMethod(
-        Invocation.method(
-          #createDefaultAdminIfNotExists,
-          [],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+  _i4.Future<void> createDefaultAdminIfNotExists() =>
+      (super.noSuchMethod(
+            Invocation.method(#createDefaultAdminIfNotExists, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 }
 
 /// A class which mocks [UserCredential].

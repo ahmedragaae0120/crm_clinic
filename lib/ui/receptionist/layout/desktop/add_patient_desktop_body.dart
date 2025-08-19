@@ -1,3 +1,5 @@
+import 'package:crm_clinic/core/utils/string_manager.dart';
+
 import 'package:crm_clinic/core/reusable_comp/validator.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/config.dart';
@@ -35,7 +37,8 @@ class AddPatientDesktopBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Add New Patient',
+                  AppStrings.addNewPatient,
+
                   style: theme.textTheme.headlineLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -48,8 +51,8 @@ class AddPatientDesktopBody extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Full name",
+                        decoration: InputDecoration(
+                          labelText: AppStrings.fullName,
                         ),
                         controller: cubit.nameController,
                         validator: Validator.name,
@@ -58,8 +61,8 @@ class AddPatientDesktopBody extends StatelessWidget {
                     SizedBox(width: Config.screenWidth! * 0.02),
                     Expanded(
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Phone number",
+                        decoration: InputDecoration(
+                          labelText: AppStrings.phoneNumber,
                         ),
                         keyboardType: TextInputType.phone,
                         validator: Validator.phoneNumber,
@@ -80,7 +83,7 @@ class AddPatientDesktopBody extends StatelessWidget {
                           child: TextFormField(
                             controller: cubit.dateController,
                             decoration: InputDecoration(
-                              labelText: "Birth date",
+                              labelText: AppStrings.birthDate,
                               suffixIcon: Icon(
                                 Icons.calendar_month_outlined,
                                 color: theme.primaryColor,
@@ -97,13 +100,15 @@ class AddPatientDesktopBody extends StatelessWidget {
                         value: cubit.selectedGender,
                         validator: (value) => Validator.dropdownButton(value),
                         items: Gender.values
-                            .map((gender) => DropdownMenuItem(
-                                  value: gender,
-                                  child: Text(gender.name),
-                                ))
+                            .map(
+                              (gender) => DropdownMenuItem(
+                                value: gender,
+                                child: Text(gender.name),
+                              ),
+                            )
                             .toList(),
-                        decoration: const InputDecoration(
-                          labelText: "Select Gender",
+                        decoration: InputDecoration(
+                          labelText: AppStrings.selectGender,
                         ),
                         onChanged: cubit.changeGender,
                       ),
@@ -117,9 +122,9 @@ class AddPatientDesktopBody extends StatelessWidget {
                   onPressed: addPatient,
                   child: state.addPatient is BaseLoadingState
                       ? const CircularProgressIndicator.adaptive()
-                      : const Text(
-                          'Add Patient',
-                          style: TextStyle(fontSize: 16),
+                      : Text(
+                          AppStrings.addPatient,
+                          style: const TextStyle(fontSize: 16),
                         ),
                 ),
               ],

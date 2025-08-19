@@ -22,13 +22,13 @@ class AppRoutes {
       login: (context) => const LoginView(),
       // signup: (context) => const SignupView(),
       admin: (context) => BlocProvider<AdminCubit>(
-            create: (context) => getIt<AdminCubit>()..getAllUsers(),
-            child: const AdminView(),
-          ),
+        create: (context) => getIt<AdminCubit>()..getAllUsers(),
+        child: const AdminView(),
+      ),
       receptionistMainScreen: (context) => BlocProvider<ReceptionistCubit>(
-            create: (context) => getIt<ReceptionistCubit>(),
-            child: const ReceptionistMainScreen(),
-          ),
+        create: (context) => getIt<ReceptionistCubit>()..getAllPatients(),
+        child: const ReceptionistMainScreen(),
+      ),
     };
   }
 }

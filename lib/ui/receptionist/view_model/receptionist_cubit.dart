@@ -1,9 +1,15 @@
+import 'dart:developer';
+
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
+import 'package:crm_clinic/domain/entity/patient_entity.dart';
 import 'package:crm_clinic/domain/use_cases/add_patient_usecase.dart';
+import 'package:crm_clinic/domain/use_cases/get_all_patients_usecase.dart';
+import 'package:crm_clinic/domain/use_cases/remove_doc_usecase.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
 import 'package:crm_clinic/ui/receptionist/views/add_patient_view.dart';
+import 'package:crm_clinic/ui/receptionist/views/receptionist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -11,8 +17,14 @@ import 'package:injectable/injectable.dart';
 @injectable
 class ReceptionistCubit extends Cubit<ReceptionistState> {
   @factoryMethod
-  ReceptionistCubit(this._addPatientUsecase) : super(ReceptionistState());
+  ReceptionistCubit(
+    this._addPatientUsecase,
+    this._getAllPatientsUsecase,
+    this._removeDocUsecase,
+  ) : super(ReceptionistState());
   final AddPatientUsecase _addPatientUsecase;
+  final GetAllPatientsUsecase _getAllPatientsUsecase;
+  final RemoveDocUsecase _removeDocUsecase;
 
   static ReceptionistCubit get(context) => BlocProvider.of(context);
 
@@ -56,10 +68,112 @@ class ReceptionistCubit extends Cubit<ReceptionistState> {
         emit(state.copyWith(addPatient: BaseSuccessState(null)));
         break;
       case Error():
-        emit(state.copyWith(
-            addPatient:
-                BaseErrorState(result.exception.toString(), result.exception)));
+        emit(
+          state.copyWith(
+            addPatient: BaseErrorState(
+              result.exception.toString(),
+              result.exception,
+            ),
+          ),
+        );
         break;
     }
+  }
+
+  void getAllPatients() {
+    emit(state.copyWith(getPatients: BaseLoadingState()));
+    _getAllPatientsUsecase.call().listen((patients) {
+      if (patients is Success<List<PatientEntity>>) {
+        final patientList = patients.data ?? [];
+        log('Patients fetched successfully: ${patients.data?.length}');
+        emit(
+          state.copyWith(
+            getPatients: BaseSuccessState(patientList),
+            allPatients: patientList,
+          ),
+        );
+      } else if (patients is Error<List<PatientEntity>>) {
+        emit(
+          state.copyWith(
+            getPatients: BaseErrorState(
+              patients.exception.toString(),
+              patients.exception,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  removeDoc(String id) async {
+    final mainList = state.allPatients;
+
+    final result = await _removeDocUsecase.call(id: id);
+    switch (result) {
+      case Success():
+        mainList.removeWhere((patient) => patient.uid == id);
+        emit(state.copyWith(getPatients: BaseSuccessState(mainList)));
+        // getAllPatients(); // إعادة تحميل المرضى بعد الحذف
+        break;
+      case Error():
+        emit(
+          state.copyWith(
+            getPatients: BaseErrorState(
+              result.exception.toString(),
+              result.exception,
+            ),
+          ),
+        );
+        break;
+    }
+  }
+
+  FilteredPatients filteredPatientType = FilteredPatients.all;
+  filteredPatient(FilteredPatients filteredPatients) {
+    filteredPatientType = filteredPatients;
+    emit(state.copyWith());
+    final mainList = state.allPatients;
+    if (filteredPatients == FilteredPatients.all) {
+      emit(state.copyWith(getPatients: BaseSuccessState(mainList)));
+      return;
+    }
+    final now = DateTime.now();
+    final filteredList = mainList.where((patient) {
+      final joinedDate = patient.joined;
+      switch (filteredPatients) {
+        case FilteredPatients.today:
+          return joinedDate.year == now.year &&
+              joinedDate.month == now.month &&
+              joinedDate.day == now.day;
+        case FilteredPatients.thisWeek:
+          return joinedDate.isAfter(
+                now.subtract(Duration(days: now.weekday - 1)),
+              ) &&
+              joinedDate.isBefore(now.add(Duration(days: 7 - now.weekday)));
+        case FilteredPatients.thisMonth:
+          return joinedDate.year == now.year && joinedDate.month == now.month;
+        default:
+          return true; // For 'all'.tr();, no filtering
+      }
+    }).toList();
+
+    emit(state.copyWith(getPatients: BaseSuccessState(filteredList)));
+  }
+
+  searchPatients(String query) {
+    final mainList = state.allPatients;
+
+    if (query.isEmpty) {
+      emit(state.copyWith(getPatients: BaseSuccessState(mainList)));
+      return;
+    }
+    final filteredList = mainList.where((patient) {
+      final queryLower = query.toLowerCase();
+      final nameMatches = patient.fullName.toLowerCase().contains(queryLower);
+      final phoneMatches = patient.phone.contains(queryLower);
+      return nameMatches || phoneMatches;
+    }).toList();
+
+    emit(state.copyWith(getPatients: BaseSuccessState(filteredList)));
   }
 }

@@ -1,10 +1,12 @@
+import 'package:crm_clinic/ui/auth/view_model/auth_state.dart';
+
 import 'dart:developer';
 
 import 'package:crm_clinic/core/reusable_comp/validator.dart';
 import 'package:crm_clinic/core/utils/app_routes.dart';
-import 'package:crm_clinic/core/utils/app_strings.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/config.dart';
+import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/core/utils/toast_message.dart';
 import 'package:crm_clinic/ui/auth/view_model/auth_cubit.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +26,9 @@ class _LoginViewState extends State<LoginView> {
 
   void login() {
     if (_formKey.currentState?.validate() ?? false) {
-      AuthCubit.get(context)
-          .login(_emailController.text, _passwordController.text);
+      AuthCubit.get(
+        context,
+      ).login(_emailController.text, _passwordController.text);
     }
   }
 
@@ -34,23 +37,23 @@ class _LoginViewState extends State<LoginView> {
     final theme = Theme.of(context);
     Config().init(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppStrings.login),
-      ),
+      appBar: AppBar(title: Text(AppStrings.login)),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state.login is BaseSuccessState) {
             final route = state.login as BaseSuccessState;
             log(route.data);
             toastMessage(
-                message: AppStrings.loginSucessfully,
-                tybeMessage: TybeMessage.positive);
+              message: AppStrings.loginSucessfully,
+              tybeMessage: TybeMessage.positive,
+            );
             Navigator.pushReplacementNamed(context, route.data);
           } else if (state.login is BaseErrorState) {
             final errorState = state.login as BaseErrorState;
             toastMessage(
-                message: errorState.errorMessage,
-                tybeMessage: TybeMessage.negative);
+              message: errorState.errorMessage,
+              tybeMessage: TybeMessage.negative,
+            );
           }
         },
         builder: (context, state) {
@@ -65,19 +68,23 @@ class _LoginViewState extends State<LoginView> {
                   spacing: 20,
                   children: [
                     Config.spaceSmall,
-                    Text(AppStrings.email,
-                        style: theme.textTheme.headlineLarge),
+                    Text(
+                      AppStrings.email,
+                      style: theme.textTheme.headlineLarge,
+                    ),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: AppStrings.enterYourEmail,
                       ),
                       validator: Validator.email,
                       controller: _emailController,
                     ),
-                    Text(AppStrings.password,
-                        style: theme.textTheme.headlineLarge),
+                    Text(
+                      AppStrings.password,
+                      style: theme.textTheme.headlineLarge,
+                    ),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: AppStrings.enterYourPassword,
                       ),
                       validator: Validator.password,
@@ -93,7 +100,7 @@ class _LoginViewState extends State<LoginView> {
                     //         endIndent: 10,
                     //       ),
                     //     ),
-                    //     Text("Or", style: theme.textTheme.bodyLarge),
+                    //     Text('Or'.tr();, style: theme.textTheme.bodyLarge),
                     //     Expanded(
                     //       child: Divider(
                     //         color: theme.colorScheme.primary,
@@ -123,23 +130,28 @@ class _LoginViewState extends State<LoginView> {
                       },
                       child: state.login is BaseLoadingState
                           ? const CircularProgressIndicator()
-                          : const Text(
-                              AppStrings.login,
-                            ),
+                          : Text(AppStrings.login),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(AppStrings.alreadyHaveAnAccount,
-                            style: theme.textTheme.bodyMedium),
+                        Text(
+                          AppStrings.alreadyHaveAnAccount,
+                          style: theme.textTheme.bodyMedium,
+                        ),
                         TextButton(
                           onPressed: () {
                             Navigator.pushReplacementNamed(
-                                context, AppRoutes.signup);
+                              context,
+                              AppRoutes.signup,
+                            );
                           },
-                          child: Text(AppStrings.register,
-                              style: theme.textTheme.bodyMedium
-                                  ?.copyWith(color: theme.colorScheme.primary)),
+                          child: Text(
+                            AppStrings.register,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ],
                     ),

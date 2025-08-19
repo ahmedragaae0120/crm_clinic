@@ -1,3 +1,6 @@
+import 'package:crm_clinic/core/utils/string_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'dart:developer';
 
 import 'package:crm_clinic/core/utils/base_state.dart';
@@ -13,11 +16,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum Gender {
-  male("Male"),
-  female("Female");
+  male("male"),
+  female("female");
 
-  final String name;
-  const Gender(this.name);
+  final String key;
+  const Gender(this.key);
+
+  String get name => key.tr();
 }
 
 class AddPatientView extends StatefulWidget {
@@ -32,13 +37,15 @@ class _AddPatientViewState extends State<AddPatientView> {
   addPatient() {
     if (_formKey.currentState?.validate() ?? false) {
       final cubit = ReceptionistCubit.get(context);
-      ReceptionistCubit.get(context).addPatient(PatientModel(
-        fullName: cubit.nameController.text,
-        phone: cubit.phoneController.text,
-        gender: cubit.selectedGender!.name,
-        birthDate: cubit.dateController.text,
-        joined: DateTime.now(),
-      ));
+      ReceptionistCubit.get(context).addPatient(
+        PatientModel(
+          fullName: cubit.nameController.text,
+          phone: cubit.phoneController.text,
+          gender: cubit.selectedGender!.name,
+          birthDate: cubit.dateController.text,
+          joined: DateTime.now(),
+        ),
+      );
       log("Patient added successfully");
     }
   }
@@ -50,7 +57,7 @@ class _AddPatientViewState extends State<AddPatientView> {
       listener: (context, state) {
         if (state.addPatient is BaseSuccessState) {
           toastMessage(
-            message: "Patient added successfully",
+            message: AppStrings.patientAddedSuccessfully,
             tybeMessage: TybeMessage.positive,
           );
         } else if (state.addPatient is BaseErrorState) {

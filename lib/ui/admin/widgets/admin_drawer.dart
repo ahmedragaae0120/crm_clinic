@@ -1,4 +1,6 @@
+import 'package:crm_clinic/ui/auth/view_model/auth_state.dart';
 import 'package:crm_clinic/core/utils/app_routes.dart';
+import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/toast_message.dart';
 import 'package:crm_clinic/ui/auth/view_model/auth_cubit.dart';
@@ -15,16 +17,21 @@ class AdminDrawer extends StatelessWidget {
       listener: (context, state) {
         if (state.signOut is BaseSuccessState) {
           Navigator.pushNamedAndRemoveUntil(
-              context, AppRoutes.login, (_) => false);
+            context,
+            AppRoutes.login,
+            (_) => false,
+          );
           toastMessage(
-              message: "Logout Successfully",
-              tybeMessage: TybeMessage.positive);
+            message: AppStrings.logoutSuccessfully,
+            tybeMessage: TybeMessage.positive,
+          );
         }
         if (state.signOut is BaseErrorState) {
           final errorState = state.signOut as BaseErrorState;
           toastMessage(
-              message: errorState.errorMessage,
-              tybeMessage: TybeMessage.negative);
+            message: errorState.errorMessage,
+            tybeMessage: TybeMessage.negative,
+          );
         }
       },
       child: Drawer(
@@ -40,25 +47,28 @@ class AdminDrawer extends StatelessWidget {
                 child: Icon(Icons.person, size: 40, color: Colors.blue),
               ),
               const SizedBox(height: 10),
-              const Center(
+              Center(
                 child: Text(
-                  'Admin',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  AppStrings.admin,
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
               const SizedBox(height: 30),
               drawerItem(
                 icon: Icons.dashboard,
-                text: 'Dashboard',
+                text: AppStrings.dashboard,
                 context: context,
                 onTap: () {
                   Navigator.pushNamedAndRemoveUntil(
-                      context, AppRoutes.admin, (_) => false);
+                    context,
+                    AppRoutes.admin,
+                    (_) => false,
+                  );
                 },
               ),
               drawerItem(
                 icon: Icons.logout,
-                text: 'Logout',
+                text: AppStrings.logout,
                 context: context,
                 onTap: () async {
                   AuthCubit.get(context).signOut();
@@ -71,11 +81,12 @@ class AdminDrawer extends StatelessWidget {
     );
   }
 
-  Widget drawerItem(
-      {required IconData icon,
-      required String text,
-      required VoidCallback onTap,
-      required BuildContext context}) {
+  Widget drawerItem({
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+    required BuildContext context,
+  }) {
     final theme = Theme.of(context);
     return ListTile(
       leading: Icon(icon, color: theme.colorScheme.onPrimary),

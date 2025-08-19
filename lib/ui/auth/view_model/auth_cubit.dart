@@ -1,5 +1,5 @@
+import 'package:crm_clinic/ui/auth/view_model/auth_state.dart';
 import 'dart:developer';
-
 import 'package:crm_clinic/core/cache/shared_pref.dart';
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/core/services/firebase_manager.dart';
@@ -13,8 +13,6 @@ import 'package:crm_clinic/domain/use_cases/auth/signout_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-
-part 'auth_state.dart';
 
 @injectable
 class AuthCubit extends Cubit<AuthState> {
@@ -49,24 +47,36 @@ class AuthCubit extends Cubit<AuthState> {
 
         break;
       case Error():
-        emit(state.copyWith(
-            login:
-                BaseErrorState(result.exception.toString(), result.exception)));
+        emit(
+          state.copyWith(
+            login: BaseErrorState(
+              result.exception.toString(),
+              result.exception,
+            ),
+          ),
+        );
     }
   }
 
   register({required UserModel userModel, required String password}) async {
     emit(state.copyWith(signup: BaseLoadingState()));
-    final result =
-        await _registerUsecase(userModel: userModel, password: password);
+    final result = await _registerUsecase(
+      userModel: userModel,
+      password: password,
+    );
     switch (result) {
       case Success():
         emit(state.copyWith(signup: BaseSuccessState(null)));
         break;
       case Error():
-        emit(state.copyWith(
-            signup:
-                BaseErrorState(result.exception.toString(), result.exception)));
+        emit(
+          state.copyWith(
+            signup: BaseErrorState(
+              result.exception.toString(),
+              result.exception,
+            ),
+          ),
+        );
     }
   }
 
@@ -117,8 +127,9 @@ class AuthCubit extends Cubit<AuthState> {
     final currentUser = _firebaseManager.currentUser;
 
     if (isRememberMe && currentUser != null) {
-      final userPermission =
-          await _firebaseManager.getUserPermission(currentUser.uid);
+      final userPermission = await _firebaseManager.getUserPermission(
+        currentUser.uid,
+      );
       switch (userPermission) {
         case UserPermission.admin:
           return AppRoutes.admin;
@@ -128,8 +139,8 @@ class AuthCubit extends Cubit<AuthState> {
         // case UserPermission.nurse:
         //   return RouteManager.adminDashboard;
         //   break;
-        // case UserPermission.receptionist:
-        //   return RouteManager.adminDashboard;
+        case UserPermission.receptionist:
+          return AppRoutes.receptionistMainScreen;
 
         default:
           return AppRoutes.login;
@@ -148,9 +159,14 @@ class AuthCubit extends Cubit<AuthState> {
         emit(state.copyWith(signOut: BaseSuccessState(null)));
         break;
       case Error():
-        emit(state.copyWith(
-            signOut:
-                BaseErrorState(result.exception.toString(), result.exception)));
+        emit(
+          state.copyWith(
+            signOut: BaseErrorState(
+              result.exception.toString(),
+              result.exception,
+            ),
+          ),
+        );
     }
   }
 

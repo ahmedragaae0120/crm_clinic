@@ -41,7 +41,9 @@ class FirebaseManager {
 
     if (googleUser == null) {
       throw FirebaseAuthException(
-          code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
+        code: 'ERROR_ABORTED_BY_USER',
+        message: 'Sign in aborted by user',
+      );
     }
     final googleAuth = await googleUser.authentication;
 
@@ -65,8 +67,9 @@ class FirebaseManager {
           FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
       // Sign in to Firebase with the Facebook credential
-      return await FirebaseAuth.instance
-          .signInWithCredential(facebookAuthCredential);
+      return await FirebaseAuth.instance.signInWithCredential(
+        facebookAuthCredential,
+      );
     } else {
       // Handle login failure or cancellation
       throw FirebaseAuthException(
@@ -76,16 +79,17 @@ class FirebaseManager {
     }
   }
 
-  Future<void> addUser(
-      {required UserModel userModel,
-      required UserCredential userCredential}) async {
+  Future<void> addUser({
+    required UserModel userModel,
+    required UserCredential userCredential,
+  }) async {
     String uid = userCredential.user!.uid;
     await _db.collection(Collections.users).doc(uid).set({
       'fullName': userModel.fullName,
       'email': userModel.email,
       'permission': userModel.permission,
       'joined': userModel.joined,
-      'uid': uid
+      'uid': uid,
     });
   }
 
@@ -95,15 +99,26 @@ class FirebaseManager {
     await docRef.set(patientModel.toJson());
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
-    final collectionRef = _db.collection(Collections.users);
+  Future<void> removeDoc({
+    required String collection,
+    required String id,
+  }) async {
+    await _db.collection(collection).doc(id).delete();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllDocsInCollection(
+    String collectionPath,
+  ) {
+    final collectionRef = _db.collection(collectionPath);
     return collectionRef.snapshots();
   }
 
   Future<UserPermission> getUserPermission(String uid) async {
     try {
-      final docSnapshot =
-          await _db.collection(Collections.users).doc(uid).get();
+      final docSnapshot = await _db
+          .collection(Collections.users)
+          .doc(uid)
+          .get();
       final userData = docSnapshot.data();
       final String? role = userData?['permission'] ?? '';
 
@@ -141,8 +156,10 @@ class FirebaseManager {
 
       if (query.docs.isEmpty) {
         // 2. محاولة تسجيل دخول أو إنشاء حساب admin
-        UserCredential userCredential =
-            await registerService(Constant.adminEmail, Constant.adminPassword);
+        UserCredential userCredential = await registerService(
+          Constant.adminEmail,
+          Constant.adminPassword,
+        );
 
         final adminUid = userCredential.user!.uid;
 
@@ -150,14 +167,15 @@ class FirebaseManager {
         // 3. إضافة بيانات admin في Firestore
 
         await addUser(
-            userModel: UserModel(
-              email: Constant.adminEmail,
-              fullName: 'Admin',
-              joined: DateTime.now(),
-              permission: UserPermission.admin.name,
-              uid: adminUid,
-            ),
-            userCredential: userCredential);
+          userModel: UserModel(
+            email: Constant.adminEmail,
+            fullName: 'Admin',
+            joined: DateTime.now(),
+            permission: UserPermission.admin.name,
+            uid: adminUid,
+          ),
+          userCredential: userCredential,
+        );
       } else {
         log("admin already exists");
         throw Exception("Admin already exists.");
@@ -167,48 +185,4 @@ class FirebaseManager {
       throw Exception("❌ Error creating admin: $e");
     }
   }
-
-  // Future<QuerySnapshot<Map<String, dynamic>>> getProducts() async {
-  //   return await firestore.collection('menu').get();
-  // }
-
-  // Future<void> addToCart(ProductModel product) async {
-  //   final user = auth.currentUser;
-  //   if (user == null) throw Exception('User not logged in');
-  //   return await firestore
-  //       .collection('users')
-  //       .doc(user.uid)
-  //       .collection('cart')
-  //       .doc(product.id)
-  //       .set(product.toJson());
-  // }
-
-  // Future<List<ProductModel>> getCartItems() async {
-  //   final user = auth.currentUser;
-  //   if (user == null) throw Exception('User not logged in');
-
-  //   final snapshot = await firestore
-  //       .collection('users')
-  //       .doc(user.uid)
-  //       .collection('cart')
-  //       .get();
-
-  //   return snapshot.docs.map((doc) {
-  //     return ProductModel.fromJson(doc.data(), doc.id);
-  //   }).toList();
-  // }
-
-  // Future<void> removeFromCart(String productId) async {
-  //   final user = auth.currentUser;
-  //   if (user == null) {
-  //     throw Exception('User not logged in');
-  //   }
-
-  //   return await firestore
-  //       .collection('users')
-  //       .doc(user.uid)
-  //       .collection('cart')
-  //       .doc(productId)
-  //       .delete();
-  // }
 }

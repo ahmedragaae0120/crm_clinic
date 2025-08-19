@@ -1,4 +1,4 @@
-part of 'auth_cubit.dart';
+import 'package:crm_clinic/core/utils/base_state.dart';
 
 class AuthState {
   BaseState? login;

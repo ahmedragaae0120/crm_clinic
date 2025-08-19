@@ -35,10 +35,8 @@ class MockGetAllUsersRepo extends _i1.Mock implements _i2.GetAllUsersRepo {
   @override
   _i3.Stream<_i4.Result<List<_i5.UserModel>>> getAllUsers() =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getAllUsers,
-          [],
-        ),
-        returnValue: _i3.Stream<_i4.Result<List<_i5.UserModel>>>.empty(),
-      ) as _i3.Stream<_i4.Result<List<_i5.UserModel>>>);
+            Invocation.method(#getAllUsers, []),
+            returnValue: _i3.Stream<_i4.Result<List<_i5.UserModel>>>.empty(),
+          )
+          as _i3.Stream<_i4.Result<List<_i5.UserModel>>>);
 }

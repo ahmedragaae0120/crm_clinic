@@ -38,17 +38,13 @@ class MockAddPatientDatasource extends _i1.Mock
   @override
   _i3.Future<_i4.Result<void>> addPatient(_i5.PatientModel? patientModel) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #addPatient,
-          [patientModel],
-        ),
-        returnValue:
-            _i3.Future<_i4.Result<void>>.value(_i6.dummyValue<_i4.Result<void>>(
-          this,
-          Invocation.method(
-            #addPatient,
-            [patientModel],
-          ),
-        )),
-      ) as _i3.Future<_i4.Result<void>>);
+            Invocation.method(#addPatient, [patientModel]),
+            returnValue: _i3.Future<_i4.Result<void>>.value(
+              _i6.dummyValue<_i4.Result<void>>(
+                this,
+                Invocation.method(#addPatient, [patientModel]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<void>>);
 }

@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum UserPermission {
-  admin("Admin"),
-  doctor("Doctor"),
-  nurse("Nurse"),
-  receptionist("Receptionist");
+  admin("admin"),
+  doctor("doctor"),
+  nurse("nurse"),
+  receptionist("receptionist");
 
-  final String name;
-  const UserPermission(this.name);
+  final String value;
+  const UserPermission(this.value);
+  String get name => value.tr();
 }
 
 class UserModel {
@@ -43,7 +45,7 @@ class UserModel {
       'email': email,
       'joined': joined?.toIso8601String(),
       'permission': permission,
-      'uid': uid
+      'uid': uid,
     };
   }
 }
