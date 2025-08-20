@@ -23,7 +23,7 @@ void main() {
 
   // بيانات وهمية للاستخدام في الاختبار
   final tPatientModel = PatientModel(
-    uid: '123',
+    patientId: '123',
     fullName: 'Mona Ahmed',
     phone: '01012345678',
     gender: 'female',
@@ -34,59 +34,71 @@ void main() {
 
   group('addPatient', () {
     test(
-        'should return Success<void> when adding a patient to firebase is successful',
-        () async {
-      // Arrange ⚙️
-      // إعداد الـ mock ليعيد إجابة ناجحة عند استدعاء addPatient بالبيانات الصحيحة
-      when(mockFirebaseManager.addPatient(tPatientModel))
-          .thenAnswer((_) async => Future.value());
+      'should return Success<void> when adding a patient to firebase is successful',
+      () async {
+        // Arrange ⚙️
+        // إعداد الـ mock ليعيد إجابة ناجحة عند استدعاء addPatient بالبيانات الصحيحة
+        when(
+          mockFirebaseManager.addPatient(tPatientModel),
+        ).thenAnswer((_) async => Future.value());
 
-      // Act 🎬
-      // تنفيذ الدالة المراد اختبارها
-      final result = await datasource.addPatient(tPatientModel);
+        // Act 🎬
+        // تنفيذ الدالة المراد اختبارها
+        final result = await datasource.addPatient(tPatientModel);
 
-      // Assert ✅
-      // التأكد من أن النتيجة من النوع Success
-      expect(result, isA<Success>());
-      // التأكد من أن دالة addPatient قد تم استدعاؤها مرة واحدة بالبيانات الصحيحة
-      verify(mockFirebaseManager.addPatient(tPatientModel)).called(1);
-      // التأكد من عدم وجود أي تفاعلات أخرى مع الـ mock
-      verifyNoMoreInteractions(mockFirebaseManager);
-    });
+        // Assert ✅
+        // التأكد من أن النتيجة من النوع Success
+        expect(result, isA<Success>());
+        // التأكد من أن دالة addPatient قد تم استدعاؤها مرة واحدة بالبيانات الصحيحة
+        verify(mockFirebaseManager.addPatient(tPatientModel)).called(1);
+        // التأكد من عدم وجود أي تفاعلات أخرى مع الـ mock
+        verifyNoMoreInteractions(mockFirebaseManager);
+      },
+    );
 
-    test('should return Error when adding a patient throws a FirebaseException',
-        () async {
-      // Arrange ⚙️
-      // إعداد الـ mock ليقوم برمي خطأ من نوع FirebaseException
-      final tException =
-          FirebaseException(plugin: 'firestore', code: 'unavailable');
-      when(mockFirebaseManager.addPatient(tPatientModel)).thenThrow(tException);
+    test(
+      'should return Error when adding a patient throws a FirebaseException',
+      () async {
+        // Arrange ⚙️
+        // إعداد الـ mock ليقوم برمي خطأ من نوع FirebaseException
+        final tException = FirebaseException(
+          plugin: 'firestore',
+          code: 'unavailable',
+        );
+        when(
+          mockFirebaseManager.addPatient(tPatientModel),
+        ).thenThrow(tException);
 
-      // Act 🎬
-      final result = await datasource.addPatient(tPatientModel);
+        // Act 🎬
+        final result = await datasource.addPatient(tPatientModel);
 
-      // Assert ✅
-      // التأكد من أن النتيجة من النوع Error
-      expect(result, isA<Error>());
-      verify(mockFirebaseManager.addPatient(tPatientModel));
-      verifyNoMoreInteractions(mockFirebaseManager);
-    });
+        // Assert ✅
+        // التأكد من أن النتيجة من النوع Error
+        expect(result, isA<Error>());
+        verify(mockFirebaseManager.addPatient(tPatientModel));
+        verifyNoMoreInteractions(mockFirebaseManager);
+      },
+    );
 
-    test('should return Error when adding a patient throws a generic Exception',
-        () async {
-      // Arrange ⚙️
-      // إعداد الـ mock ليقوم برمي خطأ عام
-      final tException = Exception('Something went wrong');
-      when(mockFirebaseManager.addPatient(tPatientModel)).thenThrow(tException);
+    test(
+      'should return Error when adding a patient throws a generic Exception',
+      () async {
+        // Arrange ⚙️
+        // إعداد الـ mock ليقوم برمي خطأ عام
+        final tException = Exception('Something went wrong');
+        when(
+          mockFirebaseManager.addPatient(tPatientModel),
+        ).thenThrow(tException);
 
-      // Act 🎬
-      final result = await datasource.addPatient(tPatientModel);
+        // Act 🎬
+        final result = await datasource.addPatient(tPatientModel);
 
-      // Assert ✅
-      // التأكد من أن النتيجة من النوع Error
-      expect(result, isA<Error>());
-      verify(mockFirebaseManager.addPatient(tPatientModel));
-      verifyNoMoreInteractions(mockFirebaseManager);
-    });
+        // Assert ✅
+        // التأكد من أن النتيجة من النوع Error
+        expect(result, isA<Error>());
+        verify(mockFirebaseManager.addPatient(tPatientModel));
+        verifyNoMoreInteractions(mockFirebaseManager);
+      },
+    );
   });
 }

@@ -95,7 +95,7 @@ class FirebaseManager {
 
   Future<void> addPatient(PatientModel patientModel) async {
     final docRef = _db.collection(Collections.patients).doc();
-    patientModel.uid = docRef.id;
+    patientModel.patientId = docRef.id;
     await docRef.set(patientModel.toJson());
   }
 
