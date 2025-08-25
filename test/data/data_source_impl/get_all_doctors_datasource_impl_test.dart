@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/core/services/firebase_manager.dart';
 import 'package:crm_clinic/data/data_source_impl/get_all_doctors_datasource_impl.dart';
-import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -35,10 +34,6 @@ void main() {
   };
 
   // قائمة الأطباء المتوقعة بعد تحويل البيانات
-  final tDoctorList = [
-    UserModel.fromJson(mockDoctorData1),
-    UserModel.fromJson(mockDoctorData2),
-  ];
 
   group('getAllDoctors', () {
     test(
