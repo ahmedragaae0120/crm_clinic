@@ -80,5 +80,5 @@ abstract class AppStrings {
   static String get doYouWantToLogout => "doYouWantToLogout".tr();
   static String get yes => "yes".tr();
   static String get no => "no".tr();
-  static String get hello => "hello".tr();
+  static String get actions => "actions".tr();
 }

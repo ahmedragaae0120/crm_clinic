@@ -114,8 +114,8 @@ class AuthCubit extends Cubit<AuthState> {
       //   return AppRoutes.doctor;
       // case UserPermission.nurse:
       //   return AppRoutes.nurse;
-      // case UserPermission.receptionist:
-      //   return AppRoutes.receptionist;
+      case UserPermission.receptionist:
+        return AppRoutes.receptionistMainScreen;
       default:
         log("permission default");
         return AppRoutes.login;

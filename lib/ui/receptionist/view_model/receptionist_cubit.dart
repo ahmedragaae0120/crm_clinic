@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
@@ -111,7 +112,7 @@ class ReceptionistCubit extends Cubit<ReceptionistState> {
     final result = await _removeDocUsecase.call(id: id);
     switch (result) {
       case Success():
-        mainList.removeWhere((patient) => patient.uid == id);
+        mainList.removeWhere((patient) => patient.patientId == id);
         emit(state.copyWith(getPatients: BaseSuccessState(mainList)));
         // getAllPatients(); // إعادة تحميل المرضى بعد الحذف
         break;
@@ -175,5 +176,23 @@ class ReceptionistCubit extends Cubit<ReceptionistState> {
     }).toList();
 
     emit(state.copyWith(getPatients: BaseSuccessState(filteredList)));
+  }
+
+  Future<void> bookAppointment({
+    required String patientId,
+    required String doctorId,
+    required DateTime dateTime,
+  }) async {
+    try {
+      await FirebaseFirestore.instance.collection('appointments').add({
+        'patientId': patientId,
+        'doctorId': doctorId,
+        'dateTime': dateTime.toIso8601String(),
+        'status': 'booked',
+        'createdAt': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      debugPrint("Error booking appointment: $e");
+    }
   }
 }

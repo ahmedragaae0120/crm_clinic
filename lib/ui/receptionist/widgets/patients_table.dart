@@ -1,9 +1,13 @@
+import 'dart:developer';
+
+import 'package:crm_clinic/core/utils/dialogs.dart';
+import 'package:crm_clinic/core/utils/layout_builder.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/domain/entity/patient_entity.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
-import 'package:crm_clinic/ui/receptionist/widgets/patient_row.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,30 +33,13 @@ class PatientsTable extends StatelessWidget {
             );
           }
           // 3. بناء الجدول باستخدام البيانات المفلترة فقط
-          return Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            // defaultColumnWidth: const IntrinsicColumnWidth(flex: 1),
-            columnWidths: const <int, TableColumnWidth>{
-              0: IntrinsicColumnWidth(), // عمود 'Full Name'.tr(); سيأخذ العرض المناسب لمحتواه
-              1: FixedColumnWidth(
-                130.0,
-              ), // عمود 'Phone'.tr(); سيأخذ عرضًا ثابتًا
-              2: IntrinsicColumnWidth(), // عمود 'Gender'.tr();
-              3: FixedColumnWidth(120.0), // عمود 'Birth Date'.tr();
-              4: FixedColumnWidth(210.0), // عمود 'Joined'.tr();
-              5: FixedColumnWidth(60.0), // عمود أيقونة الحذف
-            },
-            border: TableBorder.all(
-              color: theme.colorScheme.primary,
-              width: 2,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            children: [
-              _buildHeader(context),
-              ...filteredPatients.map(
-                (patient) => patientRow(patient, context),
-              ),
-            ],
+          return LayoutBuilderWidget(
+            mobileLayout: (context) =>
+                _buildListView(context, filteredPatients),
+            tabletLayout: (context) =>
+                _buildDataTable(context, filteredPatients),
+            desktopLayout: (context) =>
+                _buildDataTable(context, filteredPatients),
           );
         } else if (state.getPatients is BaseLoadingState) {
           return Center(
@@ -74,75 +61,112 @@ class PatientsTable extends StatelessWidget {
     );
   }
 
-  TableRow _buildHeader(BuildContext context) {
-    final theme = Theme.of(context);
-    return TableRow(
-      decoration: BoxDecoration(color: theme.colorScheme.primary),
+  /// ✅ طريقة العرض على الموبايل (ListView + Cards)
+  Widget _buildListView(BuildContext context, List<PatientEntity> patients) {
+    log("Building ListView for ${patients.length} patients");
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: patients.length,
+        itemBuilder: (context, index) {
+          final patient = patients[index];
+          return Card(
+            margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+            color: Colors.blue,
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                ListTile(
+                  title: Text(
+                    patient.fullName,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("📞 ${patient.phone}"),
+                      Text("⚧ ${patient.gender}"),
+                      Text("🎂 ${patient.birthDate}"),
+                      Text(
+                        "📅 ${AppStrings.joined}: ${DateFormat("dd/MM/yyyy").format(patient.joined)}",
+                      ),
+                    ],
+                  ),
+                  trailing: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Dialogs.showBookingDialog(context, patient);
+                            // BottomSheet(onClosing: () {}, builder: bu)
+                          },
+                          child: const Text("حجز موعد"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.remove_circle_outline,
+                    color: Colors.red,
+                  ),
+                  onPressed: () => ReceptionistCubit.get(
+                    context,
+                  ).removeDoc(patient.patientId),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            AppStrings.fullName,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onPrimary,
-            ),
-          ),
+  Widget _buildDataTable(BuildContext context, List<PatientEntity> patients) {
+    log("Building DataTable for ${patients.length} patients");
+
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        child: DataTable(
+          columns: [
+            DataColumn(label: Text(AppStrings.fullName)),
+            DataColumn(label: Text(AppStrings.phone)),
+            DataColumn(label: Text(AppStrings.gender)),
+            DataColumn(label: Text(AppStrings.birthDate)),
+            DataColumn(label: Text(AppStrings.joined)),
+            DataColumn(label: Text(AppStrings.actions)),
+          ],
+          rows: patients.map((patient) {
+            return DataRow(
+              cells: [
+                DataCell(Text(patient.fullName)),
+                DataCell(Text(patient.phone)),
+                DataCell(Text(patient.gender)),
+                DataCell(Text(patient.birthDate)),
+                DataCell(Text(patient.joined.toString())),
+                DataCell(
+                  IconButton(
+                    icon: const Icon(
+                      Icons.remove_circle_outline,
+                      color: Colors.red,
+                    ),
+                    onPressed: () => ReceptionistCubit.get(
+                      context,
+                    ).removeDoc(patient.patientId),
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            AppStrings.phone,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onPrimary,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            AppStrings.gender,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onPrimary,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            AppStrings.birthDate,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onPrimary,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            AppStrings.joined,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onPrimary,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            Icons.remove_circle_outline_outlined,
-            color: theme.colorScheme.onPrimary,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

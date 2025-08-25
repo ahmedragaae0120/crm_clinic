@@ -1,11 +1,11 @@
-class Appointment {
+class AppointmentModel {
   String? id;
   String? patientId;
   String? doctorId;
   DateTime? dateTime;
   String? status;
 
-  Appointment({
+  AppointmentModel({
     this.id,
     this.patientId,
     this.doctorId,
@@ -21,7 +21,7 @@ class Appointment {
     'createdAt': DateTime.now(),
   };
 
-  Appointment.fromJson(Map<String, dynamic> json, String id) {
+  AppointmentModel.fromJson(Map<String, dynamic> json, String id) {
     this.id = json['appointmentId'] as String?;
     patientId = json['patientId'] as String?;
     doctorId = json['doctorId'] as String?;

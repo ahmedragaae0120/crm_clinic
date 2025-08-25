@@ -23,6 +23,8 @@ import '../../data/data_source_contract/auth/signin_with_facebook_datasource.dar
 import '../../data/data_source_contract/auth/signin_with_google_datasource.dart'
     as _i574;
 import '../../data/data_source_contract/auth/signout_datasource.dart' as _i365;
+import '../../data/data_source_contract/get_all_doctors_datasource.dart'
+    as _i743;
 import '../../data/data_source_contract/get_all_patients_datasource.dart'
     as _i659;
 import '../../data/data_source_contract/get_all_users_datasource.dart' as _i332;
@@ -39,6 +41,8 @@ import '../../data/data_source_impl/auth/signin_with_facebook_datasource_impl.da
 import '../../data/data_source_impl/auth/signin_with_google_datasource_impl.dart'
     as _i424;
 import '../../data/data_source_impl/auth/signout_datasource_impl.dart' as _i107;
+import '../../data/data_source_impl/get_all_doctors_datasource_impl.dart'
+    as _i827;
 import '../../data/data_source_impl/get_all_patients_datasource_impl.dart'
     as _i59;
 import '../../data/data_source_impl/get_all_users_datasource_impl.dart'
@@ -65,6 +69,7 @@ import '../../domain/use_cases/auth/register_usecase.dart' as _i954;
 import '../../domain/use_cases/auth/signin_with_facebook_usecase.dart' as _i441;
 import '../../domain/use_cases/auth/signin_with_google_usecase.dart' as _i299;
 import '../../domain/use_cases/auth/signout_usecase.dart' as _i492;
+import '../../domain/use_cases/get_all_doctors_usecase.dart' as _i696;
 import '../../domain/use_cases/get_all_patients_usecase.dart' as _i284;
 import '../../domain/use_cases/get_all_users_usecase.dart' as _i967;
 import '../../domain/use_cases/remove_doc_usecase.dart' as _i9;
@@ -74,6 +79,7 @@ import '../../ui/auth/view_model/auth_cubit.dart' as _i538;
 import '../../ui/receptionist/view_model/receptionist_cubit.dart' as _i858;
 import '../cache/shared_pref.dart' as _i299;
 import '../services/firebase_manager.dart' as _i1025;
+import 'http_module.dart' as _i273;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -82,8 +88,10 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final httpModule = _$HttpModule();
     gh.singleton<_i299.CacheHelper>(() => _i299.CacheHelper());
     gh.singleton<_i1025.FirebaseManager>(() => _i1025.FirebaseManager());
+    gh.lazySingleton<_i519.Client>(() => httpModule.httpClient);
     gh.factory<_i365.SignoutDatasource>(
       () => _i107.SignoutDatasourceImpl(gh<_i1025.FirebaseManager>()),
     );
@@ -122,6 +130,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i901.AddPatientDatasource>(
       () => _i708.AddPatientDatasourceImpl(gh<_i1025.FirebaseManager>()),
     );
+    gh.factory<_i743.GetAllDoctorsDatasource>(
+      () => _i827.GetAllDoctorsDatasourceImpl(gh<_i1025.FirebaseManager>()),
+    );
     gh.factory<_i1048.LoginDatasource>(
       () => _i1013.LoginDatasourceImpl(gh<_i1025.FirebaseManager>()),
     );
@@ -134,6 +145,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i81.SigninWithGoogleRepo>(
       () =>
           _i27.SigninWithGoogleRepoImpl(gh<_i574.SigninWithGoogleDatasource>()),
+    );
+    gh.factory<_i696.GetAllDoctorsUsecase>(
+      () => _i696.GetAllDoctorsUsecase(gh<_i743.GetAllDoctorsDatasource>()),
     );
     gh.factory<_i1064.RemoveUserDatasource>(
       () => _i610.RemoveUserDatasourceImpl(gh<_i519.Client>()),
@@ -199,3 +213,5 @@ extension GetItInjectableX on _i174.GetIt {
     return this;
   }
 }
+
+class _$HttpModule extends _i273.HttpModule {}

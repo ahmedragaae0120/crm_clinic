@@ -42,7 +42,7 @@ class PatientModel {
 
   PatientEntity toDomainDTO() {
     return PatientEntity(
-      uid: patientId ?? '',
+      patientId: patientId ?? '',
       fullName: fullName ?? '',
       phone: phone ?? '',
       birthDate: birthDate ?? '',

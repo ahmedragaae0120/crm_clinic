@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/constant.dart';
 import 'package:crm_clinic/core/services/collections.dart';
+import 'package:crm_clinic/data/model/appointment_model.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -113,6 +114,13 @@ class FirebaseManager {
     return collectionRef.snapshots();
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getDoctors() {
+    return _db
+        .collection(Collections.users)
+        .where('permission', isEqualTo: UserPermission.doctor.name)
+        .get();
+  }
+
   Future<UserPermission> getUserPermission(String uid) async {
     try {
       final docSnapshot = await _db
@@ -120,17 +128,23 @@ class FirebaseManager {
           .doc(uid)
           .get();
       final userData = docSnapshot.data();
-      final String? role = userData?['permission'] ?? '';
+      final String role = (userData?['permission'] ?? '')
+          .toString()
+          .toLowerCase();
+      log("role =$role  /  admin permission : ${UserPermission.admin.name}");
 
       // توجيه حسب الـ role
-      if (role == UserPermission.admin.name) {
+      if (role == UserPermission.admin.name.toLowerCase()) {
         return UserPermission.admin;
-      } else if (role == UserPermission.doctor.name) {
+      } else if (role == UserPermission.doctor.name.toLowerCase()) {
         return UserPermission.doctor;
-      } else if (role == UserPermission.nurse.name) {
+      } else if (role == UserPermission.nurse.name.toLowerCase()) {
         return UserPermission.nurse;
-      } else {
+      } else if (role == UserPermission.receptionist.name.toLowerCase()) {
         return UserPermission.receptionist;
+      } else {
+        log("Unknown role: $role");
+        throw Exception("Unknown role: $role");
       }
     } catch (e) {
       log('Error fetching role: $e');
@@ -147,8 +161,8 @@ class FirebaseManager {
     try {
       // 1. البحث عن admin في Firestore
       final query = await _db
-          .collection('users')
-          .where('permission', isEqualTo: 'Admin')
+          .collection(Collections.users)
+          .where('permission', isEqualTo: UserPermission.admin.name)
           .limit(1)
           .get();
 
@@ -184,5 +198,41 @@ class FirebaseManager {
       log("❌ Error creating admin: $e");
       throw Exception("❌ Error creating admin: $e");
     }
+  }
+
+  Future<void> addAppointment(AppointmentModel appointment) async {
+    await _db.collection(Collections.appointments).add(appointment.toJson());
+  }
+
+  Stream<List<AppointmentModel>> getAppointmentsByDate(
+    DateTime date,
+    String doctorId,
+  ) {
+    final start = DateTime(date.year, date.month, date.day);
+    final end = start.add(const Duration(days: 1));
+
+    return _db
+        .collection(Collections.appointments)
+        .where('doctorId', isEqualTo: doctorId)
+        .where('dateTime', isGreaterThanOrEqualTo: start.toIso8601String())
+        .where('dateTime', isLessThan: end.toIso8601String())
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => AppointmentModel.fromJson(doc.data(), doc.id))
+              .toList(),
+        );
+  }
+
+  Future<void> updateAppointment(String id, DateTime newDate) async {
+    await _db.collection(Collections.appointments).doc(id).update({
+      'dateTime': newDate.toIso8601String(),
+    });
+  }
+
+  Future<void> cancelAppointment(String id) async {
+    await _db.collection(Collections.appointments).doc(id).update({
+      'status': 'canceled',
+    });
   }
 }

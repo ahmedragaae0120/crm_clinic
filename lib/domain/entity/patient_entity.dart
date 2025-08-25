@@ -1,5 +1,5 @@
 class PatientEntity {
-  final String uid;
+  final String patientId;
   final String fullName;
   final String phone;
   final String birthDate;
@@ -7,7 +7,7 @@ class PatientEntity {
   final DateTime joined;
 
   PatientEntity({
-    required this.uid,
+    required this.patientId,
     required this.fullName,
     required this.phone,
     required this.birthDate,

@@ -107,10 +107,7 @@ class ReceptionistView extends StatelessWidget {
                   ),
                 ],
               ),
-              const SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: PatientsTable(),
-              ),
+              const PatientsTable(),
             ],
           ),
         ),
