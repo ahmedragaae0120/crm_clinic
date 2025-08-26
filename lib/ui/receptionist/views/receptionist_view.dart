@@ -1,4 +1,7 @@
+import 'package:crm_clinic/core/Di/di.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
+import 'package:crm_clinic/domain/use_cases/doctor/add_available_slots_for_doctor_usecase.dart';
+import 'package:crm_clinic/domain/use_cases/doctor/get_available_slots_for_doctor_usecase.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:crm_clinic/core/utils/config.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
@@ -35,6 +38,25 @@ class ReceptionistView extends StatelessWidget {
             spacing: 20,
             children: [
               Config.spaceSmall,
+              ElevatedButton(
+                onPressed: () {
+                  // final add = getIt<AddAvailableSlotsForDoctorUsecase>();
+                  final get = getIt<GetAvailableSlotsForDoctorUsecase>();
+                  get.call(doctorId: "ShR8XKhHrUOfvoRxc9yxkG6wlez2");
+                  // add.call(
+                  //   doctorId: "ShR8XKhHrUOfvoRxc9yxkG6wlez2",
+                  //   slots: [
+                  //     DateTime.now().add(const Duration(days: 1, hours: 9)),
+                  //     DateTime.now().add(const Duration(days: 1, hours: 10)),
+                  //     DateTime.now().add(const Duration(days: 1, hours: 11)),
+                  //     DateTime.now().add(const Duration(days: 1, hours: 12)),
+                  //   ],
+                  // );
+                },
+                child: const Text(
+                  " Add Avalibale appointment to doctor ali test",
+                ),
+              ),
               Center(
                 child: Text(
                   AppStrings.welcomeReceptionistDashboard,

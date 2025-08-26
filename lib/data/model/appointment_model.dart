@@ -4,6 +4,8 @@ class AppointmentModel {
   String? doctorId;
   DateTime? dateTime;
   String? status;
+  String? patientName;
+  String? patientPhone;
 
   AppointmentModel({
     this.id,
@@ -11,6 +13,8 @@ class AppointmentModel {
     this.doctorId,
     this.dateTime,
     this.status = 'booked',
+    this.patientName,
+    this.patientPhone,
   });
 
   Map<String, dynamic> toJson() => {
@@ -19,6 +23,8 @@ class AppointmentModel {
     'dateTime': dateTime?.toIso8601String(),
     'status': status,
     'createdAt': DateTime.now(),
+    'patientName': patientName,
+    'patientPhone': patientPhone,
   };
 
   AppointmentModel.fromJson(Map<String, dynamic> json, String id) {
@@ -27,5 +33,7 @@ class AppointmentModel {
     doctorId = json['doctorId'] as String?;
     dateTime = DateTime.parse(json['dateTime']);
     status = json['status'] as String?;
+    patientName = json['patientName'] as String?;
+    patientPhone = json['patientPhone'] as String?;
   }
 }

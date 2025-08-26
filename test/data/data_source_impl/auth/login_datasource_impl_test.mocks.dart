@@ -234,6 +234,55 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
             returnValueForMissingStub: _i5.Future<void>.value(),
           )
           as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> addAvailableSlotsForDoctor({
+    required String? doctorId,
+    required List<DateTime>? slots,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#addAvailableSlotsForDoctor, [], {
+              #doctorId: doctorId,
+              #slots: slots,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>
+  getAvailableSlotsForDoctor(String? doctorId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAvailableSlotsForDoctor, [doctorId]),
+            returnValue:
+                _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>.value(
+                  _FakeQuerySnapshot_1<Map<String, dynamic>>(
+                    this,
+                    Invocation.method(#getAvailableSlotsForDoctor, [doctorId]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<void> bookAppointmentAndUpdateSlot({
+    required String? patientId,
+    required String? doctorId,
+    required String? slotId,
+    required _i7.PatientModel? patient,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#bookAppointmentAndUpdateSlot, [], {
+              #patientId: patientId,
+              #doctorId: doctorId,
+              #slotId: slotId,
+              #patient: patient,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
 }
 
 /// A class which mocks [UserCredential].

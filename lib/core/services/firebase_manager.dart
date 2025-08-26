@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/constant.dart';
 import 'package:crm_clinic/core/services/collections.dart';
 import 'package:crm_clinic/data/model/appointment_model.dart';
+import 'package:crm_clinic/data/model/doctor/available_slot_model.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -117,7 +118,7 @@ class FirebaseManager {
   Future<QuerySnapshot<Map<String, dynamic>>> getDoctors() {
     return _db
         .collection(Collections.users)
-        .where('permission', isEqualTo: UserPermission.doctor.name)
+        .where('permission', isEqualTo: UserPermission.doctor.value)
         .get();
   }
 
@@ -234,5 +235,97 @@ class FirebaseManager {
     await _db.collection(Collections.appointments).doc(id).update({
       'status': 'canceled',
     });
+  }
+
+  // -- دالة للطبيب لإضافة مواعيده المتاحة --
+  // سيستخدمها الطبيب من شاشته الخاصة لتحديد أوقاته
+  Future<void> addAvailableSlotsForDoctor({
+    required String doctorId,
+    required List<DateTime> slots,
+  }) async {
+    final batch = _db.batch(); // استخدام batch للكتابة المجمعة لزيادة الكفاءة
+    final doctorSlotsCollection = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection('availableSlots');
+
+    for (final slotTime in slots) {
+      final slotDoc = doctorSlotsCollection.doc();
+      batch.set(
+        slotDoc,
+        AvailableSlotModel(
+          startTime: slotTime,
+          status: 'available',
+          id: slotDoc.id,
+        ).toJson(),
+      );
+    }
+    await batch.commit();
+    log("Added ${slots.length} new available slots for doctor $doctorId");
+  }
+
+  // -- دالة لجلب المواعيد المتاحة لطبيب معين --
+  // سيستخدمها موظف الاستقبال في شاشة الحجز
+  Future<QuerySnapshot<Map<String, dynamic>>> getAvailableSlotsForDoctor(
+    String doctorId,
+  ) {
+    return _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.availableSlots)
+        .where('status', isEqualTo: 'available') // جلب المواعيد المتاحة فقط
+        .orderBy('startTime') // ترتيبها زمنياً
+        .get();
+  }
+
+  // -- دالة لحجز الموعد وتحديث حالته (الأهم) --
+  // هذه الدالة تضمن عدم حجز الموعد مرتين في نفس اللحظة
+  Future<void> bookAppointmentAndUpdateSlot({
+    required String patientId,
+    required String doctorId,
+    required String slotId, // ID الخاص بالموعد المتاح
+    required PatientModel patient, // نحتاج لبيانات المريض
+  }) async {
+    final slotRef = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.availableSlots)
+        .doc(slotId);
+    final appointmentRef = _db.collection(Collections.appointments).doc();
+
+    return _db
+        .runTransaction((transaction) async {
+          // 1. اقرأ بيانات الموعد المتاح أولاً
+          final slotSnapshot = await transaction.get(slotRef);
+
+          if (!slotSnapshot.exists ||
+              slotSnapshot.data()?['status'] != 'available') {
+            throw Exception("This slot is no longer available!");
+          }
+
+          final slotData = slotSnapshot.data()!;
+          final appointmentTime = (slotData['startTime'] as Timestamp).toDate();
+
+          // 2. قم بتحديث حالة الموعد المتاح إلى "محجوز"
+          transaction.update(slotRef, {'status': 'booked'});
+
+          // 3. قم بإنشاء الحجز الجديد في مجموعة appointments
+          final newAppointment = AppointmentModel(
+            id: appointmentRef.id,
+            patientId: patientId,
+            doctorId: doctorId,
+            dateTime: appointmentTime,
+            patientName: patient.fullName,
+            patientPhone: patient.phone,
+            status: 'booked',
+          );
+          transaction.set(appointmentRef, newAppointment.toJson());
+
+          log("Transaction successful: Appointment booked and slot updated.");
+        })
+        .catchError((error) {
+          log("Transaction failed: $error");
+          throw Exception("Failed to book appointment. Please try again.");
+        });
   }
 }

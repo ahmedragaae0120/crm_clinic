@@ -23,6 +23,10 @@ import '../../data/data_source_contract/auth/signin_with_facebook_datasource.dar
 import '../../data/data_source_contract/auth/signin_with_google_datasource.dart'
     as _i574;
 import '../../data/data_source_contract/auth/signout_datasource.dart' as _i365;
+import '../../data/data_source_contract/doctor/add_available_slots_for_doctor_datasource.dart'
+    as _i434;
+import '../../data/data_source_contract/doctor/get_available_slots_for_doctor_datasource.dart'
+    as _i419;
 import '../../data/data_source_contract/get_all_doctors_datasource.dart'
     as _i743;
 import '../../data/data_source_contract/get_all_patients_datasource.dart'
@@ -41,6 +45,10 @@ import '../../data/data_source_impl/auth/signin_with_facebook_datasource_impl.da
 import '../../data/data_source_impl/auth/signin_with_google_datasource_impl.dart'
     as _i424;
 import '../../data/data_source_impl/auth/signout_datasource_impl.dart' as _i107;
+import '../../data/data_source_impl/doctor/add_available_slots_for_doctor_datasource_impl.dart'
+    as _i260;
+import '../../data/data_source_impl/doctor/get_available_slots_for_doctor_datasource_impl.dart'
+    as _i946;
 import '../../data/data_source_impl/get_all_doctors_datasource_impl.dart'
     as _i827;
 import '../../data/data_source_impl/get_all_patients_datasource_impl.dart'
@@ -69,6 +77,10 @@ import '../../domain/use_cases/auth/register_usecase.dart' as _i954;
 import '../../domain/use_cases/auth/signin_with_facebook_usecase.dart' as _i441;
 import '../../domain/use_cases/auth/signin_with_google_usecase.dart' as _i299;
 import '../../domain/use_cases/auth/signout_usecase.dart' as _i492;
+import '../../domain/use_cases/doctor/add_available_slots_for_doctor_usecase.dart'
+    as _i479;
+import '../../domain/use_cases/doctor/get_available_slots_for_doctor_usecase.dart'
+    as _i778;
 import '../../domain/use_cases/get_all_doctors_usecase.dart' as _i696;
 import '../../domain/use_cases/get_all_patients_usecase.dart' as _i284;
 import '../../domain/use_cases/get_all_users_usecase.dart' as _i967;
@@ -124,11 +136,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i778.GetAllUsersRepo>(
       () => _i1039.GetAllUsersRepoImpl(gh<_i332.GetAllUsersDatasource>()),
     );
+    gh.factory<_i434.AddAvailableSlotsForDoctorDatasource>(
+      () => _i260.AddAvailableSlotsForDoctorDatasourceImpl(
+        gh<_i1025.FirebaseManager>(),
+      ),
+    );
     gh.factory<_i9.RemoveDocUsecase>(
       () => _i9.RemoveDocUsecase(gh<_i1034.RemoveDocDatasource>()),
     );
     gh.factory<_i901.AddPatientDatasource>(
       () => _i708.AddPatientDatasourceImpl(gh<_i1025.FirebaseManager>()),
+    );
+    gh.factory<_i419.GetAvailableSlotsForDoctorDatasource>(
+      () => _i946.GetAvailableSlotsForDoctorDatasourceImpl(
+        gh<_i1025.FirebaseManager>(),
+      ),
     );
     gh.factory<_i743.GetAllDoctorsDatasource>(
       () => _i827.GetAllDoctorsDatasourceImpl(gh<_i1025.FirebaseManager>()),
@@ -149,8 +171,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i696.GetAllDoctorsUsecase>(
       () => _i696.GetAllDoctorsUsecase(gh<_i743.GetAllDoctorsDatasource>()),
     );
+    gh.factory<_i778.GetAvailableSlotsForDoctorUsecase>(
+      () => _i778.GetAvailableSlotsForDoctorUsecase(
+        gh<_i419.GetAvailableSlotsForDoctorDatasource>(),
+      ),
+    );
     gh.factory<_i1064.RemoveUserDatasource>(
       () => _i610.RemoveUserDatasourceImpl(gh<_i519.Client>()),
+    );
+    gh.factory<_i479.AddAvailableSlotsForDoctorUsecase>(
+      () => _i479.AddAvailableSlotsForDoctorUsecase(
+        gh<_i434.AddAvailableSlotsForDoctorDatasource>(),
+      ),
     );
     gh.factory<_i299.SigninWithGoogleUsecase>(
       () => _i299.SigninWithGoogleUsecase(gh<_i81.SigninWithGoogleRepo>()),

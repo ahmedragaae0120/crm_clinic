@@ -1,0 +1,37 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crm_clinic/core/result.dart';
+import 'package:crm_clinic/core/services/firebase_manager.dart';
+import 'package:crm_clinic/data/data_source_contract/doctor/get_available_slots_for_doctor_datasource.dart';
+import 'package:crm_clinic/data/model/doctor/available_slot_model.dart';
+import 'package:injectable/injectable.dart';
+
+@Injectable(as: GetAvailableSlotsForDoctorDatasource)
+class GetAvailableSlotsForDoctorDatasourceImpl
+    implements GetAvailableSlotsForDoctorDatasource {
+  @factoryMethod
+  GetAvailableSlotsForDoctorDatasourceImpl(this._firebaseManager);
+  final FirebaseManager _firebaseManager;
+  @override
+  Future<Result<List<AvailableSlotModel>>> getAvailableSlots({
+    required String doctorId,
+  }) async {
+    try {
+      final querySnapshot = await _firebaseManager.getAvailableSlotsForDoctor(
+        doctorId,
+      );
+      final slots = querySnapshot.docs
+          .map((doc) => AvailableSlotModel.fromJson(doc.data(), doc.id))
+          .toList();
+      log("slots: ${slots.length}");
+      return Success<List<AvailableSlotModel>>(slots);
+    } on FirebaseException catch (e) {
+      log(e.message.toString());
+      return Error(Exception(e.message));
+    } catch (e) {
+      log(e.toString());
+      return Error(Exception(e.toString()));
+    }
+  }
+}
