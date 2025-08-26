@@ -111,12 +111,17 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 flutter_native_splash:
-  color: "#000000"
+  icon_background_color: "#FFFFFF"
+  color: "#FFFFFF"
   image: "assets/icons/splash.png"
+  color_dark: "#000000" # لون الخلفية في الوضع المظلم
+  image_dark: "assets/icons/splash.png" # يمكنك استخدام نفس الصورة
   android: true
   ios: true
   web: true
   android_12:
     image: "assets/icons/splash_1024.png"
-    icon_background_color: "#000000"
+    icon_background_color: "#FFFFFF"
+    image_dark: "assets/icons/splash_1024.png"
+    icon_background_color_dark: "#000000"
     web: true
