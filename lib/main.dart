@@ -16,7 +16,6 @@ void main() async {
 
   final authCubit = getIt<AuthCubit>();
   await authCubit.createAdminEmail();
-  final initialRoute = await authCubit.initRoute();
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
@@ -25,10 +24,7 @@ void main() async {
       fallbackLocale: const Locale('en'),
       startLocale: const Locale('en'),
 
-      child: BlocProvider.value(
-        value: authCubit,
-        child: MyApp(initialRoute: initialRoute),
-      ),
+      child: BlocProvider.value(value: authCubit, child: const MyApp()),
     ),
   );
 }
