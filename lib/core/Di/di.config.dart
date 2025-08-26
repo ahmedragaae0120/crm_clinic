@@ -208,6 +208,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i875.AddPatientUsecase>(),
         gh<_i284.GetAllPatientsUsecase>(),
         gh<_i9.RemoveDocUsecase>(),
+        gh<_i696.GetAllDoctorsUsecase>(),
       ),
     );
     return this;

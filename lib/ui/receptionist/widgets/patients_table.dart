@@ -1,12 +1,13 @@
 import 'dart:developer';
 
-import 'package:crm_clinic/core/utils/dialogs.dart';
 import 'package:crm_clinic/core/utils/layout_builder.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
+import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/domain/entity/patient_entity.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
+import 'package:crm_clinic/ui/receptionist/widgets/booking_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +24,7 @@ class PatientsTable extends StatelessWidget {
 
         if (getPatientsState is BaseSuccessState<List<PatientEntity>>) {
           final filteredPatients = getPatientsState.data;
+          final doctors = state.allDoctors;
 
           if (filteredPatients == null || filteredPatients.isEmpty) {
             return Center(
@@ -35,7 +37,7 @@ class PatientsTable extends StatelessWidget {
           // 3. بناء الجدول باستخدام البيانات المفلترة فقط
           return LayoutBuilderWidget(
             mobileLayout: (context) =>
-                _buildListView(context, filteredPatients),
+                _buildListView(context, filteredPatients, doctors),
             tabletLayout: (context) =>
                 _buildDataTable(context, filteredPatients),
             desktopLayout: (context) =>
@@ -62,7 +64,11 @@ class PatientsTable extends StatelessWidget {
   }
 
   /// ✅ طريقة العرض على الموبايل (ListView + Cards)
-  Widget _buildListView(BuildContext context, List<PatientEntity> patients) {
+  Widget _buildListView(
+    BuildContext context,
+    List<PatientEntity> patients,
+    List<UserModel> doctors,
+  ) {
     log("Building ListView for ${patients.length} patients");
     return SizedBox(
       width: MediaQuery.of(context).size.width,
@@ -101,7 +107,14 @@ class PatientsTable extends StatelessWidget {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            Dialogs.showBookingDialog(context, patient);
+                            // Dialogs.showBookingDialog(context, patient);
+                            showDialog(
+                              context: context,
+                              builder: (context) => BookingDialog(
+                                patient: patient,
+                                doctors: doctors,
+                              ),
+                            );
                             // BottomSheet(onClosing: () {}, builder: bu)
                           },
                           child: const Text("حجز موعد"),

@@ -6,6 +6,7 @@ import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/domain/entity/patient_entity.dart';
 import 'package:crm_clinic/domain/use_cases/add_patient_usecase.dart';
+import 'package:crm_clinic/domain/use_cases/get_all_doctors_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/get_all_patients_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/remove_doc_usecase.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
@@ -22,10 +23,12 @@ class ReceptionistCubit extends Cubit<ReceptionistState> {
     this._addPatientUsecase,
     this._getAllPatientsUsecase,
     this._removeDocUsecase,
+    this._getAllDoctorsUsecase,
   ) : super(ReceptionistState());
   final AddPatientUsecase _addPatientUsecase;
   final GetAllPatientsUsecase _getAllPatientsUsecase;
   final RemoveDocUsecase _removeDocUsecase;
+  final GetAllDoctorsUsecase _getAllDoctorsUsecase;
 
   static ReceptionistCubit get(context) => BlocProvider.of(context);
 
@@ -83,10 +86,12 @@ class ReceptionistCubit extends Cubit<ReceptionistState> {
 
   void getAllPatients() {
     emit(state.copyWith(getPatients: BaseLoadingState()));
+    getAllDoctors();
     _getAllPatientsUsecase.call().listen((patients) {
       if (patients is Success<List<PatientEntity>>) {
         final patientList = patients.data ?? [];
         log('Patients fetched successfully: ${patients.data?.length}');
+
         emit(
           state.copyWith(
             getPatients: BaseSuccessState(patientList),
@@ -104,6 +109,33 @@ class ReceptionistCubit extends Cubit<ReceptionistState> {
         );
       }
     });
+  }
+
+  void getAllDoctors() async {
+    emit(state.copyWith(getDoctors: BaseLoadingState()));
+    final result = await _getAllDoctorsUsecase.call();
+    switch (result) {
+      case Success():
+        log("Doctors fetched successfully: ${result.data?.length}");
+        emit(
+          state.copyWith(
+            getDoctors: BaseSuccessState(result.data),
+            allDoctors: result.data ?? [],
+          ),
+        );
+        break;
+      case Error():
+        log("Error fetching doctors: ${result.exception}");
+        emit(
+          state.copyWith(
+            getDoctors: BaseErrorState(
+              result.exception.toString(),
+              result.exception,
+            ),
+          ),
+        );
+        break;
+    }
   }
 
   removeDoc(String id) async {

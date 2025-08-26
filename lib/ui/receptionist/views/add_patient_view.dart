@@ -41,7 +41,7 @@ class _AddPatientViewState extends State<AddPatientView> {
         PatientModel(
           fullName: cubit.nameController.text,
           phone: cubit.phoneController.text,
-          gender: cubit.selectedGender!.name,
+          gender: cubit.selectedGender!.key,
           birthDate: cubit.dateController.text,
           joined: DateTime.now(),
         ),
