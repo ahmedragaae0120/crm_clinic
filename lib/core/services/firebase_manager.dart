@@ -135,13 +135,13 @@ class FirebaseManager {
       log("role =$role  /  admin permission : ${UserPermission.admin.name}");
 
       // توجيه حسب الـ role
-      if (role == UserPermission.admin.name.toLowerCase()) {
+      if (role == UserPermission.admin.value.toLowerCase()) {
         return UserPermission.admin;
-      } else if (role == UserPermission.doctor.name.toLowerCase()) {
+      } else if (role == UserPermission.doctor.value.toLowerCase()) {
         return UserPermission.doctor;
-      } else if (role == UserPermission.nurse.name.toLowerCase()) {
+      } else if (role == UserPermission.nurse.value.toLowerCase()) {
         return UserPermission.nurse;
-      } else if (role == UserPermission.receptionist.name.toLowerCase()) {
+      } else if (role == UserPermission.receptionist.value.toLowerCase()) {
         return UserPermission.receptionist;
       } else {
         log("Unknown role: $role");
@@ -163,7 +163,7 @@ class FirebaseManager {
       // 1. البحث عن admin في Firestore
       final query = await _db
           .collection(Collections.users)
-          .where('permission', isEqualTo: UserPermission.admin.name)
+          .where('permission', isEqualTo: UserPermission.admin.value)
           .limit(1)
           .get();
 
@@ -186,7 +186,7 @@ class FirebaseManager {
             email: Constant.adminEmail,
             fullName: 'Admin',
             joined: DateTime.now(),
-            permission: UserPermission.admin.name,
+            permission: UserPermission.admin.value,
             uid: adminUid,
           ),
           userCredential: userCredential,

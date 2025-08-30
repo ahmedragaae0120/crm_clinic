@@ -6,7 +6,6 @@ import 'package:crm_clinic/domain/entity/patient_entity.dart';
 import 'package:crm_clinic/ui/receptionist/layout/desktop/desktop_patient_list_builder_widget.dart';
 import 'package:crm_clinic/ui/receptionist/layout/mobile/mobile_patient_list_builder_widget.dart';
 import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/view_model/receptionist_dashboard_cubit.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
