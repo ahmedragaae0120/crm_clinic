@@ -23,7 +23,7 @@ class PatientModel {
     joined = json['joined'] is Timestamp
         ? (json['joined'] as Timestamp).toDate()
         : DateTime.tryParse(json['joined']?.toString() ?? '');
-    patientId = json['uid'] as String?;
+    patientId = json['patientId'] as String?;
     phone = json['phone'] as String?;
     birthDate = json['birthDate'] as String?;
     gender = json['gender'] as String?;

@@ -3,7 +3,6 @@ import 'package:crm_clinic/ui/admin/admin_view.dart';
 import 'package:crm_clinic/ui/admin/view_model/admin_cubit.dart';
 import 'package:crm_clinic/ui/auth/login/login_view.dart';
 import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
-import 'package:crm_clinic/ui/receptionist/views/calendar_view.dart';
 import 'package:crm_clinic/ui/receptionist/views/receptionist_main_screen.dart';
 import 'package:crm_clinic/ui/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +29,10 @@ class AppRoutes {
         child: const AdminView(),
       ),
       receptionistMainScreen: (context) => BlocProvider<ReceptionistCubit>(
-        create: (context) => getIt<ReceptionistCubit>()..getAllPatients(),
+        create: (context) => getIt<ReceptionistCubit>(),
         child: const ReceptionistMainScreen(),
       ),
-      calendar: (_) => const CalendarView(doctorId: "12116341"),
+      // calendar: (_) => const CalendarView(doctorId: "12116341"),
       splash: (context) => SplashScreen(
         navigationRoute:
             ModalRoute.of(context)?.settings.arguments as String? ?? login,

@@ -24,8 +24,13 @@ class GetAvailableSlotsForDoctorDatasourceImpl
       final slots = querySnapshot.docs
           .map((doc) => AvailableSlotModel.fromJson(doc.data(), doc.id))
           .toList();
+
       log("slots: ${slots.length}");
-      return Success<List<AvailableSlotModel>>(slots);
+      if (slots.isNotEmpty) {
+        return Success<List<AvailableSlotModel>>(slots);
+      } else {
+        return Error(Exception("no slots found"));
+      }
     } on FirebaseException catch (e) {
       log(e.message.toString());
       return Error(Exception(e.message));

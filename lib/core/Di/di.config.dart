@@ -23,10 +23,14 @@ import '../../data/data_source_contract/auth/signin_with_facebook_datasource.dar
 import '../../data/data_source_contract/auth/signin_with_google_datasource.dart'
     as _i574;
 import '../../data/data_source_contract/auth/signout_datasource.dart' as _i365;
+import '../../data/data_source_contract/book_appointment_datasource.dart'
+    as _i608;
 import '../../data/data_source_contract/doctor/add_available_slots_for_doctor_datasource.dart'
     as _i434;
 import '../../data/data_source_contract/doctor/get_available_slots_for_doctor_datasource.dart'
     as _i419;
+import '../../data/data_source_contract/get_all_appointments_datasource.dart'
+    as _i906;
 import '../../data/data_source_contract/get_all_doctors_datasource.dart'
     as _i743;
 import '../../data/data_source_contract/get_all_patients_datasource.dart'
@@ -45,10 +49,14 @@ import '../../data/data_source_impl/auth/signin_with_facebook_datasource_impl.da
 import '../../data/data_source_impl/auth/signin_with_google_datasource_impl.dart'
     as _i424;
 import '../../data/data_source_impl/auth/signout_datasource_impl.dart' as _i107;
+import '../../data/data_source_impl/book_appointment_datasource_impl.dart'
+    as _i222;
 import '../../data/data_source_impl/doctor/add_available_slots_for_doctor_datasource_impl.dart'
     as _i260;
 import '../../data/data_source_impl/doctor/get_available_slots_for_doctor_datasource_impl.dart'
     as _i946;
+import '../../data/data_source_impl/get_all_appointments_datasource_impl.dart'
+    as _i205;
 import '../../data/data_source_impl/get_all_doctors_datasource_impl.dart'
     as _i827;
 import '../../data/data_source_impl/get_all_patients_datasource_impl.dart'
@@ -77,10 +85,12 @@ import '../../domain/use_cases/auth/register_usecase.dart' as _i954;
 import '../../domain/use_cases/auth/signin_with_facebook_usecase.dart' as _i441;
 import '../../domain/use_cases/auth/signin_with_google_usecase.dart' as _i299;
 import '../../domain/use_cases/auth/signout_usecase.dart' as _i492;
+import '../../domain/use_cases/book_appointment_usecase.dart' as _i727;
 import '../../domain/use_cases/doctor/add_available_slots_for_doctor_usecase.dart'
     as _i479;
 import '../../domain/use_cases/doctor/get_available_slots_for_doctor_usecase.dart'
     as _i778;
+import '../../domain/use_cases/get_all_appointments_usecase.dart' as _i595;
 import '../../domain/use_cases/get_all_doctors_usecase.dart' as _i696;
 import '../../domain/use_cases/get_all_patients_usecase.dart' as _i284;
 import '../../domain/use_cases/get_all_users_usecase.dart' as _i967;
@@ -88,6 +98,10 @@ import '../../domain/use_cases/remove_doc_usecase.dart' as _i9;
 import '../../domain/use_cases/remove_user_usecase.dart' as _i374;
 import '../../ui/admin/view_model/admin_cubit.dart' as _i705;
 import '../../ui/auth/view_model/auth_cubit.dart' as _i538;
+import '../../ui/receptionist/tabs/add_patient_tab/view_model/add_patient_cubit.dart'
+    as _i610;
+import '../../ui/receptionist/tabs/receptionist_dashboard_tab/view_model/receptionist_dashboard_cubit.dart'
+    as _i669;
 import '../../ui/receptionist/view_model/receptionist_cubit.dart' as _i858;
 import '../cache/shared_pref.dart' as _i299;
 import '../services/firebase_manager.dart' as _i1025;
@@ -133,6 +147,13 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i216.SigninWithFacebookDatasourceImpl(gh<_i1025.FirebaseManager>()),
     );
+    gh.factory<_i608.BookAppointmentDatasource>(
+      () => _i222.BookAppointmentDatasourceImpl(gh<_i1025.FirebaseManager>()),
+    );
+    gh.factory<_i906.GetAllAppointmentsDatasource>(
+      () =>
+          _i205.GetAllAppointmentsDatasourceImpl(gh<_i1025.FirebaseManager>()),
+    );
     gh.factory<_i778.GetAllUsersRepo>(
       () => _i1039.GetAllUsersRepoImpl(gh<_i332.GetAllUsersDatasource>()),
     );
@@ -176,6 +197,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i419.GetAvailableSlotsForDoctorDatasource>(),
       ),
     );
+    gh.factory<_i595.GetAllAppointmentsUsecase>(
+      () => _i595.GetAllAppointmentsUsecase(
+        gh<_i906.GetAllAppointmentsDatasource>(),
+      ),
+    );
     gh.factory<_i1064.RemoveUserDatasource>(
       () => _i610.RemoveUserDatasourceImpl(gh<_i519.Client>()),
     );
@@ -184,11 +210,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i434.AddAvailableSlotsForDoctorDatasource>(),
       ),
     );
+    gh.factory<_i858.ReceptionistCubit>(
+      () => _i858.ReceptionistCubit(gh<_i595.GetAllAppointmentsUsecase>()),
+    );
     gh.factory<_i299.SigninWithGoogleUsecase>(
       () => _i299.SigninWithGoogleUsecase(gh<_i81.SigninWithGoogleRepo>()),
     );
     gh.factory<_i284.LoginRepo>(
       () => _i314.LoginRepoImpl(gh<_i1048.LoginDatasource>()),
+    );
+    gh.factory<_i727.BookAppointmentUsecase>(
+      () => _i727.BookAppointmentUsecase(gh<_i608.BookAppointmentDatasource>()),
     );
     gh.factory<_i913.GetAllPatientsRepo>(
       () => _i96.GetAllPatientsRepoImpl(gh<_i659.GetAllPatientsDatasource>()),
@@ -213,6 +245,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i374.RemoveUserUsecase>(
       () => _i374.RemoveUserUsecase(gh<_i1064.RemoveUserDatasource>()),
     );
+    gh.factory<_i610.AddPatientCubit>(
+      () => _i610.AddPatientCubit(gh<_i875.AddPatientUsecase>()),
+    );
     gh.factory<_i538.AuthCubit>(
       () => _i538.AuthCubit(
         gh<_i912.LoginUseCase>(),
@@ -235,12 +270,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i284.GetAllPatientsUsecase>(
       () => _i284.GetAllPatientsUsecase(gh<_i913.GetAllPatientsRepo>()),
     );
-    gh.factory<_i858.ReceptionistCubit>(
-      () => _i858.ReceptionistCubit(
-        gh<_i875.AddPatientUsecase>(),
+    gh.factory<_i669.ReceptionistDashboardCubit>(
+      () => _i669.ReceptionistDashboardCubit(
         gh<_i284.GetAllPatientsUsecase>(),
         gh<_i9.RemoveDocUsecase>(),
         gh<_i696.GetAllDoctorsUsecase>(),
+        gh<_i778.GetAvailableSlotsForDoctorUsecase>(),
+        gh<_i727.BookAppointmentUsecase>(),
       ),
     );
     return this;

@@ -1,8 +1,8 @@
 import 'package:crm_clinic/core/utils/string_manager.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_patient_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_patient_state.dart';
 import 'package:easy_localization/easy_localization.dart';
-
 import 'dart:developer';
-
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/config.dart';
 import 'package:crm_clinic/core/utils/layout_builder.dart';
@@ -10,8 +10,6 @@ import 'package:crm_clinic/core/utils/toast_message.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/ui/receptionist/layout/desktop/add_patient_desktop_body.dart';
 import 'package:crm_clinic/ui/receptionist/layout/mobile/add_patient_mobile_body.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,19 +23,19 @@ enum Gender {
   String get name => key.tr();
 }
 
-class AddPatientView extends StatefulWidget {
-  const AddPatientView({super.key});
+class AddPatientTab extends StatefulWidget {
+  const AddPatientTab({super.key});
 
   @override
-  State<AddPatientView> createState() => _AddPatientViewState();
+  State<AddPatientTab> createState() => _AddPatientTabState();
 }
 
-class _AddPatientViewState extends State<AddPatientView> {
+class _AddPatientTabState extends State<AddPatientTab> {
   final _formKey = GlobalKey<FormState>();
   addPatient() {
     if (_formKey.currentState?.validate() ?? false) {
-      final cubit = ReceptionistCubit.get(context);
-      ReceptionistCubit.get(context).addPatient(
+      final cubit = AddPatientCubit.get(context);
+      AddPatientCubit.get(context).addPatient(
         PatientModel(
           fullName: cubit.nameController.text,
           phone: cubit.phoneController.text,
@@ -53,7 +51,7 @@ class _AddPatientViewState extends State<AddPatientView> {
   @override
   Widget build(BuildContext context) {
     Config().init(context);
-    return BlocConsumer<ReceptionistCubit, ReceptionistState>(
+    return BlocConsumer<AddPatientCubit, AddPatientState>(
       listener: (context, state) {
         if (state.addPatient is BaseSuccessState) {
           toastMessage(

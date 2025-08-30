@@ -1,16 +1,16 @@
+import 'package:crm_clinic/core/animations/screen_title_animation.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
-
 import 'package:crm_clinic/core/reusable_comp/validator.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/config.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
-import 'package:crm_clinic/ui/receptionist/views/add_patient_view.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/add_patient_tab.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_patient_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_patient_state.dart';
 import 'package:flutter/material.dart';
 
 class AddPatientDesktopBody extends StatelessWidget {
   final void Function()? addPatient;
-  final ReceptionistState state;
+  final AddPatientState state;
   final GlobalKey<FormState> formKey;
 
   const AddPatientDesktopBody({
@@ -24,7 +24,7 @@ class AddPatientDesktopBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Config().init(context);
-    final cubit = ReceptionistCubit.get(context);
+    final cubit = AddPatientCubit.get(context);
 
     return Center(
       child: ConstrainedBox(
@@ -36,13 +36,8 @@ class AddPatientDesktopBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  AppStrings.addNewPatient,
-
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
+                Center(
+                  child: ScreenTitleAnimation(title: AppStrings.addNewPatient),
                 ),
                 Config.spaceMedium,
 

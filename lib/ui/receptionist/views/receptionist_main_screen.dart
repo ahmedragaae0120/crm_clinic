@@ -1,10 +1,16 @@
+import 'package:crm_clinic/core/Di/di.dart';
 import 'package:crm_clinic/core/utils/dialogs.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
-import 'package:crm_clinic/ui/receptionist/views/add_patient_view.dart';
-import 'package:crm_clinic/ui/receptionist/views/receptionist_view.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/add_patient_tab.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_patient_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/appointments_tab.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/receptionist_dashboard_tab.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/view_model/receptionist_dashboard_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReceptionistMainScreen extends StatefulWidget {
   const ReceptionistMainScreen({super.key});
@@ -15,7 +21,18 @@ class ReceptionistMainScreen extends StatefulWidget {
 
 class _ReceptionistMainScreenState extends State<ReceptionistMainScreen> {
   int _currentIndex = 0;
-  final List<Widget> _tabs = const [ReceptionistView(), AddPatientView()];
+  final List<Widget> _tabs = [
+    const AppointmentsTab(),
+    BlocProvider(
+      create: (context) =>
+          getIt<ReceptionistDashboardCubit>()..getAllPatients(),
+      child: const ReceptionistDashboard(),
+    ),
+    BlocProvider(
+      create: (context) => getIt<AddPatientCubit>(),
+      child: const AddPatientTab(),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +79,10 @@ class _ReceptionistMainScreenState extends State<ReceptionistMainScreen> {
               });
             },
             items: [
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.calendar_month_outlined),
+                label: AppStrings.appointments,
+              ),
               BottomNavigationBarItem(
                 icon: const Icon(Icons.dashboard),
                 label: AppStrings.dashboard,

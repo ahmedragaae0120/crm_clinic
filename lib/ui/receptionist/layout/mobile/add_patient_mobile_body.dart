@@ -1,15 +1,16 @@
+import 'package:crm_clinic/core/animations/screen_title_animation.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/core/reusable_comp/validator.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/config.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
-import 'package:crm_clinic/ui/receptionist/views/add_patient_view.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_patient_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_patient_state.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/add_patient_tab.dart';
 import 'package:flutter/material.dart';
 
 class AddPatientMobileBody extends StatelessWidget {
   final void Function()? addPatient;
-  final ReceptionistState state;
+  final AddPatientState state;
   final GlobalKey<FormState> formKey;
   const AddPatientMobileBody({
     super.key,
@@ -22,7 +23,7 @@ class AddPatientMobileBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Config().init(context);
-    final cubit = ReceptionistCubit.get(context);
+    final cubit = AddPatientCubit.get(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Form(
@@ -34,9 +35,8 @@ class AddPatientMobileBody extends StatelessWidget {
           children: [
             Config.spaceSmall,
             Center(
-              child: Text(
-                AppStrings.formToAddNewPatient,
-                style: theme.textTheme.headlineLarge,
+              child: ScreenTitleAnimation(
+                title: AppStrings.formToAddNewPatient,
               ),
             ),
             TextFormField(
