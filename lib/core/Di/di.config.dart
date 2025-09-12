@@ -25,6 +25,8 @@ import '../../data/data_source_contract/auth/signin_with_google_datasource.dart'
 import '../../data/data_source_contract/auth/signout_datasource.dart' as _i365;
 import '../../data/data_source_contract/book_appointment_datasource.dart'
     as _i608;
+import '../../data/data_source_contract/cancel_appointment_datasource.dart'
+    as _i405;
 import '../../data/data_source_contract/doctor/add_available_slots_for_doctor_datasource.dart'
     as _i434;
 import '../../data/data_source_contract/doctor/get_available_slots_for_doctor_datasource.dart'
@@ -53,6 +55,8 @@ import '../../data/data_source_impl/auth/signin_with_google_datasource_impl.dart
 import '../../data/data_source_impl/auth/signout_datasource_impl.dart' as _i107;
 import '../../data/data_source_impl/book_appointment_datasource_impl.dart'
     as _i222;
+import '../../data/data_source_impl/cancel_appointment_datasource_impl.dart'
+    as _i542;
 import '../../data/data_source_impl/doctor/add_available_slots_for_doctor_datasource_impl.dart'
     as _i260;
 import '../../data/data_source_impl/doctor/get_available_slots_for_doctor_datasource_impl.dart'
@@ -90,6 +94,7 @@ import '../../domain/use_cases/auth/signin_with_facebook_usecase.dart' as _i441;
 import '../../domain/use_cases/auth/signin_with_google_usecase.dart' as _i299;
 import '../../domain/use_cases/auth/signout_usecase.dart' as _i492;
 import '../../domain/use_cases/book_appointment_usecase.dart' as _i727;
+import '../../domain/use_cases/cancel_appointment_usecase.dart' as _i51;
 import '../../domain/use_cases/doctor/add_available_slots_for_doctor_usecase.dart'
     as _i479;
 import '../../domain/use_cases/doctor/get_available_slots_for_doctor_usecase.dart'
@@ -179,6 +184,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1025.FirebaseManager>(),
       ),
     );
+    gh.factory<_i405.CancelAppointmentDatasource>(
+      () => _i542.CancelAppointmentDatasourceImpl(gh<_i1025.FirebaseManager>()),
+    );
     gh.factory<_i743.GetAllDoctorsDatasource>(
       () => _i827.GetAllDoctorsDatasourceImpl(gh<_i1025.FirebaseManager>()),
     );
@@ -211,6 +219,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i299.UpdateAppointmentTimeUsecase>(
       () => _i299.UpdateAppointmentTimeUsecase(
         gh<_i324.UpdateAppointmentTimeDatasource>(),
+      ),
+    );
+    gh.factory<_i51.CancelAppointmentUsecase>(
+      () => _i51.CancelAppointmentUsecase(
+        gh<_i405.CancelAppointmentDatasource>(),
       ),
     );
     gh.factory<_i595.GetAllAppointmentsUsecase>(

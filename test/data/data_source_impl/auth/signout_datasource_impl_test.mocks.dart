@@ -218,6 +218,23 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
           as _i5.Stream<List<_i8.AppointmentModel>>);
 
   @override
+  _i5.Future<void> cancelAppointment({
+    required String? appointmentId,
+    required String? doctorId,
+    required String? slotId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#cancelAppointment, [], {
+              #appointmentId: appointmentId,
+              #doctorId: doctorId,
+              #slotId: slotId,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
   _i5.Future<void> addAvailableSlotsForDoctor({
     required String? doctorId,
     required List<DateTime>? slots,

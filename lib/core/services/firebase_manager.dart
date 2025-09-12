@@ -225,11 +225,25 @@ class FirebaseManager {
         );
   }
 
-  // Future<void> cancelAppointment(String id) async {
-  //   await _db.collection(Collections.appointments).doc(id).update({
-  //     'status': 'available',
-  //   });
-  // }
+  Future<void> cancelAppointment({
+    required String appointmentId,
+    required String doctorId,
+    required String slotId,
+  }) async {
+    final appointmentRef = _db
+        .collection(Collections.appointments)
+        .doc(appointmentId);
+    final slotRef = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.availableSlots)
+        .doc(slotId);
+
+    await _db.runTransaction((transaction) async {
+      transaction.delete(appointmentRef);
+      transaction.update(slotRef, {'status': 'available'});
+    });
+  }
 
   // -- دالة للطبيب لإضافة مواعيده المتاحة --
   // سيستخدمها الطبيب من شاشته الخاصة لتحديد أوقاته
