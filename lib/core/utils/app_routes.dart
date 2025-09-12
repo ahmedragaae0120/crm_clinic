@@ -2,7 +2,7 @@ import 'package:crm_clinic/core/Di/di.dart';
 import 'package:crm_clinic/ui/admin/admin_view.dart';
 import 'package:crm_clinic/ui/admin/view_model/admin_cubit.dart';
 import 'package:crm_clinic/ui/auth/login/login_view.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/view_model/appointments_cubit.dart';
 import 'package:crm_clinic/ui/receptionist/views/receptionist_main_screen.dart';
 import 'package:crm_clinic/ui/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +28,8 @@ class AppRoutes {
         create: (context) => getIt<AdminCubit>()..getAllUsers(),
         child: const AdminView(),
       ),
-      receptionistMainScreen: (context) => BlocProvider<ReceptionistCubit>(
-        create: (context) => getIt<ReceptionistCubit>(),
+      receptionistMainScreen: (context) => BlocProvider<AppointmentsCubit>(
+        create: (context) => getIt<AppointmentsCubit>(),
         child: const ReceptionistMainScreen(),
       ),
       // calendar: (_) => const CalendarView(doctorId: "12116341"),

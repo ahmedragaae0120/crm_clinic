@@ -218,24 +218,6 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
           as _i5.Stream<List<_i8.AppointmentModel>>);
 
   @override
-  _i5.Future<void> updateAppointment(String? id, DateTime? newDate) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateAppointment, [id, newDate]),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
-
-  @override
-  _i5.Future<void> cancelAppointment(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#cancelAppointment, [id]),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
-
-  @override
   _i5.Future<void> addAvailableSlotsForDoctor({
     required String? doctorId,
     required List<DateTime>? slots,
@@ -278,6 +260,27 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
               #doctorId: doctorId,
               #slotId: slotId,
               #patient: patient,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> updateAppointment({
+    required String? appointmentId,
+    required String? oldDoctorId,
+    required String? oldSlotId,
+    required String? newDoctorId,
+    required String? newSlotId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateAppointment, [], {
+              #appointmentId: appointmentId,
+              #oldDoctorId: oldDoctorId,
+              #oldSlotId: oldSlotId,
+              #newDoctorId: newDoctorId,
+              #newSlotId: newSlotId,
             }),
             returnValue: _i5.Future<void>.value(),
             returnValueForMissingStub: _i5.Future<void>.value(),

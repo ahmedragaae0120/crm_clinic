@@ -1,39 +1,48 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AppointmentModel {
-  String? id;
+  String? appointmentId;
   String? patientId;
   String? doctorId;
   DateTime? dateTime;
   String? status;
   String? patientName;
   String? patientPhone;
+  String? slotId; // 👈 نربط الـ appointment بالـ slot
 
   AppointmentModel({
-    this.id,
+    this.appointmentId,
     this.patientId,
     this.doctorId,
     this.dateTime,
     this.status = 'booked',
     this.patientName,
     this.patientPhone,
+    this.slotId,
   });
 
   Map<String, dynamic> toJson() => {
+    'appointmentId': appointmentId,
     'patientId': patientId,
     'doctorId': doctorId,
-    'dateTime': dateTime?.toIso8601String(),
+    'dateTime': dateTime != null ? Timestamp.fromDate(dateTime!) : null,
     'status': status,
     'createdAt': DateTime.now(),
     'patientName': patientName,
     'patientPhone': patientPhone,
+    'slotId': slotId,
   };
 
   AppointmentModel.fromJson(Map<String, dynamic> json, String id) {
-    this.id = json['appointmentId'] as String?;
+    appointmentId = json['appointmentId'] as String?;
     patientId = json['patientId'] as String?;
     doctorId = json['doctorId'] as String?;
-    dateTime = DateTime.parse(json['dateTime']);
+    dateTime = (json['dateTime'] is Timestamp)
+        ? (json['dateTime'] as Timestamp).toDate()
+        : null; //DateTime.parse(json['dateTime']);
     status = json['status'] as String?;
     patientName = json['patientName'] as String?;
     patientPhone = json['patientPhone'] as String?;
+    slotId = json['slotId'] as String?;
   }
 }

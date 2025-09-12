@@ -225,17 +225,11 @@ class FirebaseManager {
         );
   }
 
-  Future<void> updateAppointment(String id, DateTime newDate) async {
-    await _db.collection(Collections.appointments).doc(id).update({
-      'dateTime': newDate.toIso8601String(),
-    });
-  }
-
-  Future<void> cancelAppointment(String id) async {
-    await _db.collection(Collections.appointments).doc(id).update({
-      'status': 'canceled',
-    });
-  }
+  // Future<void> cancelAppointment(String id) async {
+  //   await _db.collection(Collections.appointments).doc(id).update({
+  //     'status': 'available',
+  //   });
+  // }
 
   // -- دالة للطبيب لإضافة مواعيده المتاحة --
   // سيستخدمها الطبيب من شاشته الخاصة لتحديد أوقاته
@@ -311,13 +305,14 @@ class FirebaseManager {
 
           // 3. قم بإنشاء الحجز الجديد في مجموعة appointments
           final newAppointment = AppointmentModel(
-            id: appointmentRef.id,
+            appointmentId: appointmentRef.id,
             patientId: patientId,
             doctorId: doctorId,
             dateTime: appointmentTime,
             patientName: patient.fullName,
             patientPhone: patient.phone,
             status: 'booked',
+            slotId: slotId,
           );
           transaction.set(appointmentRef, newAppointment.toJson());
 
@@ -326,6 +321,78 @@ class FirebaseManager {
         .catchError((error) {
           log("Transaction failed: $error");
           throw Exception("Failed to book appointment. Please try again.");
+        });
+  }
+
+  // -- دالة لتعديل موعد محجوز مسبقًا --
+  // هذه الدالة تضمن أن العملية الذرية (atomic) لتحرير القديم وحجز الجديد
+  Future<void> updateAppointment({
+    required String appointmentId, // ID الحجز الذي نريد تعديله
+    required String oldDoctorId, // ID الطبيب القديم
+    required String oldSlotId, // ID الموعد القديم لتحريره
+    required String newDoctorId, // ID الطبيب الجديد (قد يكون نفسه)
+    required String newSlotId, // ID الموعد الجديد لحجزه
+  }) async {
+    // 1. تحديد المراجع (References) للمستندات التي سنتعامل معها
+    final appointmentRef = _db
+        .collection(Collections.appointments)
+        .doc(appointmentId);
+
+    final oldSlotRef = _db
+        .collection(Collections.users)
+        .doc(oldDoctorId)
+        .collection(Collections.availableSlots)
+        .doc(oldSlotId);
+
+    final newSlotRef = _db
+        .collection(Collections.users)
+        .doc(newDoctorId)
+        .collection(Collections.availableSlots)
+        .doc(newSlotId);
+
+    // 2. تشغيل العملية داخل Transaction لضمان الاتساق
+    return _db
+        .runTransaction((transaction) async {
+          // أ. اقرأ بيانات الموعد الجديد أولاً للتأكد من أنه لا يزال متاحًا
+          final newSlotSnapshot = await transaction.get(newSlotRef);
+
+          if (!newSlotSnapshot.exists ||
+              newSlotSnapshot.data()?['status'] != 'available') {
+            throw Exception(
+              "The new slot is no longer available. Please choose another time.",
+            );
+          }
+
+          // خُد الـ Timestamp كما هو لتوحيد النوع
+          final newStartTs = (newSlotSnapshot.data()!['startTime'] as Timestamp)
+              .toDate();
+          final isSameSlotSameDoctor =
+              (oldDoctorId == newDoctorId) && (oldSlotId == newSlotId);
+          if (!isSameSlotSameDoctor) {
+            // حرّر القديم واحجز الجديد
+            transaction.update(oldSlotRef, {'status': 'available'});
+            transaction.update(newSlotRef, {'status': 'booked'});
+          }
+          // ب. (اختياري ولكن جيد) يمكنك قراءة الموعد القديم للتأكد من حالته
+          // final oldSlotSnapshot = await transaction.get(oldSlotRef);
+          // if (!oldSlotSnapshot.exists || oldSlotSnapshot.data()?['status'] != 'booked') {
+          //   throw Exception("Consistency error: The old slot was not booked as expected.");
+          // }
+
+          // مهم: حدّث slotId + dateTime كـ Timestamp (مش String)
+          transaction.update(appointmentRef, {
+            'doctorId': newDoctorId,
+            'dateTime': newStartTs,
+            'slotId': newSlotId,
+          });
+
+          log(
+            "Transaction successful: Appointment updated, old slot freed, and new slot booked.",
+          );
+        })
+        .catchError((error) {
+          log("Transaction failed during update: $error");
+          throw Exception("Failed to update appointment. Please try again.");
         });
   }
 }

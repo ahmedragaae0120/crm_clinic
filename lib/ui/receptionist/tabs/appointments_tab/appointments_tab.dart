@@ -1,9 +1,16 @@
+import 'dart:developer';
+
 import 'package:crm_clinic/core/animations/list_item_animation.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
+import 'package:crm_clinic/core/utils/toast_message.dart';
 import 'package:crm_clinic/data/model/appointment_model.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_cubit.dart';
-import 'package:crm_clinic/ui/receptionist/view_model/receptionist_state.dart';
+import 'package:crm_clinic/domain/entity/patient_entity.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/add_patient_tab.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/view_model/receptionist_dashboard_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/widgets/booking_dialog.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/view_model/appointments_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/view_model/appointments_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,13 +26,30 @@ class _AppointmentsTabState extends State<AppointmentsTab> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ReceptionistCubit.get(context).getAllAppointment();
+      AppointmentsCubit.get(context).getAllAppointment();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReceptionistCubit, ReceptionistState>(
+    return BlocConsumer<AppointmentsCubit, AppointmentsState>(
+      listener: (context, state) {
+        if (state.updateAppointments is BaseSuccessState) {
+          toastMessage(
+            message: AppStrings.updatedSuccessfully,
+            tybeMessage: TybeMessage.positive,
+          );
+          // Navigator.pop(context);
+        }
+        if (state.updateAppointments is BaseErrorState) {
+          final errorState = state.updateAppointments as BaseErrorState;
+          toastMessage(
+            message: errorState.errorMessage,
+            tybeMessage: TybeMessage.negative,
+          );
+          Navigator.pop(context);
+        }
+      },
       builder: (context, state) {
         if (state.getAppointments is BaseSuccessState<List<AppointmentModel>>) {
           final appointments =
@@ -37,6 +61,10 @@ class _AppointmentsTabState extends State<AppointmentsTab> {
             itemCount: appointments.length,
             itemBuilder: (context, index) {
               final appointment = appointments[index];
+
+              log(
+                "Appointments: ${appointments.length} , appointment id: ${appointment.appointmentId}  ,doctor Id: ${appointment.doctorId}   patient Id: ${appointment.patientId} ",
+              );
 
               final doctorName = [appointment.doctorId];
               final formattedDate = appointment.dateTime != null
@@ -74,7 +102,57 @@ class _AppointmentsTabState extends State<AppointmentsTab> {
                         Text("${AppStrings.status}: ${appointment.status}"),
                       ],
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                    trailing: PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_vert),
+                      onSelected: (value) async {
+                        if (value == 'edit') {
+                          final dashboardCubit = ReceptionistDashboardCubit.get(
+                            context,
+                          );
+                          final appointmentsCubit = AppointmentsCubit.get(
+                            context,
+                          );
+                          final patientEntity = PatientEntity(
+                            patientId: appointment.patientId ?? "",
+                            fullName: appointment.patientName ?? "",
+                            phone: appointment.patientPhone ?? "",
+                            gender: Gender.male.key,
+                            birthDate: DateTime.now().toString(),
+                            joined: DateTime.now(),
+                          );
+                          final doctors = dashboardCubit.state.allDoctors;
+                          log(
+                            "doctors: ${doctors[0].fullName} \n patient: ${patientEntity.fullName} \n oldSlotId: ${appointment.appointmentId}    \n  ",
+                          );
+                          showDialog(
+                            context: context,
+                            builder: (context) => BlocProvider.value(
+                              value: dashboardCubit,
+                              child: BookingDialog(
+                                patient: patientEntity,
+                                doctors: doctors,
+                                update: true,
+                                oldSlotId: appointment.slotId ?? "",
+                                oldDoctorId: appointment.doctorId ?? "",
+                                appointmentsCubit: appointmentsCubit,
+                                appointmentId: appointment.appointmentId ?? "",
+                              ),
+                            ),
+                          );
+                        }
+                        // else if (value == 'delete') {}
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Text(AppStrings.editTime),
+                        ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Text(AppStrings.delete),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

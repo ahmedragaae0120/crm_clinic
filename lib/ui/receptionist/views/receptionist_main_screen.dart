@@ -6,6 +6,7 @@ import 'package:crm_clinic/ui/receptionist/tabs/add_patient_tab/view_model/add_p
 import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/appointments_tab.dart';
 import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/receptionist_dashboard_tab.dart';
 import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/view_model/receptionist_dashboard_cubit.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/view_model/appointments_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
@@ -23,22 +24,20 @@ class _ReceptionistMainScreenState extends State<ReceptionistMainScreen> {
   int _currentIndex = 0;
   final List<Widget> _tabs = [
     const AppointmentsTab(),
-    BlocProvider(
-      create: (context) =>
-          getIt<ReceptionistDashboardCubit>()..getAllPatients(),
-      child: const ReceptionistDashboard(),
-    ),
-    BlocProvider(
-      create: (context) => getIt<AddPatientCubit>(),
-      child: const AddPatientTab(),
-    ),
+    const ReceptionistDashboard(),
+    const AddPatientTab(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 800),
-
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<AppointmentsCubit>()),
+        BlocProvider(
+          create: (_) => getIt<ReceptionistDashboardCubit>()..getAllPatients(),
+        ),
+        BlocProvider(create: (_) => getIt<AddPatientCubit>()),
+      ],
       child: Directionality(
         textDirection: ui.TextDirection.ltr,
         child: Scaffold(

@@ -61,7 +61,6 @@ class MobilePatientListBuilderWidget extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              // Dialogs.showBookingDialog(context, patient);
                               showDialog(
                                 context: context,
                                 builder: (context) => BlocProvider.value(

@@ -5,6 +5,7 @@ import 'package:crm_clinic/data/model/doctor/available_slot_model.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/domain/entity/patient_entity.dart';
+import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/view_model/appointments_cubit.dart';
 import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/view_model/receptionist_dashboard_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BookingDialog extends StatefulWidget {
   final PatientEntity patient;
   final List<UserModel> doctors;
+  final bool update;
+  final String? appointmentId;
+  final String? oldSlotId;
+  final String? oldDoctorId;
+  final AppointmentsCubit? appointmentsCubit;
 
   const BookingDialog({
     super.key,
     required this.patient,
     required this.doctors,
+    this.update = false,
+    this.appointmentId,
+    this.oldSlotId,
+    this.appointmentsCubit,
+    this.oldDoctorId,
   });
 
   @override
@@ -34,14 +45,14 @@ class _BookingDialogState extends State<BookingDialog> {
     final cubit = ReceptionistDashboardCubit.get(context);
     return BlocListener<ReceptionistDashboardCubit, ReceptionistDashboardState>(
       listener: (context, state) {
-        if (state.bookAppointment is BaseSuccessState) {
+        if (state.bookAppointment is BaseSuccessState && !widget.update) {
           toastMessage(
             message: AppStrings.appointmentBookedSuccessfully,
             tybeMessage: TybeMessage.positive,
           );
           Navigator.pop(context);
         }
-        if (state.bookAppointment is BaseErrorState) {
+        if (state.bookAppointment is BaseErrorState && !widget.update) {
           final errorState = state.bookAppointment as BaseErrorState;
           toastMessage(
             message: errorState.errorMessage,
@@ -128,19 +139,29 @@ class _BookingDialogState extends State<BookingDialog> {
           ElevatedButton(
             onPressed: selectedSlotId != null
                 ? () {
-                    cubit.bookAppointment(
-                      patientId: widget.patient.patientId,
-                      doctorId: selectedDoctorId ?? "",
-                      slotId: selectedSlotId ?? "",
-                      patient: PatientModel(
-                        fullName: widget.patient.fullName,
-                        phone: widget.patient.phone,
-                        gender: widget.patient.gender,
-                        birthDate: widget.patient.birthDate,
-                        joined: widget.patient.joined,
+                    if (widget.update && widget.appointmentsCubit != null) {
+                      widget.appointmentsCubit?.updateAppointmentTime(
+                        appointmentId: widget.appointmentId ?? "",
+                        oldDoctorId: widget.oldDoctorId ?? "",
+                        oldSlotId: widget.oldSlotId ?? "",
+                        newDoctorId: selectedDoctorId ?? "",
+                        newSlotId: selectedSlotId ?? "",
+                      );
+                    } else {
+                      cubit.bookAppointment(
                         patientId: widget.patient.patientId,
-                      ),
-                    );
+                        doctorId: selectedDoctorId ?? "",
+                        slotId: selectedSlotId ?? "",
+                        patient: PatientModel(
+                          fullName: widget.patient.fullName,
+                          phone: widget.patient.phone,
+                          gender: widget.patient.gender,
+                          birthDate: widget.patient.birthDate,
+                          joined: widget.patient.joined,
+                          patientId: widget.patient.patientId,
+                        ),
+                      );
+                    }
                   }
                 : null,
             child: Text(AppStrings.confirmBooking),

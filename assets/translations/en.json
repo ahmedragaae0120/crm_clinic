@@ -103,5 +103,8 @@
     "appointments": "Appointments",
     "bookAnAppointment": "Book an appointment",
     "deletePatientFromDatabase": "Delete patient from database",
-    "areYouSureAboutThisProcedure": "Are you sure about this procedure?"
+    "areYouSureAboutThisProcedure": "Are you sure about this procedure?",
+    "editTime ": "Edit Time",
+    "delete": "Delete",
+    "updatedSuccessfully": "Updated Successfully"
 }
