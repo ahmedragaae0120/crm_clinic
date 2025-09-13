@@ -139,8 +139,13 @@ class _AppointmentsTabState extends State<AppointmentsTab> {
                               ),
                             ),
                           );
+                        } else if (value == 'delete') {
+                          AppointmentsCubit.get(context).cancelAppointment(
+                            appointmentId: appointment.appointmentId ?? "",
+                            doctorId: appointment.doctorId ?? "",
+                            slotId: appointment.slotId ?? "",
+                          );
                         }
-                        // else if (value == 'delete') {}
                       },
                       itemBuilder: (context) => [
                         PopupMenuItem(

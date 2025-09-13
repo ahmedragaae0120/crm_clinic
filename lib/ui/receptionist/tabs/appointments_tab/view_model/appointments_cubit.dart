@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/data/model/appointment_model.dart';
+import 'package:crm_clinic/domain/use_cases/cancel_appointment_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/get_all_appointments_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/update_appointment_time_usecase.dart';
 import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/view_model/appointments_state.dart';
@@ -14,18 +15,39 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
   AppointmentsCubit(
     this._getAllAppointmentsUsecase,
     this._updateAppointmentTimeDatasource,
+    this._cancelAppointmentDatasource,
   ) : super(AppointmentsState());
   final GetAllAppointmentsUsecase _getAllAppointmentsUsecase;
   final UpdateAppointmentTimeUsecase _updateAppointmentTimeDatasource;
+  final CancelAppointmentUsecase _cancelAppointmentDatasource;
 
-  // Future<void> cancelAppointment(String id) async {
-  //   try {
-  //     await _firebaseManager.cancelAppointment(id);
-  //     getAllAppointment();
-  //   } catch (e) {
-  //     log('Error canceling appointment: $e');
-  //   }
-  // }
+  Future<void> cancelAppointment({
+    required String appointmentId,
+    required String doctorId,
+    required String slotId,
+  }) async {
+    emit(state.copyWith(cancelAppointments: BaseLoadingState()));
+    final result = await _cancelAppointmentDatasource.call(
+      appointmentId: appointmentId,
+      doctorId: doctorId,
+      slotId: slotId,
+    );
+    switch (result) {
+      case Success():
+        emit(state.copyWith(cancelAppointments: BaseSuccessState(null)));
+        break;
+      case Error():
+        emit(
+          state.copyWith(
+            cancelAppointments: BaseErrorState(
+              result.exception.toString(),
+              result.exception,
+            ),
+          ),
+        );
+        break;
+    }
+  }
 
   static AppointmentsCubit get(context) => BlocProvider.of(context);
 

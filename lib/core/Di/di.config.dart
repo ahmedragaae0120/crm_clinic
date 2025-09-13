@@ -248,6 +248,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i727.BookAppointmentUsecase>(
       () => _i727.BookAppointmentUsecase(gh<_i608.BookAppointmentDatasource>()),
     );
+    gh.factory<_i569.AppointmentsCubit>(
+      () => _i569.AppointmentsCubit(
+        gh<_i595.GetAllAppointmentsUsecase>(),
+        gh<_i299.UpdateAppointmentTimeUsecase>(),
+        gh<_i51.CancelAppointmentUsecase>(),
+      ),
+    );
     gh.factory<_i913.GetAllPatientsRepo>(
       () => _i96.GetAllPatientsRepoImpl(gh<_i659.GetAllPatientsDatasource>()),
     );
@@ -266,12 +273,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i301.SigninWithFacebookRepo>(
       () => _i28.SigninWithFacebookRepoImpl(
         gh<_i489.SigninWithFacebookDatasource>(),
-      ),
-    );
-    gh.factory<_i569.AppointmentsCubit>(
-      () => _i569.AppointmentsCubit(
-        gh<_i595.GetAllAppointmentsUsecase>(),
-        gh<_i299.UpdateAppointmentTimeUsecase>(),
       ),
     );
     gh.factory<_i374.RemoveUserUsecase>(
