@@ -108,4 +108,5 @@ abstract class AppStrings {
   static String get editTime  => "editTime ".tr();
   static String get delete => "delete".tr();
   static String get updatedSuccessfully => "updatedSuccessfully".tr();
+  static String get noAppointmentsFound => "noAppointmentsFound".tr();
 }

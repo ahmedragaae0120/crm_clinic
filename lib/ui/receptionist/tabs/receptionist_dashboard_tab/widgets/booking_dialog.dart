@@ -44,6 +44,8 @@ class _BookingDialogState extends State<BookingDialog> {
     final theme = Theme.of(context);
     final cubit = ReceptionistDashboardCubit.get(context);
     return BlocListener<ReceptionistDashboardCubit, ReceptionistDashboardState>(
+      listenWhen: (previous, current) =>
+          previous.bookAppointment != current.bookAppointment,
       listener: (context, state) {
         if (state.bookAppointment is BaseSuccessState && !widget.update) {
           toastMessage(

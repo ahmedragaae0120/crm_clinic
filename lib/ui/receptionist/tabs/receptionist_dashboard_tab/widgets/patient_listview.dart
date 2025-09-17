@@ -16,6 +16,9 @@ class PatientListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BlocBuilder<ReceptionistDashboardCubit, ReceptionistDashboardState>(
+      buildWhen: (previous, current) =>
+          previous.getPatients != current.getPatients ||
+          previous.allDoctors != current.allDoctors,
       builder: (context, state) {
         final cubit = ReceptionistDashboardCubit.get(context);
 

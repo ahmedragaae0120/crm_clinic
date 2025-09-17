@@ -106,5 +106,6 @@
     "areYouSureAboutThisProcedure": "Are you sure about this procedure?",
     "editTime ": "Edit Time",
     "delete": "Delete",
-    "updatedSuccessfully": "Updated Successfully"
+    "updatedSuccessfully": "Updated Successfully",
+    "noAppointmentsFound": "No appointments found"
 }

@@ -3,14 +3,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum FilteredPatients {
+enum FilterByDate {
   all('all'),
   today('today'),
   thisWeek('thisWeek'),
   thisMonth('thisMonth');
 
   final String key;
-  const FilteredPatients(this.key);
+  const FilterByDate(this.key);
   String get value => key.tr();
 }
 
@@ -29,25 +29,25 @@ class PatientFilterPopupButton extends StatelessWidget {
               icon: const Icon(Icons.filter_alt_rounded),
               initialValue: cubit.filteredPatientType,
 
-              onSelected: (FilteredPatients value) {
+              onSelected: (FilterByDate value) {
                 cubit.filteredPatient(value);
               },
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  value: FilteredPatients.all,
-                  child: Text(FilteredPatients.all.value),
+                  value: FilterByDate.all,
+                  child: Text(FilterByDate.all.value),
                 ),
                 PopupMenuItem(
-                  value: FilteredPatients.today,
-                  child: Text(FilteredPatients.today.value),
+                  value: FilterByDate.today,
+                  child: Text(FilterByDate.today.value),
                 ),
                 PopupMenuItem(
-                  value: FilteredPatients.thisWeek,
-                  child: Text(FilteredPatients.thisWeek.value),
+                  value: FilterByDate.thisWeek,
+                  child: Text(FilterByDate.thisWeek.value),
                 ),
                 PopupMenuItem(
-                  value: FilteredPatients.thisMonth,
-                  child: Text(FilteredPatients.thisMonth.value),
+                  value: FilterByDate.thisMonth,
+                  child: Text(FilterByDate.thisMonth.value),
                 ),
               ],
             ),

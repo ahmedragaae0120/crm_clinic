@@ -128,12 +128,12 @@ class ReceptionistDashboardCubit extends Cubit<ReceptionistDashboardState> {
     }
   }
 
-  FilteredPatients filteredPatientType = FilteredPatients.all;
-  filteredPatient(FilteredPatients filteredPatients) {
+  FilterByDate filteredPatientType = FilterByDate.all;
+  filteredPatient(FilterByDate filteredPatients) {
     filteredPatientType = filteredPatients;
     emit(state.copyWith());
     final mainList = state.allPatients;
-    if (filteredPatients == FilteredPatients.all) {
+    if (filteredPatients == FilterByDate.all) {
       emit(state.copyWith(getPatients: BaseSuccessState(mainList)));
       return;
     }
@@ -141,16 +141,16 @@ class ReceptionistDashboardCubit extends Cubit<ReceptionistDashboardState> {
     final filteredList = mainList.where((patient) {
       final joinedDate = patient.joined;
       switch (filteredPatients) {
-        case FilteredPatients.today:
+        case FilterByDate.today:
           return joinedDate.year == now.year &&
               joinedDate.month == now.month &&
               joinedDate.day == now.day;
-        case FilteredPatients.thisWeek:
+        case FilterByDate.thisWeek:
           return joinedDate.isAfter(
                 now.subtract(Duration(days: now.weekday - 1)),
               ) &&
               joinedDate.isBefore(now.add(Duration(days: 7 - now.weekday)));
-        case FilteredPatients.thisMonth:
+        case FilterByDate.thisMonth:
           return joinedDate.year == now.year && joinedDate.month == now.month;
         default:
           return true; // For 'all'.tr();, no filtering
