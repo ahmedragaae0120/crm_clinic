@@ -11,11 +11,13 @@ class BookAppointmentUsecase {
   Future<Result<void>> call({
     required String patientId,
     required String doctorId,
+    required String doctorName,
     required String slotId,
     required PatientModel patient,
   }) async => await _bookAppointmentDatasource.bookAppointment(
     patientId: patientId,
     doctorId: doctorId,
+    doctorName: doctorName,
     slotId: slotId,
     patient: patient,
   );

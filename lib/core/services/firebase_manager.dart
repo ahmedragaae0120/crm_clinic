@@ -291,6 +291,7 @@ class FirebaseManager {
   Future<void> bookAppointmentAndUpdateSlot({
     required String patientId,
     required String doctorId,
+    required String doctorName,
     required String slotId, // ID الخاص بالموعد المتاح
     required PatientModel patient, // نحتاج لبيانات المريض
   }) async {
@@ -322,6 +323,7 @@ class FirebaseManager {
             appointmentId: appointmentRef.id,
             patientId: patientId,
             doctorId: doctorId,
+            doctorName: doctorName,
             dateTime: appointmentTime,
             patientName: patient.fullName,
             patientPhone: patient.phone,

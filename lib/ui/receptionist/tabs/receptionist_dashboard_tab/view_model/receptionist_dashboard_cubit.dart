@@ -203,12 +203,14 @@ class ReceptionistDashboardCubit extends Cubit<ReceptionistDashboardState> {
     required String patientId,
     required String doctorId,
     required String slotId,
+    required String doctorName,
     required PatientModel patient,
   }) async {
     emit(state.copyWith(bookAppointment: BaseLoadingState()));
     final result = await _bookAppointmentUsecase.call(
       patientId: patientId,
       doctorId: doctorId,
+      doctorName: doctorName,
       slotId: slotId,
       patient: patient,
     );

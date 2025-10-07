@@ -23,7 +23,7 @@ class AppointmentsCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final doctorName = [appointment.doctorId];
+    final doctorName = appointment.doctorName;
     final formattedDate = appointment.dateTime != null
         ? DateFormat(
             'yyyy/MM/dd – hh:mm a',

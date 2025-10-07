@@ -4,6 +4,7 @@ class AppointmentModel {
   String? appointmentId;
   String? patientId;
   String? doctorId;
+  String? doctorName;
   DateTime? dateTime;
   String? status;
   String? patientName;
@@ -14,6 +15,7 @@ class AppointmentModel {
     this.appointmentId,
     this.patientId,
     this.doctorId,
+    this.doctorName,
     this.dateTime,
     this.status = 'booked',
     this.patientName,
@@ -25,6 +27,7 @@ class AppointmentModel {
     'appointmentId': appointmentId,
     'patientId': patientId,
     'doctorId': doctorId,
+    'doctorName': doctorName,
     'dateTime': dateTime != null ? Timestamp.fromDate(dateTime!) : null,
     'status': status,
     'createdAt': DateTime.now(),
@@ -37,6 +40,7 @@ class AppointmentModel {
     appointmentId = json['appointmentId'] as String?;
     patientId = json['patientId'] as String?;
     doctorId = json['doctorId'] as String?;
+    doctorName = json['doctorName'] as String?;
     dateTime = (json['dateTime'] is Timestamp)
         ? (json['dateTime'] as Timestamp).toDate()
         : null; //DateTime.parse(json['dateTime']);

@@ -6,6 +6,7 @@ abstract interface class UpdateAppointmentTimeDatasource {
     required String oldDoctorId, // ID الطبيب القديم
     required String oldSlotId, // ID الموعد القديم لتحريره
     required String newDoctorId, // ID الطبيب الجديد (قد يكون نفسه)
+
     required String newSlotId, // ID الموعد الجديد لحجزه
   });
 }

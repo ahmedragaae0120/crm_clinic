@@ -5,6 +5,7 @@ abstract interface class BookAppointmentDatasource {
   Future<Result<void>> bookAppointment({
     required String patientId,
     required String doctorId,
+    required String doctorName,
     required String slotId,
     required PatientModel patient,
   });

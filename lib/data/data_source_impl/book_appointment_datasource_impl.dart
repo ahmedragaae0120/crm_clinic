@@ -16,6 +16,7 @@ class BookAppointmentDatasourceImpl implements BookAppointmentDatasource {
   Future<Result<void>> bookAppointment({
     required String patientId,
     required String doctorId,
+    required String doctorName,
     required String slotId,
     required PatientModel patient,
   }) async {
@@ -23,6 +24,7 @@ class BookAppointmentDatasourceImpl implements BookAppointmentDatasource {
       await _firebaseManager.bookAppointmentAndUpdateSlot(
         patientId: patientId,
         doctorId: doctorId,
+        doctorName: doctorName,
         slotId: slotId,
         patient: patient,
       );

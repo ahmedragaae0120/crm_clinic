@@ -141,6 +141,14 @@ class _BookingDialogState extends State<BookingDialog> {
           ElevatedButton(
             onPressed: selectedSlotId != null
                 ? () {
+                    String? doctorName =
+                        widget.doctors
+                            .firstWhere(
+                              (doctor) => doctor.uid == selectedDoctorId,
+                              orElse: () => const UserModel(),
+                            )
+                            .fullName ??
+                        "غير معروف";
                     if (widget.update && widget.appointmentsCubit != null) {
                       widget.appointmentsCubit?.updateAppointmentTime(
                         appointmentId: widget.appointmentId ?? "",
@@ -153,6 +161,8 @@ class _BookingDialogState extends State<BookingDialog> {
                       cubit.bookAppointment(
                         patientId: widget.patient.patientId,
                         doctorId: selectedDoctorId ?? "",
+                        doctorName: doctorName,
+
                         slotId: selectedSlotId ?? "",
                         patient: PatientModel(
                           fullName: widget.patient.fullName,
