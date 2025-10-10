@@ -155,6 +155,7 @@ class _BookingDialogState extends State<BookingDialog> {
                         oldDoctorId: widget.oldDoctorId ?? "",
                         oldSlotId: widget.oldSlotId ?? "",
                         newDoctorId: selectedDoctorId ?? "",
+                        newDoctorName: doctorName,
                         newSlotId: selectedSlotId ?? "",
                       );
                     } else {

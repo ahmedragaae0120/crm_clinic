@@ -1,5 +1,6 @@
 import 'package:crm_clinic/core/Di/di.dart';
 import 'package:crm_clinic/core/animations/screen_title_animation.dart';
+import 'package:crm_clinic/core/reusable_comp/search_widget.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/domain/use_cases/doctor/add_available_slots_for_doctor_usecase.dart';
 import 'package:crm_clinic/domain/use_cases/doctor/get_available_slots_for_doctor_usecase.dart';
@@ -57,23 +58,7 @@ class ReceptionistDashboard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(
-                    child: TextField(
-                      expands: false,
-                      onChanged: (value) {
-                        cubit.searchPatients(value);
-                      },
-                      decoration: InputDecoration(
-                        labelText: AppStrings.searchByNameOrPhone,
-                        hintText: AppStrings.enterPatientDetails,
-                        prefixIcon: const Icon(Icons.search),
-
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    ),
-                  ),
+                  SearchWidget(onSearch: cubit.searchPatients),
                   PatientFilterPopupButton(cubit: cubit),
                 ],
               ),

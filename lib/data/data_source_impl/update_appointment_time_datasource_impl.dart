@@ -17,6 +17,7 @@ class UpdateAppointmentTimeDatasourceImpl
     required String oldDoctorId, // ID الطبيب القديم
     required String oldSlotId, // ID الموعد القديم لتحريره
     required String newDoctorId, // ID الطبيب الجديد (قد يكون نفسه)
+    required String newDoctorName, // اسم الطبيب الجديد (قد يكون نفسه)
     required String newSlotId, // ID الموعد الجديد لحجزه
   }) async {
     try {
@@ -25,6 +26,7 @@ class UpdateAppointmentTimeDatasourceImpl
         oldDoctorId: oldDoctorId,
         oldSlotId: oldSlotId,
         newDoctorId: newDoctorId,
+        newDoctorName: newDoctorName,
         newSlotId: newSlotId,
       );
       return Success<void>(null);

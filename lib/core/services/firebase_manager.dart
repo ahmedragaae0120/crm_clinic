@@ -347,6 +347,7 @@ class FirebaseManager {
     required String oldDoctorId, // ID الطبيب القديم
     required String oldSlotId, // ID الموعد القديم لتحريره
     required String newDoctorId, // ID الطبيب الجديد (قد يكون نفسه)
+    required String newDoctorName, // اسم الطبيب الجديد
     required String newSlotId, // ID الموعد الجديد لحجزه
   }) async {
     // 1. تحديد المراجع (References) للمستندات التي سنتعامل معها
@@ -395,12 +396,19 @@ class FirebaseManager {
           //   throw Exception("Consistency error: The old slot was not booked as expected.");
           // }
 
-          // مهم: حدّث slotId + dateTime كـ Timestamp (مش String)
-          transaction.update(appointmentRef, {
-            'doctorId': newDoctorId,
+          // 3. تجهيز بيانات التحديث الأساسية
+          final updateData = <String, dynamic>{
             'dateTime': newStartTs,
             'slotId': newSlotId,
-          });
+          };
+
+          // ✅ إذا تغيّر الطبيب، حدث أيضًا الـ doctorId والـ doctorName
+          if (oldDoctorId != newDoctorId) {
+            updateData['doctorId'] = newDoctorId;
+            updateData['doctorName'] = newDoctorName;
+          }
+          // 4. تنفيذ التحديث
+          transaction.update(appointmentRef, updateData);
 
           log(
             "Transaction successful: Appointment updated, old slot freed, and new slot booked.",
