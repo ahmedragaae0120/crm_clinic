@@ -16,18 +16,15 @@ void main() async {
 
   final authCubit = getIt<AuthCubit>();
   await authCubit.createAdminEmail();
-  final initialRoute = await authCubit.initRoute();
   runApp(
-    BlocProvider.value(
-      value: authCubit,
-      child: EasyLocalization(
-        supportedLocales: const [Locale('en'), Locale('ar')],
-        path:
-            'assets/translations', // <-- change the path of the translation files
-        fallbackLocale: const Locale('en', 'ar'),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path:
+          'assets/translations', // <-- change the path of the translation files
+      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('en'),
 
-        child: MyApp(initialRoute: initialRoute),
-      ),
+      child: BlocProvider.value(value: authCubit, child: const MyApp()),
     ),
   );
 }

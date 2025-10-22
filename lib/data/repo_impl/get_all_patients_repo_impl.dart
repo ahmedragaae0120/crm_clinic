@@ -23,12 +23,5 @@ class GetAllPatientsRepoImpl implements GetAllPatientsRepo {
           return Error<List<PatientEntity>>(result.exception);
       }
     });
-
-    // switch (response) {
-    //   case Success<List<PatientModel>>():
-    //     response.;
-    //     break;
-
-    // }
   }
 }

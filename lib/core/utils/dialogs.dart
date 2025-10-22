@@ -61,4 +61,39 @@ abstract class Dialogs {
       ),
     );
   }
+
+  static confirmDialogs({
+    required BuildContext context,
+    required String message,
+    required String title,
+    required VoidCallback onConfirm,
+  }) {
+    final theme = Theme.of(context);
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          title,
+          style: theme.textTheme.headlineLarge,
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          message,
+          style: theme.textTheme.headlineMedium,
+          textAlign: TextAlign.center,
+        ),
+
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppStrings.no),
+          ),
+          ElevatedButton(
+            onPressed: () => onConfirm(),
+            child: Text(AppStrings.yes),
+          ),
+        ],
+      ),
+    );
+  }
 }

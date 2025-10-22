@@ -3,12 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
-import 'package:cloud_firestore/cloud_firestore.dart' as _i7;
-import 'package:crm_clinic/core/services/firebase_manager.dart' as _i3;
-import 'package:crm_clinic/data/model/patient_model.dart' as _i6;
-import 'package:crm_clinic/data/model/user_model.dart' as _i5;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i3;
+import 'package:crm_clinic/core/services/firebase_manager.dart' as _i4;
+import 'package:crm_clinic/data/model/appointment_model.dart' as _i8;
+import 'package:crm_clinic/data/model/patient_model.dart' as _i7;
+import 'package:crm_clinic/data/model/user_model.dart' as _i6;
 import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -32,75 +33,81 @@ class _FakeUserCredential_0 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
+class _FakeQuerySnapshot_1<T extends Object?> extends _i1.SmartFake
+    implements _i3.QuerySnapshot<T> {
+  _FakeQuerySnapshot_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [FirebaseManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFirebaseManager extends _i1.Mock implements _i3.FirebaseManager {
+class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
   MockFirebaseManager() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.UserCredential> registerService(
+  _i5.Future<_i2.UserCredential> registerService(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#registerService, [email, password]),
-            returnValue: _i4.Future<_i2.UserCredential>.value(
+            returnValue: _i5.Future<_i2.UserCredential>.value(
               _FakeUserCredential_0(
                 this,
                 Invocation.method(#registerService, [email, password]),
               ),
             ),
           )
-          as _i4.Future<_i2.UserCredential>);
+          as _i5.Future<_i2.UserCredential>);
 
   @override
-  _i4.Future<_i2.UserCredential> loginService(
+  _i5.Future<_i2.UserCredential> loginService(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#loginService, [email, password]),
-            returnValue: _i4.Future<_i2.UserCredential>.value(
+            returnValue: _i5.Future<_i2.UserCredential>.value(
               _FakeUserCredential_0(
                 this,
                 Invocation.method(#loginService, [email, password]),
               ),
             ),
           )
-          as _i4.Future<_i2.UserCredential>);
+          as _i5.Future<_i2.UserCredential>);
 
   @override
-  _i4.Future<_i2.UserCredential> signInWithGoogle() =>
+  _i5.Future<_i2.UserCredential> signInWithGoogle() =>
       (super.noSuchMethod(
             Invocation.method(#signInWithGoogle, []),
-            returnValue: _i4.Future<_i2.UserCredential>.value(
+            returnValue: _i5.Future<_i2.UserCredential>.value(
               _FakeUserCredential_0(
                 this,
                 Invocation.method(#signInWithGoogle, []),
               ),
             ),
           )
-          as _i4.Future<_i2.UserCredential>);
+          as _i5.Future<_i2.UserCredential>);
 
   @override
-  _i4.Future<_i2.UserCredential> signInWithFacebook() =>
+  _i5.Future<_i2.UserCredential> signInWithFacebook() =>
       (super.noSuchMethod(
             Invocation.method(#signInWithFacebook, []),
-            returnValue: _i4.Future<_i2.UserCredential>.value(
+            returnValue: _i5.Future<_i2.UserCredential>.value(
               _FakeUserCredential_0(
                 this,
                 Invocation.method(#signInWithFacebook, []),
               ),
             ),
           )
-          as _i4.Future<_i2.UserCredential>);
+          as _i5.Future<_i2.UserCredential>);
 
   @override
-  _i4.Future<void> addUser({
-    required _i5.UserModel? userModel,
+  _i5.Future<void> addUser({
+    required _i6.UserModel? userModel,
     required _i2.UserCredential? userCredential,
   }) =>
       (super.noSuchMethod(
@@ -108,22 +115,22 @@ class MockFirebaseManager extends _i1.Mock implements _i3.FirebaseManager {
               #userModel: userModel,
               #userCredential: userCredential,
             }),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> addPatient(_i6.PatientModel? patientModel) =>
+  _i5.Future<void> addPatient(_i7.PatientModel? patientModel) =>
       (super.noSuchMethod(
             Invocation.method(#addPatient, [patientModel]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> removeDoc({
+  _i5.Future<void> removeDoc({
     required String? collection,
     required String? id,
   }) =>
@@ -132,47 +139,168 @@ class MockFirebaseManager extends _i1.Mock implements _i3.FirebaseManager {
               #collection: collection,
               #id: id,
             }),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>> getAllDocsInCollection(
+  _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>> getAllDocsInCollection(
     String? collectionPath,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getAllDocsInCollection, [collectionPath]),
             returnValue:
-                _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>.empty(),
+                _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>>.empty(),
           )
-          as _i4.Stream<_i7.QuerySnapshot<Map<String, dynamic>>>);
+          as _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>>);
 
   @override
-  _i4.Future<_i5.UserPermission> getUserPermission(String? uid) =>
+  _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>> getDoctors() =>
+      (super.noSuchMethod(
+            Invocation.method(#getDoctors, []),
+            returnValue:
+                _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>.value(
+                  _FakeQuerySnapshot_1<Map<String, dynamic>>(
+                    this,
+                    Invocation.method(#getDoctors, []),
+                  ),
+                ),
+          )
+          as _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<_i6.UserPermission> getUserPermission(String? uid) =>
       (super.noSuchMethod(
             Invocation.method(#getUserPermission, [uid]),
-            returnValue: _i4.Future<_i5.UserPermission>.value(
-              _i5.UserPermission.admin,
+            returnValue: _i5.Future<_i6.UserPermission>.value(
+              _i6.UserPermission.admin,
             ),
           )
-          as _i4.Future<_i5.UserPermission>);
+          as _i5.Future<_i6.UserPermission>);
 
   @override
-  _i4.Future<void> signOut() =>
+  _i5.Future<void> signOut() =>
       (super.noSuchMethod(
             Invocation.method(#signOut, []),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> createDefaultAdminIfNotExists() =>
+  _i5.Future<void> createDefaultAdminIfNotExists() =>
       (super.noSuchMethod(
             Invocation.method(#createDefaultAdminIfNotExists, []),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> addAppointment(_i8.AppointmentModel? appointment) =>
+      (super.noSuchMethod(
+            Invocation.method(#addAppointment, [appointment]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Stream<List<_i8.AppointmentModel>> getAppointmentsByDate(
+    DateTime? date,
+    String? doctorId,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAppointmentsByDate, [date, doctorId]),
+            returnValue: _i5.Stream<List<_i8.AppointmentModel>>.empty(),
+          )
+          as _i5.Stream<List<_i8.AppointmentModel>>);
+
+  @override
+  _i5.Future<void> cancelAppointment({
+    required String? appointmentId,
+    required String? doctorId,
+    required String? slotId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#cancelAppointment, [], {
+              #appointmentId: appointmentId,
+              #doctorId: doctorId,
+              #slotId: slotId,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> addAvailableSlotsForDoctor({
+    required String? doctorId,
+    required List<DateTime>? slots,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#addAvailableSlotsForDoctor, [], {
+              #doctorId: doctorId,
+              #slots: slots,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>
+  getAvailableSlotsForDoctor(String? doctorId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAvailableSlotsForDoctor, [doctorId]),
+            returnValue:
+                _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>.value(
+                  _FakeQuerySnapshot_1<Map<String, dynamic>>(
+                    this,
+                    Invocation.method(#getAvailableSlotsForDoctor, [doctorId]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<void> bookAppointmentAndUpdateSlot({
+    required String? patientId,
+    required String? doctorId,
+    required String? slotId,
+    required _i7.PatientModel? patient,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#bookAppointmentAndUpdateSlot, [], {
+              #patientId: patientId,
+              #doctorId: doctorId,
+              #slotId: slotId,
+              #patient: patient,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> updateAppointment({
+    required String? appointmentId,
+    required String? oldDoctorId,
+    required String? oldSlotId,
+    required String? newDoctorId,
+    required String? newSlotId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateAppointment, [], {
+              #appointmentId: appointmentId,
+              #oldDoctorId: oldDoctorId,
+              #oldSlotId: oldSlotId,
+              #newDoctorId: newDoctorId,
+              #newSlotId: newSlotId,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
 }

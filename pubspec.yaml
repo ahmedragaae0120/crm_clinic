@@ -51,7 +51,8 @@ dependencies:
   shared_preferences: ^2.5.3
   mockito: ^5.5.0
   easy_localization: ^3.0.8
-  flutter_ar_json_extractor: ^0.0.6
+  table_calendar: ^3.2.0
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -109,12 +110,18 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-# flutter_native_splash:
-#   color: "#000000"
-#   image: "assets/images/splach.png"
-#   android: true
-#   ios: true
-#   web: false
-#   android_12:
-#     image: "assets/images/splach.png"
-#     icon_background_color: "#000000"
+flutter_native_splash:
+  icon_background_color: "#FFFFFF"
+  color: "#FFFFFF"
+  image: "assets/icons/splash.png"
+  color_dark: "#000000" # لون الخلفية في الوضع المظلم
+  image_dark: "assets/icons/splash.png" # يمكنك استخدام نفس الصورة
+  android: true
+  ios: true
+  web: true
+  android_12:
+    image: "assets/icons/splash_1024.png"
+    icon_background_color: "#FFFFFF"
+    image_dark: "assets/icons/splash_1024.png"
+    icon_background_color_dark: "#000000"
+    web: true

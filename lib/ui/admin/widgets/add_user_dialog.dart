@@ -38,7 +38,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
           fullName: _fullNameController.text,
           email: _emailController.text,
           joined: DateTime.now(),
-          permission: _userPermission!.name,
+          permission: _userPermission!.value,
         ),
         password: _passwordController.text,
       );

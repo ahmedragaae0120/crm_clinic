@@ -7,11 +7,12 @@ import 'dart:async' as _i5;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i3;
 import 'package:crm_clinic/core/services/firebase_manager.dart' as _i4;
+import 'package:crm_clinic/data/model/appointment_model.dart' as _i8;
 import 'package:crm_clinic/data/model/patient_model.dart' as _i7;
 import 'package:crm_clinic/data/model/user_model.dart' as _i6;
 import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i8;
+import 'package:mockito/src/dummies.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -33,15 +34,21 @@ class _FakeUserCredential_0 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeSnapshotMetadata_1 extends _i1.SmartFake
-    implements _i3.SnapshotMetadata {
-  _FakeSnapshotMetadata_1(Object parent, Invocation parentInvocation)
+class _FakeQuerySnapshot_1<T extends Object?> extends _i1.SmartFake
+    implements _i3.QuerySnapshot<T> {
+  _FakeQuerySnapshot_1(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDocumentReference_2<T1 extends Object?> extends _i1.SmartFake
+class _FakeSnapshotMetadata_2 extends _i1.SmartFake
+    implements _i3.SnapshotMetadata {
+  _FakeSnapshotMetadata_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeDocumentReference_3<T1 extends Object?> extends _i1.SmartFake
     implements _i3.DocumentReference<T1> {
-  _FakeDocumentReference_2(Object parent, Invocation parentInvocation)
+  _FakeDocumentReference_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -162,6 +169,20 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
           as _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>>);
 
   @override
+  _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>> getDoctors() =>
+      (super.noSuchMethod(
+            Invocation.method(#getDoctors, []),
+            returnValue:
+                _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>.value(
+                  _FakeQuerySnapshot_1<Map<String, dynamic>>(
+                    this,
+                    Invocation.method(#getDoctors, []),
+                  ),
+                ),
+          )
+          as _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>);
+
+  @override
   _i5.Future<_i6.UserPermission> getUserPermission(String? uid) =>
       (super.noSuchMethod(
             Invocation.method(#getUserPermission, [uid]),
@@ -184,6 +205,113 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
   _i5.Future<void> createDefaultAdminIfNotExists() =>
       (super.noSuchMethod(
             Invocation.method(#createDefaultAdminIfNotExists, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> addAppointment(_i8.AppointmentModel? appointment) =>
+      (super.noSuchMethod(
+            Invocation.method(#addAppointment, [appointment]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Stream<List<_i8.AppointmentModel>> getAppointmentsByDate(
+    DateTime? date,
+    String? doctorId,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAppointmentsByDate, [date, doctorId]),
+            returnValue: _i5.Stream<List<_i8.AppointmentModel>>.empty(),
+          )
+          as _i5.Stream<List<_i8.AppointmentModel>>);
+
+  @override
+  _i5.Future<void> cancelAppointment({
+    required String? appointmentId,
+    required String? doctorId,
+    required String? slotId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#cancelAppointment, [], {
+              #appointmentId: appointmentId,
+              #doctorId: doctorId,
+              #slotId: slotId,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> addAvailableSlotsForDoctor({
+    required String? doctorId,
+    required List<DateTime>? slots,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#addAvailableSlotsForDoctor, [], {
+              #doctorId: doctorId,
+              #slots: slots,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>
+  getAvailableSlotsForDoctor(String? doctorId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAvailableSlotsForDoctor, [doctorId]),
+            returnValue:
+                _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>.value(
+                  _FakeQuerySnapshot_1<Map<String, dynamic>>(
+                    this,
+                    Invocation.method(#getAvailableSlotsForDoctor, [doctorId]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<void> bookAppointmentAndUpdateSlot({
+    required String? patientId,
+    required String? doctorId,
+    required String? slotId,
+    required _i7.PatientModel? patient,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#bookAppointmentAndUpdateSlot, [], {
+              #patientId: patientId,
+              #doctorId: doctorId,
+              #slotId: slotId,
+              #patient: patient,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> updateAppointment({
+    required String? appointmentId,
+    required String? oldDoctorId,
+    required String? oldSlotId,
+    required String? newDoctorId,
+    required String? newSlotId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateAppointment, [], {
+              #appointmentId: appointmentId,
+              #oldDoctorId: oldDoctorId,
+              #oldSlotId: oldSlotId,
+              #newDoctorId: newDoctorId,
+              #newSlotId: newSlotId,
+            }),
             returnValue: _i5.Future<void>.value(),
             returnValueForMissingStub: _i5.Future<void>.value(),
           )
@@ -219,7 +347,7 @@ class MockQuerySnapshot<T extends Object?> extends _i1.Mock
   _i3.SnapshotMetadata get metadata =>
       (super.noSuchMethod(
             Invocation.getter(#metadata),
-            returnValue: _FakeSnapshotMetadata_1(
+            returnValue: _FakeSnapshotMetadata_2(
               this,
               Invocation.getter(#metadata),
             ),
@@ -244,7 +372,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   String get id =>
       (super.noSuchMethod(
             Invocation.getter(#id),
-            returnValue: _i8.dummyValue<String>(this, Invocation.getter(#id)),
+            returnValue: _i9.dummyValue<String>(this, Invocation.getter(#id)),
           )
           as String);
 
@@ -252,7 +380,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   _i3.DocumentReference<T> get reference =>
       (super.noSuchMethod(
             Invocation.getter(#reference),
-            returnValue: _FakeDocumentReference_2<T>(
+            returnValue: _FakeDocumentReference_3<T>(
               this,
               Invocation.getter(#reference),
             ),
@@ -263,7 +391,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   _i3.SnapshotMetadata get metadata =>
       (super.noSuchMethod(
             Invocation.getter(#metadata),
-            returnValue: _FakeSnapshotMetadata_1(
+            returnValue: _FakeSnapshotMetadata_2(
               this,
               Invocation.getter(#metadata),
             ),
@@ -279,7 +407,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   T data() =>
       (super.noSuchMethod(
             Invocation.method(#data, []),
-            returnValue: _i8.dummyValue<T>(this, Invocation.method(#data, [])),
+            returnValue: _i9.dummyValue<T>(this, Invocation.method(#data, [])),
           )
           as T);
 

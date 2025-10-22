@@ -20,7 +20,7 @@ void main() {
 
     // بيانات وهمية للاستخدام في الاختبار
     final tPatientModel = PatientModel(
-      uid: '123',
+      patientId: '123',
       fullName: 'Mona Ahmed',
       phone: '01012345678',
       gender: 'female',
@@ -31,25 +31,28 @@ void main() {
     // نتيجة وهمية ناجحة
     final tSuccessResult = Success<void>(null);
 
-    test('should call addPatient on the datasource and return its result',
-        () async {
-      // Arrange ⚙️
-      // إعداد الـ mock ليرجع نتيجة ناجحة عند استدعاء دالة addPatient
-      provideDummy<Result<void>>(tSuccessResult);
+    test(
+      'should call addPatient on the datasource and return its result',
+      () async {
+        // Arrange ⚙️
+        // إعداد الـ mock ليرجع نتيجة ناجحة عند استدعاء دالة addPatient
+        provideDummy<Result<void>>(tSuccessResult);
 
-      when(mockAddPatientDatasource.addPatient(tPatientModel))
-          .thenAnswer((_) async => tSuccessResult);
-      // Act 🎬
-      // تنفيذ الـ usecase مع تمرير بيانات المريض الوهمية
-      final result = await addPatientUsecase.call(tPatientModel);
+        when(
+          mockAddPatientDatasource.addPatient(tPatientModel),
+        ).thenAnswer((_) async => tSuccessResult);
+        // Act 🎬
+        // تنفيذ الـ usecase مع تمرير بيانات المريض الوهمية
+        final result = await addPatientUsecase.call(tPatientModel);
 
-      // Assert ✅
-      // التأكد من أن النتيجة التي أرجعها الـ usecase هي نفسها التي أرجعها الـ mock
-      expect(result, tSuccessResult);
-      // التأكد من أن دالة addPatient قد تم استدعاؤها مرة واحدة بالبيانات الصحيحة
-      verify(mockAddPatientDatasource.addPatient(tPatientModel)).called(1);
-      // التأكد من عدم وجود أي تفاعلات أخرى مع الـ mock
-      verifyNoMoreInteractions(mockAddPatientDatasource);
-    });
+        // Assert ✅
+        // التأكد من أن النتيجة التي أرجعها الـ usecase هي نفسها التي أرجعها الـ mock
+        expect(result, tSuccessResult);
+        // التأكد من أن دالة addPatient قد تم استدعاؤها مرة واحدة بالبيانات الصحيحة
+        verify(mockAddPatientDatasource.addPatient(tPatientModel)).called(1);
+        // التأكد من عدم وجود أي تفاعلات أخرى مع الـ mock
+        verifyNoMoreInteractions(mockAddPatientDatasource);
+      },
+    );
   });
 }

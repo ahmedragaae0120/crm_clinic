@@ -1,0 +1,9 @@
+// lib/core/di/register_module.dart
+import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
+
+@module
+abstract class HttpModule {
+  @lazySingleton
+  http.Client get httpClient => http.Client();
+}

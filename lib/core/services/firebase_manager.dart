@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/constant.dart';
 import 'package:crm_clinic/core/services/collections.dart';
+import 'package:crm_clinic/data/model/appointment_model.dart';
+import 'package:crm_clinic/data/model/doctor/available_slot_model.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -95,7 +97,7 @@ class FirebaseManager {
 
   Future<void> addPatient(PatientModel patientModel) async {
     final docRef = _db.collection(Collections.patients).doc();
-    patientModel.uid = docRef.id;
+    patientModel.patientId = docRef.id;
     await docRef.set(patientModel.toJson());
   }
 
@@ -113,6 +115,13 @@ class FirebaseManager {
     return collectionRef.snapshots();
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getDoctors() {
+    return _db
+        .collection(Collections.users)
+        .where('permission', isEqualTo: UserPermission.doctor.value)
+        .get();
+  }
+
   Future<UserPermission> getUserPermission(String uid) async {
     try {
       final docSnapshot = await _db
@@ -120,17 +129,23 @@ class FirebaseManager {
           .doc(uid)
           .get();
       final userData = docSnapshot.data();
-      final String? role = userData?['permission'] ?? '';
+      final String role = (userData?['permission'] ?? '')
+          .toString()
+          .toLowerCase();
+      log("role =$role  /  admin permission : ${UserPermission.admin.name}");
 
       // توجيه حسب الـ role
-      if (role == UserPermission.admin.name) {
+      if (role == UserPermission.admin.value.toLowerCase()) {
         return UserPermission.admin;
-      } else if (role == UserPermission.doctor.name) {
+      } else if (role == UserPermission.doctor.value.toLowerCase()) {
         return UserPermission.doctor;
-      } else if (role == UserPermission.nurse.name) {
+      } else if (role == UserPermission.nurse.value.toLowerCase()) {
         return UserPermission.nurse;
-      } else {
+      } else if (role == UserPermission.receptionist.value.toLowerCase()) {
         return UserPermission.receptionist;
+      } else {
+        log("Unknown role: $role");
+        throw Exception("Unknown role: $role");
       }
     } catch (e) {
       log('Error fetching role: $e');
@@ -147,8 +162,8 @@ class FirebaseManager {
     try {
       // 1. البحث عن admin في Firestore
       final query = await _db
-          .collection('users')
-          .where('permission', isEqualTo: 'Admin')
+          .collection(Collections.users)
+          .where('permission', isEqualTo: UserPermission.admin.value)
           .limit(1)
           .get();
 
@@ -171,7 +186,7 @@ class FirebaseManager {
             email: Constant.adminEmail,
             fullName: 'Admin',
             joined: DateTime.now(),
-            permission: UserPermission.admin.name,
+            permission: UserPermission.admin.value,
             uid: adminUid,
           ),
           userCredential: userCredential,
@@ -184,5 +199,224 @@ class FirebaseManager {
       log("❌ Error creating admin: $e");
       throw Exception("❌ Error creating admin: $e");
     }
+  }
+
+  Future<void> addAppointment(AppointmentModel appointment) async {
+    await _db.collection(Collections.appointments).add(appointment.toJson());
+  }
+
+  Stream<List<AppointmentModel>> getAppointmentsByDate(
+    DateTime date,
+    String doctorId,
+  ) {
+    final start = DateTime(date.year, date.month, date.day);
+    final end = start.add(const Duration(days: 1));
+
+    return _db
+        .collection(Collections.appointments)
+        .where('doctorId', isEqualTo: doctorId)
+        .where('dateTime', isGreaterThanOrEqualTo: start.toIso8601String())
+        .where('dateTime', isLessThan: end.toIso8601String())
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => AppointmentModel.fromJson(doc.data(), doc.id))
+              .toList(),
+        );
+  }
+
+  Future<void> cancelAppointment({
+    required String appointmentId,
+    required String doctorId,
+    required String slotId,
+  }) async {
+    final appointmentRef = _db
+        .collection(Collections.appointments)
+        .doc(appointmentId);
+    final slotRef = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.availableSlots)
+        .doc(slotId);
+
+    await _db.runTransaction((transaction) async {
+      transaction.delete(appointmentRef);
+      transaction.update(slotRef, {'status': 'available'});
+    });
+  }
+
+  // -- دالة للطبيب لإضافة مواعيده المتاحة --
+  // سيستخدمها الطبيب من شاشته الخاصة لتحديد أوقاته
+  Future<void> addAvailableSlotsForDoctor({
+    required String doctorId,
+    required List<DateTime> slots,
+  }) async {
+    final batch = _db.batch(); // استخدام batch للكتابة المجمعة لزيادة الكفاءة
+    final doctorSlotsCollection = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection('availableSlots');
+
+    for (final slotTime in slots) {
+      final slotDoc = doctorSlotsCollection.doc();
+      batch.set(
+        slotDoc,
+        AvailableSlotModel(
+          startTime: slotTime,
+          status: 'available',
+          id: slotDoc.id,
+        ).toJson(),
+      );
+    }
+    await batch.commit();
+    log("Added ${slots.length} new available slots for doctor $doctorId");
+  }
+
+  // -- دالة لجلب المواعيد المتاحة لطبيب معين --
+  // سيستخدمها موظف الاستقبال في شاشة الحجز
+  Future<QuerySnapshot<Map<String, dynamic>>> getAvailableSlotsForDoctor(
+    String doctorId,
+  ) {
+    return _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.availableSlots)
+        .where('status', isEqualTo: 'available') // جلب المواعيد المتاحة فقط
+        .orderBy('startTime') // ترتيبها زمنياً
+        .get();
+  }
+
+  // -- دالة لحجز الموعد وتحديث حالته (الأهم) --
+  // هذه الدالة تضمن عدم حجز الموعد مرتين في نفس اللحظة
+  Future<void> bookAppointmentAndUpdateSlot({
+    required String patientId,
+    required String doctorId,
+    required String doctorName,
+    required String slotId, // ID الخاص بالموعد المتاح
+    required PatientModel patient, // نحتاج لبيانات المريض
+  }) async {
+    final slotRef = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.availableSlots)
+        .doc(slotId);
+    final appointmentRef = _db.collection(Collections.appointments).doc();
+
+    return _db
+        .runTransaction((transaction) async {
+          // 1. اقرأ بيانات الموعد المتاح أولاً
+          final slotSnapshot = await transaction.get(slotRef);
+
+          if (!slotSnapshot.exists ||
+              slotSnapshot.data()?['status'] != 'available') {
+            throw Exception("This slot is no longer available!");
+          }
+
+          final slotData = slotSnapshot.data()!;
+          final appointmentTime = (slotData['startTime'] as Timestamp).toDate();
+
+          // 2. قم بتحديث حالة الموعد المتاح إلى "محجوز"
+          transaction.update(slotRef, {'status': 'booked'});
+
+          // 3. قم بإنشاء الحجز الجديد في مجموعة appointments
+          final newAppointment = AppointmentModel(
+            appointmentId: appointmentRef.id,
+            patientId: patientId,
+            doctorId: doctorId,
+            doctorName: doctorName,
+            dateTime: appointmentTime,
+            patientName: patient.fullName,
+            patientPhone: patient.phone,
+            status: 'booked',
+            slotId: slotId,
+          );
+          transaction.set(appointmentRef, newAppointment.toJson());
+
+          log("Transaction successful: Appointment booked and slot updated.");
+        })
+        .catchError((error) {
+          log("Transaction failed: $error");
+          throw Exception("Failed to book appointment. Please try again.");
+        });
+  }
+
+  // -- دالة لتعديل موعد محجوز مسبقًا --
+  // هذه الدالة تضمن أن العملية الذرية (atomic) لتحرير القديم وحجز الجديد
+  Future<void> updateAppointment({
+    required String appointmentId, // ID الحجز الذي نريد تعديله
+    required String oldDoctorId, // ID الطبيب القديم
+    required String oldSlotId, // ID الموعد القديم لتحريره
+    required String newDoctorId, // ID الطبيب الجديد (قد يكون نفسه)
+    required String newDoctorName, // اسم الطبيب الجديد
+    required String newSlotId, // ID الموعد الجديد لحجزه
+  }) async {
+    // 1. تحديد المراجع (References) للمستندات التي سنتعامل معها
+    final appointmentRef = _db
+        .collection(Collections.appointments)
+        .doc(appointmentId);
+
+    final oldSlotRef = _db
+        .collection(Collections.users)
+        .doc(oldDoctorId)
+        .collection(Collections.availableSlots)
+        .doc(oldSlotId);
+
+    final newSlotRef = _db
+        .collection(Collections.users)
+        .doc(newDoctorId)
+        .collection(Collections.availableSlots)
+        .doc(newSlotId);
+
+    // 2. تشغيل العملية داخل Transaction لضمان الاتساق
+    return _db
+        .runTransaction((transaction) async {
+          // أ. اقرأ بيانات الموعد الجديد أولاً للتأكد من أنه لا يزال متاحًا
+          final newSlotSnapshot = await transaction.get(newSlotRef);
+
+          if (!newSlotSnapshot.exists ||
+              newSlotSnapshot.data()?['status'] != 'available') {
+            throw Exception(
+              "The new slot is no longer available. Please choose another time.",
+            );
+          }
+
+          // خُد الـ Timestamp كما هو لتوحيد النوع
+          final newStartTs = (newSlotSnapshot.data()!['startTime'] as Timestamp)
+              .toDate();
+          final isSameSlotSameDoctor =
+              (oldDoctorId == newDoctorId) && (oldSlotId == newSlotId);
+          if (!isSameSlotSameDoctor) {
+            // حرّر القديم واحجز الجديد
+            transaction.update(oldSlotRef, {'status': 'available'});
+            transaction.update(newSlotRef, {'status': 'booked'});
+          }
+          // ب. (اختياري ولكن جيد) يمكنك قراءة الموعد القديم للتأكد من حالته
+          // final oldSlotSnapshot = await transaction.get(oldSlotRef);
+          // if (!oldSlotSnapshot.exists || oldSlotSnapshot.data()?['status'] != 'booked') {
+          //   throw Exception("Consistency error: The old slot was not booked as expected.");
+          // }
+
+          // 3. تجهيز بيانات التحديث الأساسية
+          final updateData = <String, dynamic>{
+            'dateTime': newStartTs,
+            'slotId': newSlotId,
+          };
+
+          // ✅ إذا تغيّر الطبيب، حدث أيضًا الـ doctorId والـ doctorName
+          if (oldDoctorId != newDoctorId) {
+            updateData['doctorId'] = newDoctorId;
+            updateData['doctorName'] = newDoctorName;
+          }
+          // 4. تنفيذ التحديث
+          transaction.update(appointmentRef, updateData);
+
+          log(
+            "Transaction successful: Appointment updated, old slot freed, and new slot booked.",
+          );
+        })
+        .catchError((error) {
+          log("Transaction failed during update: $error");
+          throw Exception("Failed to update appointment. Please try again.");
+        });
   }
 }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/domain/entity/patient_entity.dart';
 
 class PatientModel {
-  String? uid;
+  String? patientId;
   String? fullName;
   String? phone;
   String? birthDate;
@@ -12,7 +12,7 @@ class PatientModel {
   PatientModel({
     this.fullName,
     this.joined,
-    this.uid,
+    this.patientId,
     this.phone,
     this.birthDate,
     this.gender,
@@ -23,7 +23,7 @@ class PatientModel {
     joined = json['joined'] is Timestamp
         ? (json['joined'] as Timestamp).toDate()
         : DateTime.tryParse(json['joined']?.toString() ?? '');
-    uid = json['uid'] as String?;
+    patientId = json['patientId'] as String?;
     phone = json['phone'] as String?;
     birthDate = json['birthDate'] as String?;
     gender = json['gender'] as String?;
@@ -33,7 +33,7 @@ class PatientModel {
     return {
       'fullName': fullName,
       'joined': joined,
-      'uid': uid,
+      'patientId': patientId,
       'phone': phone,
       'birthDate': birthDate,
       'gender': gender,
@@ -42,7 +42,7 @@ class PatientModel {
 
   PatientEntity toDomainDTO() {
     return PatientEntity(
-      uid: uid ?? '',
+      patientId: patientId ?? '',
       fullName: fullName ?? '',
       phone: phone ?? '',
       birthDate: birthDate ?? '',
