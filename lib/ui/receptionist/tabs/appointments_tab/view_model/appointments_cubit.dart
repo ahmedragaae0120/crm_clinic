@@ -123,6 +123,26 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     }
   }
 
+  searchForAppointment(String query) {
+    final mainList = state.appointmentsList ?? [];
+
+    if (query.isEmpty) {
+      emit(state.copyWith(getAppointments: BaseSuccessState(mainList)));
+      return;
+    }
+    final filteredList = mainList.where((appointment) {
+      final queryLower = query.toLowerCase();
+
+      final nameMatches =
+          appointment.patientName?.toLowerCase().contains(queryLower) ?? false;
+      final phoneMatches =
+          appointment.patientPhone?.contains(queryLower) ?? false;
+      return nameMatches || phoneMatches;
+    }).toList();
+
+    emit(state.copyWith(getAppointments: BaseSuccessState(filteredList)));
+  }
+
   void getAllAppointment() {
     emit(state.copyWith(getAppointments: BaseLoadingState()));
     _getAllAppointmentsUsecase.call().listen((appointments) {

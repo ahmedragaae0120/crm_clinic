@@ -1,3 +1,4 @@
+import 'package:crm_clinic/core/reusable_comp/search_widget.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/config.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
@@ -28,6 +29,7 @@ class _AppointmentsTabState extends State<AppointmentsTab> {
   @override
   Widget build(BuildContext context) {
     Config().init(context);
+    final appointmentsCubit = AppointmentsCubit.get(context);
     return BlocConsumer<AppointmentsCubit, AppointmentsState>(
       listenWhen: (previous, current) =>
           previous.updateAppointments != current.updateAppointments,
@@ -58,6 +60,15 @@ class _AppointmentsTabState extends State<AppointmentsTab> {
 
           return Column(
             children: [
+              SizedBox(height: Config.hightSize! * 0.02),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SearchWidget(
+                    onSearch: appointmentsCubit.searchForAppointment,
+                  ),
+                ],
+              ),
               SizedBox(height: Config.hightSize! * 0.02),
               const FilterTabBarWidget(),
               appointments.isEmpty

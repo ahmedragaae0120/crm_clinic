@@ -55,6 +55,10 @@ class _FilterTabBarWidgetState extends State<FilterTabBarWidget>
         TabBar(
           controller: tabController,
           isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          labelPadding: const EdgeInsets.symmetric(
+            horizontal: 24,
+          ), // 🔹 المسافة بين التابات
           indicator: BoxDecoration(
             borderRadius: BorderRadius.horizontal(
               left: Radius.circular(tabController.index == 0 ? 30 : 0),
@@ -75,9 +79,7 @@ class _FilterTabBarWidgetState extends State<FilterTabBarWidget>
           dividerColor: Colors.transparent, // يشيل الخط الأسود
 
           unselectedLabelStyle: const TextStyle(fontSize: 14),
-          labelPadding: const EdgeInsets.symmetric(
-            horizontal: 24,
-          ), // 🔹 المسافة بين التابات
+
           tabs: [
             Tab(text: FilterByDate.today.value),
             Tab(text: FilterByDate.thisWeek.value),
