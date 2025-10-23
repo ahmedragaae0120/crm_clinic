@@ -110,8 +110,8 @@ class AuthCubit extends Cubit<AuthState> {
       case UserPermission.admin:
         log("permission admin");
         return AppRoutes.admin;
-      // case UserPermission.doctor:
-      //   return AppRoutes.doctor;
+      case UserPermission.doctor:
+        return AppRoutes.doctor;
       // case UserPermission.nurse:
       //   return AppRoutes.nurse;
       case UserPermission.receptionist:
@@ -133,12 +133,8 @@ class AuthCubit extends Cubit<AuthState> {
       switch (userPermission) {
         case UserPermission.admin:
           return AppRoutes.admin;
-        // case UserPermission.doctor:
-        //   return RouteManager.adminDashboard;
-        //   break;
-        // case UserPermission.nurse:
-        //   return RouteManager.adminDashboard;
-        //   break;
+        case UserPermission.doctor:
+          return AppRoutes.doctor;
         case UserPermission.receptionist:
           return AppRoutes.receptionistMainScreen;
 
