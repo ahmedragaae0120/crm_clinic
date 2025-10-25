@@ -5,11 +5,6 @@ class ProfileTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        color: Colors.indigoAccent,
-        child: const Text('Profile Tab View'),
-      ),
-    );
+    return Center(child: Container(color: Colors.indigoAccent));
   }
 }

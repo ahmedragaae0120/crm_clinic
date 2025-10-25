@@ -5,11 +5,6 @@ class AppointmentsTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        color: Colors.blue,
-        child: const Text('Appointments Tab View'),
-      ),
-    );
+    return Center(child: Container(color: Colors.blue));
   }
 }

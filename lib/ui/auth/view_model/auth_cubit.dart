@@ -106,6 +106,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<String> getNavigation(String uid) async {
     final userPermission = await _firebaseManager.getUserPermission(uid);
+    log("userPermission =$userPermission vs ${userPermission.name}");
     switch (userPermission) {
       case UserPermission.admin:
         log("permission admin");
@@ -137,7 +138,6 @@ class AuthCubit extends Cubit<AuthState> {
           return AppRoutes.doctor;
         case UserPermission.receptionist:
           return AppRoutes.receptionistMainScreen;
-
         default:
           return AppRoutes.login;
       }

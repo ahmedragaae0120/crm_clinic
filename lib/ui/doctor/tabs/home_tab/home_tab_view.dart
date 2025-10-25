@@ -5,8 +5,6 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(color: Colors.brown, child: const Text('Home Tab View')),
-    );
+    return Center(child: Container(color: Colors.brown));
   }
 }

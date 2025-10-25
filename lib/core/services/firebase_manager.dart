@@ -138,6 +138,7 @@ class FirebaseManager {
       if (role == UserPermission.admin.value.toLowerCase()) {
         return UserPermission.admin;
       } else if (role == UserPermission.doctor.value.toLowerCase()) {
+        log("role doctor from firebase manager");
         return UserPermission.doctor;
       } else if (role == UserPermission.nurse.value.toLowerCase()) {
         return UserPermission.nurse;

@@ -34,7 +34,7 @@ class _DoctorMainScreenState extends State<DoctorMainScreen> {
             label: AppStrings.home,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.book),
+            icon: const Icon(Icons.calendar_today),
             label: AppStrings.appointments,
           ),
           BottomNavigationBarItem(

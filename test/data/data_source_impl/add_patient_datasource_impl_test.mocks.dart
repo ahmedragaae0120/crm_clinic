@@ -268,6 +268,7 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
   _i5.Future<void> bookAppointmentAndUpdateSlot({
     required String? patientId,
     required String? doctorId,
+    required String? doctorName,
     required String? slotId,
     required _i7.PatientModel? patient,
   }) =>
@@ -275,6 +276,7 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
             Invocation.method(#bookAppointmentAndUpdateSlot, [], {
               #patientId: patientId,
               #doctorId: doctorId,
+              #doctorName: doctorName,
               #slotId: slotId,
               #patient: patient,
             }),
@@ -289,6 +291,7 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
     required String? oldDoctorId,
     required String? oldSlotId,
     required String? newDoctorId,
+    required String? newDoctorName,
     required String? newSlotId,
   }) =>
       (super.noSuchMethod(
@@ -297,6 +300,7 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
               #oldDoctorId: oldDoctorId,
               #oldSlotId: oldSlotId,
               #newDoctorId: newDoctorId,
+              #newDoctorName: newDoctorName,
               #newSlotId: newSlotId,
             }),
             returnValue: _i5.Future<void>.value(),
