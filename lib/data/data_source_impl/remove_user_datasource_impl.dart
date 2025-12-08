@@ -16,14 +16,11 @@ class RemoveUserDatasourceImpl implements RemoveUserDatasource {
   final http.Client client;
   @override
   Future<Result<void>> removeUser(String userId) async {
-    final response = await client.delete(Uri.parse(Constant.removeUserEndPoint),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          "collection": Collections.users,
-          "docId": userId,
-        }));
+    final response = await client.delete(
+      Uri.parse(Constant.removeUserEndPoint),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({"collection": Collections.users, "docId": userId}),
+    );
 
     if (response.statusCode == 200) {
       log("Success");

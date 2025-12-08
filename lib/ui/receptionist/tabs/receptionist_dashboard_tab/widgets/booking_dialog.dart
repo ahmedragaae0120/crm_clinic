@@ -1,7 +1,7 @@
 import 'package:crm_clinic/core/utils/base_state.dart';
 import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/core/utils/toast_message.dart';
-import 'package:crm_clinic/data/model/doctor/available_slot_model.dart';
+import 'package:crm_clinic/data/model/doctor/slot_model.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:crm_clinic/domain/entity/patient_entity.dart';
@@ -114,13 +114,9 @@ class _BookingDialogState extends State<BookingDialog> {
                           ),
                         );
                       }
-                      if (state.getSlots
-                          is BaseSuccessState<List<AvailableSlotModel>>) {
+                      if (state.getSlots is BaseSuccessState<List<SlotModel>>) {
                         return _buildAvailableSlotsList(
-                          (state.getSlots
-                                      as BaseSuccessState<
-                                        List<AvailableSlotModel>
-                                      >)
+                          (state.getSlots as BaseSuccessState<List<SlotModel>>)
                                   .data ??
                               [],
                           context,
@@ -185,11 +181,11 @@ class _BookingDialogState extends State<BookingDialog> {
   }
 
   Widget _buildAvailableSlotsList(
-    List<AvailableSlotModel> availableSlots,
+    List<SlotModel> availableSlots,
     BuildContext context,
   ) {
     // 1. تجميع المواعيد في Map حسب اليوم
-    final Map<DateTime, List<AvailableSlotModel>> groupedSlots = {};
+    final Map<DateTime, List<SlotModel>> groupedSlots = {};
     for (var slot in availableSlots) {
       // التأكد من أن وقت البدء ليس null
       final startTime = slot.startTime ?? DateTime.now();

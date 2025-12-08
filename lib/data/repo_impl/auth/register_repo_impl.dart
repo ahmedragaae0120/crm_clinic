@@ -12,9 +12,13 @@ class RegisterRepoImpl implements RegisterRepo {
   final RegisterDatasource _registerDatasource;
 
   @override
-  Future<Result<void>> register(
-      {required UserModel userModel, required String password}) {
+  Future<Result<void>> register({
+    required UserModel userModel,
+    required String password,
+  }) {
     return _registerDatasource.register(
-        userModel: userModel, password: password);
+      userModel: userModel,
+      password: password,
+    );
   }
 }

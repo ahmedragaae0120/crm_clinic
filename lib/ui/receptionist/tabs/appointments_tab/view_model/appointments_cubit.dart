@@ -25,7 +25,7 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
 
   filteredAppointments(FilterByDate filterAppointments) {
     filteredAppointmentsType = filterAppointments;
-    emit(state.copyWith(getAppointments: BaseLoadingState()));
+    emit(state.copyWith());
 
     final mainList = state.appointmentsList ?? [];
     if (filterAppointments == FilterByDate.all) {

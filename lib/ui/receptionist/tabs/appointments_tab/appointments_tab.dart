@@ -70,7 +70,9 @@ class _AppointmentsTabState extends State<AppointmentsTab> {
                 ],
               ),
               SizedBox(height: Config.hightSize! * 0.02),
-              const FilterTabBarWidget(),
+              FilterTabBarWidget(
+                onFilterChanged: appointmentsCubit.filteredAppointments,
+              ),
               appointments.isEmpty
                   ? Expanded(
                       child: Center(

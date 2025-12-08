@@ -23,17 +23,19 @@ void main() {
   // بيانات وهمية للاستخدام في الاختبار
   final tUsersList = <UserModel>[
     UserModel(
-        uid: '1',
-        fullName: 'Ahmed',
-        email: 'ahmed@example.com',
-        joined: DateTime.now(),
-        permission: 'Admin'),
+      uid: '1',
+      fullName: 'Ahmed',
+      email: 'ahmed@example.com',
+      joined: DateTime.now(),
+      permission: 'Admin',
+    ),
     UserModel(
-        uid: '2',
-        fullName: 'Fatma',
-        email: 'fatma@example.com',
-        joined: DateTime.now(),
-        permission: 'Doctor'),
+      uid: '2',
+      fullName: 'Fatma',
+      email: 'fatma@example.com',
+      joined: DateTime.now(),
+      permission: 'Doctor',
+    ),
   ];
   final tResultStream = Stream.value(Success(tUsersList));
 

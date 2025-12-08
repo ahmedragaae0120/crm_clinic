@@ -9,5 +9,6 @@ class AppColors {
   static const background = Color(0xFFF2F8FF);
   static const textPrimary = Color(0xFF212121); // Dark text
   static const textSecondary = Color(0xFF757575); // Grey text
+  static const textSmall = Colors.white70;
   static const white = Colors.white;
 }

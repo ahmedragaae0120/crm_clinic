@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+
 abstract class AppStrings {
   static String get login => "login".tr();
   static String get register => "register".tr();
@@ -26,13 +27,18 @@ abstract class AppStrings {
   static String get emailCantBeEmpty => "emailCantBeEmpty".tr();
   static String get enterValidEmailAddress => "enterValidEmailAddress".tr();
   static String get passwordCantBeEmpty => "passwordCantBeEmpty".tr();
-  static String get passwordMustBeAtLeast6Characters => "passwordMustBeAtLeast6Characters".tr();
-  static String get passwordMustContainAtLeastOneUppercaseLetter => "passwordMustContainAtLeastOneUppercaseLetter".tr();
-  static String get passwordMustContainAtLeastOneNumber => "passwordMustContainAtLeastOneNumber".tr();
-  static String get passwordMustContainAtLeastOneSpecialCharacter => "passwordMustContainAtLeastOneSpecialCharacter".tr();
+  static String get passwordMustBeAtLeast6Characters =>
+      "passwordMustBeAtLeast6Characters".tr();
+  static String get passwordMustContainAtLeastOneUppercaseLetter =>
+      "passwordMustContainAtLeastOneUppercaseLetter".tr();
+  static String get passwordMustContainAtLeastOneNumber =>
+      "passwordMustContainAtLeastOneNumber".tr();
+  static String get passwordMustContainAtLeastOneSpecialCharacter =>
+      "passwordMustContainAtLeastOneSpecialCharacter".tr();
   static String get passwordsDoNotMatch => "passwordsDoNotMatch".tr();
   static String get userNameCannotBeEmpty => "userNameCannotBeEmpty".tr();
-  static String get userNameCannotBeMoreThan20Characters => "userNameCannotBeMoreThan20Characters".tr();
+  static String get userNameCannotBeMoreThan20Characters =>
+      "userNameCannotBeMoreThan20Characters".tr();
   static String get addNewPatient => "addNewPatient".tr();
   static String get fullName => "fullName".tr();
   static String get phoneNumber => "phoneNumber".tr();
@@ -55,10 +61,12 @@ abstract class AppStrings {
   static String get manageYourUsersHere => "manageYourUsersHere".tr();
   static String get newUser => "newUser".tr();
   static String get crmClinic => "crmClinic".tr();
-  static String get welcomeReceptionistDashboard => "welcomeReceptionistDashboard".tr();
+  static String get welcomeReceptionistDashboard =>
+      "welcomeReceptionistDashboard".tr();
   static String get searchByNameOrPhone => "searchByNameOrPhone".tr();
   static String get enterPatientDetails => "enterPatientDetails".tr();
-  static String get enterPatientNameOrPhoneToSearch => "enterPatientNameOrPhoneToSearch".tr();
+  static String get enterPatientNameOrPhoneToSearch =>
+      "enterPatientNameOrPhoneToSearch".tr();
   static String get noPatientsFoundFor => "noPatientsFoundFor".tr();
   static String get phone => "phone".tr();
   static String get gender => "gender".tr();
@@ -81,11 +89,14 @@ abstract class AppStrings {
   static String get yes => "yes".tr();
   static String get no => "no".tr();
   static String get actions => "actions".tr();
-  static String get bookAppointmentForPatient => "bookAppointmentForPatient".tr();
+  static String get bookAppointmentForPatient =>
+      "bookAppointmentForPatient".tr();
   static String get selectDoctorFirst => "selectDoctorFirst".tr();
   static String get confirmBooking => "confirmBooking".tr();
-  static String get appointmentBookedSuccessfully => "appointmentBookedSuccessfully".tr();
-  static String get noAvailableSlotsForThisDoctor => "noAvailableSlotsForThisDoctor".tr();
+  static String get appointmentBookedSuccessfully =>
+      "appointmentBookedSuccessfully".tr();
+  static String get noAvailableSlotsForThisDoctor =>
+      "noAvailableSlotsForThisDoctor".tr();
   static String get selectClinic => "selectClinic".tr();
   static String get mainClinic => "mainClinic".tr();
   static String get childrenClinic => "childrenClinic".tr();
@@ -103,9 +114,11 @@ abstract class AppStrings {
   static String get done => "done".tr();
   static String get appointments => "appointments".tr();
   static String get bookAnAppointment => "bookAnAppointment".tr();
-  static String get deletePatientFromDatabase => "deletePatientFromDatabase".tr();
-  static String get areYouSureAboutThisProcedure => "areYouSureAboutThisProcedure".tr();
-  static String get editTime  => "editTime ".tr();
+  static String get deletePatientFromDatabase =>
+      "deletePatientFromDatabase".tr();
+  static String get areYouSureAboutThisProcedure =>
+      "areYouSureAboutThisProcedure".tr();
+  static String get editTime => "editTime ".tr();
   static String get delete => "delete".tr();
   static String get updatedSuccessfully => "updatedSuccessfully".tr();
   static String get noAppointmentsFound => "noAppointmentsFound".tr();

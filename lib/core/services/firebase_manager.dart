@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crm_clinic/core/constant.dart';
 import 'package:crm_clinic/core/services/collections.dart';
 import 'package:crm_clinic/data/model/appointment_model.dart';
-import 'package:crm_clinic/data/model/doctor/available_slot_model.dart';
+import 'package:crm_clinic/data/model/doctor/slot_model.dart';
 import 'package:crm_clinic/data/model/patient_model.dart';
 import 'package:crm_clinic/data/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -248,29 +248,57 @@ class FirebaseManager {
 
   // -- دالة للطبيب لإضافة مواعيده المتاحة --
   // سيستخدمها الطبيب من شاشته الخاصة لتحديد أوقاته
-  Future<void> addAvailableSlotsForDoctor({
+  Future<void> addSlotForDoctor({
     required String doctorId,
-    required List<DateTime> slots,
+    required DateTime slot,
   }) async {
-    final batch = _db.batch(); // استخدام batch للكتابة المجمعة لزيادة الكفاءة
     final doctorSlotsCollection = _db
         .collection(Collections.users)
         .doc(doctorId)
-        .collection('availableSlots');
+        .collection(Collections.slots);
 
-    for (final slotTime in slots) {
-      final slotDoc = doctorSlotsCollection.doc();
-      batch.set(
-        slotDoc,
-        AvailableSlotModel(
-          startTime: slotTime,
-          status: 'available',
-          id: slotDoc.id,
-        ).toJson(),
-      );
+    // Check if a slot with the same time already exists
+    final querySnapshot = await doctorSlotsCollection
+        .where('startTime', isEqualTo: slot)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // A slot at this time already exists
+      throw Exception('This slot already exists.');
     }
+
+    final batch = _db.batch(); // استخدام batch للكتابة المجمعة لزيادة الكفاءة
+
+    final slotDoc = doctorSlotsCollection.doc();
+    batch.set(
+      slotDoc,
+      SlotModel(startTime: slot, status: 'available', id: slotDoc.id).toJson(),
+    );
+
     await batch.commit();
-    log("Added ${slots.length} new available slots for doctor $doctorId");
+  }
+
+  Future<void> removeSlot({
+    required String doctorId,
+    required String slotId,
+  }) async {
+    final slotDoc = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.slots)
+        .doc(slotId);
+    await slotDoc.delete();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllSlotsByDoctor(
+    String doctorId,
+  ) {
+    final collectionRef = _db
+        .collection(Collections.users)
+        .doc(doctorId)
+        .collection(Collections.slots);
+    return collectionRef.snapshots();
   }
 
   // -- دالة لجلب المواعيد المتاحة لطبيب معين --

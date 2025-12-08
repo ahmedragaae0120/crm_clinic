@@ -3,4 +3,5 @@ abstract class Collections {
   static const patients = 'patients';
   static const appointments = 'appointments';
   static const availableSlots = 'availableSlots';
+  static const slots = 'slots';
 }

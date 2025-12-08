@@ -25,35 +25,37 @@ void main() {
 
   group('LoginDatasourceImpl', () {
     test(
-        'should return Success<Usercredential> when login from firebase is successful',
-        () {
-      // Arrange
-      when(mockFirebaseManager.loginService(email, password)).thenAnswer(
-        (_) async => Future.value(mockUserCredential),
-      );
-      final result = loginDatasource.login(
-        email: email,
-        password: password,
-      );
-      // Assert
-      expect(result, isA<Future<Result<UserCredential>>>());
-      verify(mockFirebaseManager.loginService(email, password)).called(1);
-    });
+      'should return Success<Usercredential> when login from firebase is successful',
+      () {
+        // Arrange
+        when(
+          mockFirebaseManager.loginService(email, password),
+        ).thenAnswer((_) async => Future.value(mockUserCredential));
+        final result = loginDatasource.login(email: email, password: password);
+        // Assert
+        expect(result, isA<Future<Result<UserCredential>>>());
+        verify(mockFirebaseManager.loginService(email, password)).called(1);
+      },
+    );
 
-    test('should return Error when login fails with user-not-found error',
-        () async {
-      // Arrange
-      when(mockFirebaseManager.loginService(email, password)).thenThrow(
-        FirebaseAuthException(code: 'user-not-found'),
-      );
-      Result<UserCredential> result = await loginDatasource.login(
-        email: email,
-        password: password,
-      );
-      // Assert
-      expect(result, isA<Error>());
-      expect((result as Error).exception.toString(),
-          contains('No user found for that email.'));
-    });
+    test(
+      'should return Error when login fails with user-not-found error',
+      () async {
+        // Arrange
+        when(
+          mockFirebaseManager.loginService(email, password),
+        ).thenThrow(FirebaseAuthException(code: 'user-not-found'));
+        Result<UserCredential> result = await loginDatasource.login(
+          email: email,
+          password: password,
+        );
+        // Assert
+        expect(result, isA<Error>());
+        expect(
+          (result as Error).exception.toString(),
+          contains('No user found for that email.'),
+        );
+      },
+    );
   });
 }

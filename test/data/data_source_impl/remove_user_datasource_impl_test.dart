@@ -37,8 +37,9 @@ void main() {
       () async {
         // Arrange ⚙️
         // تهيئة الـ mock لإرجاع استجابة ناجحة عند استدعاء دالة delete
-        when(mockHttpClient.delete(tUri, headers: tHeaders, body: tBody))
-            .thenAnswer((_) async => http.Response('User removed', 200));
+        when(
+          mockHttpClient.delete(tUri, headers: tHeaders, body: tBody),
+        ).thenAnswer((_) async => http.Response('User removed', 200));
 
         // Act 🎬
         // تنفيذ الدالة المراد اختبارها
@@ -48,8 +49,9 @@ void main() {
         // التأكد من أن النتيجة من النوع Success
         expect(result, isA<Success>());
         // التأكد من أن دالة delete تم استدعاؤها مرة واحدة بالبيانات الصحيحة
-        verify(mockHttpClient.delete(tUri, headers: tHeaders, body: tBody))
-            .called(1);
+        verify(
+          mockHttpClient.delete(tUri, headers: tHeaders, body: tBody),
+        ).called(1);
         // التأكد من عدم حدوث أي استدعاءات أخرى للـ mock
         verifyNoMoreInteractions(mockHttpClient);
       },
@@ -60,8 +62,9 @@ void main() {
       () async {
         // Arrange ⚙️
         // تهيئة الـ mock لإرجاع استجابة خاطئة (e.g. 404 Not Found)
-        when(mockHttpClient.delete(tUri, headers: tHeaders, body: tBody))
-            .thenAnswer((_) async => http.Response('Not Found', 404));
+        when(
+          mockHttpClient.delete(tUri, headers: tHeaders, body: tBody),
+        ).thenAnswer((_) async => http.Response('Not Found', 404));
 
         // Act 🎬
         // تنفيذ الدالة المراد اختبارها
@@ -71,8 +74,9 @@ void main() {
         // التأكد من أن النتيجة من النوع Error
         expect(result, isA<Error>());
         // التأكد من أن دالة delete تم استدعاؤها مرة واحدة بالبيانات الصحيحة
-        verify(mockHttpClient.delete(tUri, headers: tHeaders, body: tBody))
-            .called(1);
+        verify(
+          mockHttpClient.delete(tUri, headers: tHeaders, body: tBody),
+        ).called(1);
         verifyNoMoreInteractions(mockHttpClient);
       },
     );

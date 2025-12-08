@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetAllAppointmentsUsecase {
+  @factoryMethod
   GetAllAppointmentsUsecase(this._getAllAppointmentsDatasource);
   final GetAllAppointmentsDatasource _getAllAppointmentsDatasource;
 

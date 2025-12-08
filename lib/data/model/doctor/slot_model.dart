@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AvailableSlotModel {
+class SlotModel {
   final String? id;
   final DateTime? startTime;
   final String? status;
 
-  AvailableSlotModel({this.id, this.startTime, this.status});
+  SlotModel({this.id, this.startTime, this.status});
 
-  factory AvailableSlotModel.fromJson(Map<String, dynamic>? json, String id) {
+  factory SlotModel.fromJson(Map<String, dynamic>? json, String id) {
     if (json == null) {
-      return AvailableSlotModel(id: id);
+      return SlotModel(id: id);
     }
-    return AvailableSlotModel(
+    return SlotModel(
       id: id,
       startTime: (json['startTime'] is Timestamp)
           ? (json['startTime'] as Timestamp).toDate()

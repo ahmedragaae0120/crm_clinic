@@ -9,9 +9,13 @@ class RegisterUsecase {
   RegisterUsecase(this._registerRepo);
   final RegisterRepo _registerRepo;
 
-  Future<Result<void>> call(
-      {required UserModel userModel, required String password}) async {
+  Future<Result<void>> call({
+    required UserModel userModel,
+    required String password,
+  }) async {
     return await _registerRepo.register(
-        userModel: userModel, password: password);
+      userModel: userModel,
+      password: password,
+    );
   }
 }

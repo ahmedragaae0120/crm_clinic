@@ -19,13 +19,7 @@ class Config {
     return screenHight;
   }
 
-  static const spaceSmall = SizedBox(
-    height: 25,
-  );
-  static final spaceMedium = SizedBox(
-    height: screenHight! * 0.05,
-  );
-  static final spaceBig = SizedBox(
-    height: screenHight! * 0.08,
-  );
+  static const spaceSmall = SizedBox(height: 25);
+  static final spaceMedium = SizedBox(height: screenHight! * 0.05);
+  static final spaceBig = SizedBox(height: screenHight! * 0.08);
 }

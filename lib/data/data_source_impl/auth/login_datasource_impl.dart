@@ -12,8 +12,10 @@ class LoginDatasourceImpl implements LoginDatasource {
   final FirebaseManager _firebaseManager;
 
   @override
-  Future<Result<UserCredential>> login(
-      {required String email, required String password}) async {
+  Future<Result<UserCredential>> login({
+    required String email,
+    required String password,
+  }) async {
     try {
       final response = await _firebaseManager.loginService(email, password);
       return Success<UserCredential>(response);

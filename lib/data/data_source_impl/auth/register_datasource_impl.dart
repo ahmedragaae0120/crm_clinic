@@ -13,13 +13,19 @@ class RegisterDatasourceImpl implements RegisterDatasource {
   final FirebaseManager _firebaseManager;
 
   @override
-  Future<Result<void>> register(
-      {required UserModel userModel, required String password}) async {
+  Future<Result<void>> register({
+    required UserModel userModel,
+    required String password,
+  }) async {
     try {
       UserCredential userCredential = await _firebaseManager.registerService(
-          userModel.email ?? '', password);
+        userModel.email ?? '',
+        password,
+      );
       await _firebaseManager.addUser(
-          userModel: userModel, userCredential: userCredential);
+        userModel: userModel,
+        userCredential: userCredential,
+      );
       return Success<void>(null);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

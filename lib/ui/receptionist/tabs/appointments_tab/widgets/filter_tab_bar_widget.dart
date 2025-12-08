@@ -1,11 +1,11 @@
 import 'dart:developer';
-
-import 'package:crm_clinic/ui/receptionist/tabs/appointments_tab/view_model/appointments_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:crm_clinic/ui/receptionist/tabs/receptionist_dashboard_tab/widgets/patient_filter_popup_button.dart';
 
 class FilterTabBarWidget extends StatefulWidget {
-  const FilterTabBarWidget({super.key});
+  final void Function(FilterByDate filter)? onFilterChanged;
+
+  const FilterTabBarWidget({super.key, this.onFilterChanged});
 
   @override
   State<FilterTabBarWidget> createState() => _FilterTabBarWidgetState();
@@ -27,14 +27,15 @@ class _FilterTabBarWidgetState extends State<FilterTabBarWidget>
     tabController = TabController(length: 4, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final filter = tabOrder[tabController.index];
-      AppointmentsCubit.get(context).filteredAppointments(filter);
+      widget.onFilterChanged?.call(filter);
+      // AppointmentsCubit.get(context).filteredAppointments(filter);
     });
     tabController.addListener(() {
       if (tabController.indexIsChanging == false) {
         log('Tab Index: ${tabController.index}');
         final filter = tabOrder[tabController.index];
         log('Selected Tab: ${filter.key}');
-        AppointmentsCubit.get(context).filteredAppointments(filter);
+        widget.onFilterChanged?.call(filter);
       }
       setState(() {});
     });
@@ -55,7 +56,7 @@ class _FilterTabBarWidgetState extends State<FilterTabBarWidget>
         TabBar(
           controller: tabController,
           isScrollable: true,
-          tabAlignment: TabAlignment.start,
+          tabAlignment: TabAlignment.center,
           labelPadding: const EdgeInsets.symmetric(
             horizontal: 24,
           ), // 🔹 المسافة بين التابات

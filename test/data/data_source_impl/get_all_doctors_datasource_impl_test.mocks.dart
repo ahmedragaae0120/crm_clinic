@@ -248,19 +248,45 @@ class MockFirebaseManager extends _i1.Mock implements _i4.FirebaseManager {
           as _i5.Future<void>);
 
   @override
-  _i5.Future<void> addAvailableSlotsForDoctor({
+  _i5.Future<void> addSlotForDoctor({
     required String? doctorId,
-    required List<DateTime>? slots,
+    required DateTime? slot,
   }) =>
       (super.noSuchMethod(
-            Invocation.method(#addAvailableSlotsForDoctor, [], {
+            Invocation.method(#addSlotForDoctor, [], {
               #doctorId: doctorId,
-              #slots: slots,
+              #slot: slot,
             }),
             returnValue: _i5.Future<void>.value(),
             returnValueForMissingStub: _i5.Future<void>.value(),
           )
           as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> removeSlot({
+    required String? doctorId,
+    required String? slotId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeSlot, [], {
+              #doctorId: doctorId,
+              #slotId: slotId,
+            }),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>> getAllSlotsByDoctor(
+    String? doctorId,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllSlotsByDoctor, [doctorId]),
+            returnValue:
+                _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>>.empty(),
+          )
+          as _i5.Stream<_i3.QuerySnapshot<Map<String, dynamic>>>);
 
   @override
   _i5.Future<_i3.QuerySnapshot<Map<String, dynamic>>>
