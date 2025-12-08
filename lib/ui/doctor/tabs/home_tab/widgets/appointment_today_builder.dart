@@ -9,8 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AppointmentTodayBuilder extends StatelessWidget {
-  final List<AppointmentModel> appointmentsToday;
-  const AppointmentTodayBuilder({super.key, required this.appointmentsToday});
+  const AppointmentTodayBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {

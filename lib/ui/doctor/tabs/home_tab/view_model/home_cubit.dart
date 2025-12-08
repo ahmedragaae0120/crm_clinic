@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/core/utils/base_state.dart';
@@ -14,28 +16,36 @@ class HomeCubit extends Cubit<HomeState> {
     : super(HomeState());
   final GetAllReceptionistUsecase _getAllReceptionistUsecase;
   final GetTodayAppointmentsUsecase _getTodayAppointmentsUsecase;
-  getAllReceptionist() async {
-    final result = await _getAllReceptionistUsecase.call();
-    switch (result) {
-      case Success():
-        emit(state.copyWith(getAllReceptionist: BaseSuccessState(result.data)));
-      case Error():
-        emit(
-          state.copyWith(
-            getAllReceptionist: BaseErrorState(
-              result.exception.toString(),
-              result.exception,
+
+  getAllReceptionist() {
+    final result = _getAllReceptionistUsecase.call();
+
+    result.listen((event) {
+      switch (event) {
+        case Success():
+          emit(
+            state.copyWith(getAllReceptionist: BaseSuccessState(event.data)),
+          );
+        case Error():
+          emit(
+            state.copyWith(
+              getAllReceptionist: BaseErrorState(
+                event.exception.toString(),
+                event.exception,
+              ),
             ),
-          ),
-        );
-    }
+          );
+      }
+    });
   }
 
   getAppointmentsToday() {
+    emit(state.copyWith(getAppointmentsToday: BaseLoadingState()));
     final result = _getTodayAppointmentsUsecase.call();
     result.listen((event) {
       switch (event) {
         case Success():
+          log('Appointments Today: ${event.data}');
           emit(
             state.copyWith(
               getAppointmentsToday: BaseSuccessState(event.data ?? []),

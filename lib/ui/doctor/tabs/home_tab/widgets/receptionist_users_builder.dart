@@ -28,62 +28,23 @@ class ReceptionistUsersBuilder extends StatelessWidget {
                   .data ??
               [];
           if (receptionists.isEmpty) {
-            // return const SliverToBoxAdapter(
-            //   child: Center(
-            //     child: Text(
-            //       "No Receptionist Found",
-            //       style: TextStyle(color: Colors.red),
-            //     ),
-            //   ),
-            // );
-          }
-          return SliverToBoxAdapter(
-            child: Skeletonizer(
-              enabled: true,
-              effect: const ShimmerEffect(
-                baseColor: Color(0xFFEAEAEA),
-                highlightColor: Colors.white,
-              ),
-              child: Column(
-                children: List.generate(
-                  4,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Container(
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: const CircleAvatar(radius: 24),
-                        title: Container(
-                          height: 12,
-                          width: 100,
-                          color: Colors.white,
-                        ),
-                        subtitle: Container(
-                          height: 12,
-                          width: 60,
-                          color: Colors.white,
-                        ),
-                        trailing: const Icon(Icons.more_vert),
-                      ),
-                    ),
-                  ),
+            return const SliverToBoxAdapter(
+              child: Center(
+                child: Text(
+                  "No Receptionist Found",
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
-            ),
+            );
+          }
+          return SliverList.builder(
+            itemCount: receptionists.length,
+            itemBuilder: (context, index) {
+              return ReceptionistUsersWidget(
+                receptionist: receptionists[index],
+              );
+            },
           );
-
-          // SliverList.builder(
-          //   itemCount: receptionists.length,
-          //   itemBuilder: (context, index) {
-          //     return ReceptionistUsersWidget(
-          //       receptionist: receptionists[index],
-          //     );
-          //   },
-          // );
         }
         return SliverToBoxAdapter(
           child: Column(

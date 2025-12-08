@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:crm_clinic/core/result.dart';
 import 'package:crm_clinic/data/data_source_contract/get_all_appointments_datasource.dart';
 import 'package:crm_clinic/data/model/appointment_model.dart';
@@ -21,6 +23,7 @@ class GetTodayAppointmentsUsecase {
                 date.month == today.month &&
                 date.day == today.day;
           }).toList();
+          log('todayAppointments: $todayAppointments');
           return Success<List<AppointmentModel>>(todayAppointments);
 
         case Error<List<AppointmentModel>>():

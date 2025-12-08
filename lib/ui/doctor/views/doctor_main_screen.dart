@@ -2,6 +2,7 @@ import 'package:crm_clinic/core/utils/string_manager.dart';
 import 'package:crm_clinic/ui/doctor/tabs/appointments_tab/appointments_tab_view.dart';
 import 'package:crm_clinic/ui/doctor/tabs/home_tab/home_tab_view.dart';
 import 'package:crm_clinic/ui/doctor/tabs/profile_tab/profile_tab_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DoctorMainScreen extends StatefulWidget {
@@ -43,8 +44,7 @@ class _DoctorMainScreenState extends State<DoctorMainScreen> {
           ),
         ],
       ),
-      appBar: AppBar(title: const Text('Doctor Main Screen')),
-      body: _tabs[_currentIndex], // Placeholder for the selected tab content
+      body: _tabs[_currentIndex],
     );
   }
 }

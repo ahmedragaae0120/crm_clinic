@@ -103,5 +103,6 @@
     "appointments": "المواعيد",
     "bookAnAppointment": "حجز موعد",
     "deletePatientFromDatabase": "حذف المريض من قاعدة البيانات",
-    "areYouSureAboutThisProcedure": "هل انت متاكد من هذه العملية؟"
+    "areYouSureAboutThisProcedure": "هل انت متاكد من هذه العملية؟",
+    "language": "اللغة"
 }

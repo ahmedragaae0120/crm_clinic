@@ -1,6 +1,4 @@
 import 'package:crm_clinic/core/Di/di.dart';
-import 'package:crm_clinic/domain/use_cases/doctor/add_available_slots_for_doctor_usecase.dart';
-import 'package:crm_clinic/domain/use_cases/doctor/get_available_slots_for_doctor_usecase.dart';
 import 'package:crm_clinic/ui/doctor/tabs/home_tab/view_model/home_cubit.dart';
 import 'package:crm_clinic/ui/doctor/tabs/home_tab/widgets/appointment_today_builder.dart';
 import 'package:crm_clinic/ui/doctor/tabs/home_tab/widgets/receptionist_users_builder.dart';
@@ -20,30 +18,6 @@ class HomeTabView extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: ElevatedButton(
-              onPressed: () {
-                final add = getIt<AddSlotsForDoctorUsecase>();
-                final get = getIt<GetAvailableSlotsForDoctorUsecase>();
-                get.call(doctorId: "iUjf0yXCIPXNFNVn01gfu4jGR093");
-                // add.call(
-                //   doctorId: "iUjf0yXCIPXNFNVn01gfu4jGR093",
-                //   slots: [
-                //     DateTime.now().add(const Duration(days: 5, hours: 9)),
-                //     DateTime.now().add(const Duration(days: 6, hours: 10)),
-                //     DateTime.now().add(const Duration(days: 1, hours: 12)),
-                //     DateTime.now().add(const Duration(days: 1, hours: 15)),
-                //     DateTime.now().add(const Duration(days: 5, hours: 12)),
-                //     DateTime.now().add(const Duration(days: 3, hours: 12)),
-                //     DateTime.now().add(const Duration(days: 8, hours: 12)),
-                //   ],
-                // );
-              },
-              child: const Text(
-                " Add Avalibale appointment to doctor ali test",
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Text(
@@ -52,7 +26,7 @@ class HomeTabView extends StatelessWidget {
               ),
             ),
           ),
-          const AppointmentTodayBuilder(appointmentsToday: []),
+          const AppointmentTodayBuilder(),
 
           SliverToBoxAdapter(
             child: Padding(

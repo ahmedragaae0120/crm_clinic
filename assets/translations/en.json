@@ -107,5 +107,6 @@
     "editTime ": "Edit Time",
     "delete": "Delete",
     "updatedSuccessfully": "Updated Successfully",
-    "noAppointmentsFound": "No appointments found"
+    "noAppointmentsFound": "No appointments found",
+    "language": "Language"
 }
